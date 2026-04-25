@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RCCG Jesus House SV — Visual Style Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* ---------- CORE BRAND COLORS ---------- */
+    --plum-900: #1F0A1D;      /* Deepest plum — reserved, rare use */
+    --plum-800: #2A0E27;      /* Dark aubergine — footer, dark surfaces */
+    --plum-700: #3A1535;      /* Primary deep plum */
+    --plum-600: #4A1942;      /* SANCTUARY PLUM — brand primary */
+    --plum-500: #6B2C60;      /* Mid plum — hovers, accents */
+    --plum-300: #B48AA9;      /* Soft plum — tints, badges */
+    --plum-100: #EFE3EC;      /* Pale plum — wash backgrounds */
+    --plum-50:  #F8F2F6;      /* Whisper plum */
+
+    --coral-700: #B84226;     /* Deep coral — hover states */
+    --coral-600: #D94F2E;     /* Darker coral */
+    --coral-500: #E85D3C;     /* CORAL FLAME — brand accent */
+    --coral-300: #F1A68E;     /* Soft coral */
+    --coral-100: #FCE5DB;     /* Coral tint — badges */
+    --coral-50:  #FDF2EC;     /* Coral wash */
+
+    --parchment:   #FAF6F0;   /* Warm off-white — primary bg */
+    --parchment-2: #F3EEE5;   /* Slightly deeper — section alt */
+    --mist:        #E8E1D9;   /* Warm border/divider */
+    --mist-2:      #D5CDC3;   /* Stronger border */
+
+    --ink:      #1C1A23;      /* Primary text — plum-tinted black */
+    --ink-80:   #3A3641;      /* Headings on parchment */
+    --ink-60:   #6B6571;      /* Secondary text */
+    --ink-40:   #9E9AA5;      /* Tertiary / captions */
+    --ink-20:   #C8C5CE;      /* Disabled */
+
+    --gold-500: #C99A3E;      /* Rare accent — reserved for special moments */
+
+    /* ---------- SEMANTIC TOKENS ---------- */
+    --bg-page:       var(--parchment);
+    --bg-alt:        var(--parchment-2);
+    --bg-card:       #FFFFFF;
+    --bg-dark:       var(--plum-800);
+    --bg-accent:     var(--plum-600);
+
+    --text-primary:   var(--ink);
+    --text-secondary: var(--ink-60);
+    --text-muted:     var(--ink-40);
+    --text-inverse:   #FAF6F0;
+
+    --border-soft:    var(--mist);
+    --border-strong:  var(--mist-2);
+
+    --cta-primary:    var(--plum-600);
+    --cta-accent:     var(--coral-500);
+
+    /* ---------- ARCH RADII ---------- */
+    --arch-full: 50% 50% 0 0 / 30% 30% 0 0;     /* Image container arch */
+    --arch-soft: 50% 50% 0 0 / 18% 18% 0 0;     /* Soft arch */
+    --arch-hi:   50% 50% 0 0 / 45% 45% 0 0;     /* Tall arch */
+
+    /* ---------- TYPE ---------- */
+    --display: "DM Serif Display", "Times New Roman", Georgia, serif;
+    --sans:    "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --mono:    ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    /* ---------- SHADOW ---------- */
+    --shadow-sm: 0 1px 2px rgba(28,26,35,0.04), 0 1px 3px rgba(28,26,35,0.06);
+    --shadow-md: 0 4px 6px -1px rgba(28,26,35,0.05), 0 2px 12px rgba(74,25,66,0.06);
+    --shadow-lg: 0 10px 24px -4px rgba(28,26,35,0.08), 0 4px 8px rgba(74,25,66,0.06);
+
+    /* Motion */
+    --ease-out:   cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  body {
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- TOP NAV ---------- */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250, 246, 240, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border-soft);
+    padding: 18px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .topbar .brand {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text-primary);
+    letter-spacing: -0.005em;
+  }
+  .topbar .brand em {
+    font-style: normal;
+    font-weight: 500;
+    color: var(--plum-600);
+  }
+  .topbar nav {
+    display: flex;
+    gap: 20px;
+    font-size: 13.5px;
+    font-weight: 500;
+    flex-wrap: wrap;
+  }
+  .topbar nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s var(--ease-out);
+  }
+  .topbar nav a:hover { color: var(--plum-600); }
+
+  /* ---------- LAYOUT ---------- */
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  .hero {
+    padding: 120px 48px 100px;
+    max-width: 1180px;
+    margin: 0 auto;
+    text-align: left;
+    position: relative;
+  }
+  .hero .eyebrow {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--coral-600);
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(56px, 8vw, 96px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+    margin-bottom: 32px;
+    max-width: 980px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--plum-600);
+  }
+  .hero .lede {
+    font-size: 20px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    max-width: 720px;
+    font-weight: 400;
+  }
+  .hero .meta {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 32px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* Arch decoration on hero */
+  .hero-arch {
+    position: absolute;
+    top: 80px;
+    right: 48px;
+    width: 140px;
+    height: 170px;
+    background: var(--plum-600);
+    border-radius: var(--arch-full);
+    opacity: 0.08;
+    z-index: -1;
+  }
+  .hero-arch-2 {
+    position: absolute;
+    top: 140px;
+    right: 180px;
+    width: 80px;
+    height: 100px;
+    background: var(--coral-500);
+    border-radius: var(--arch-full);
+    opacity: 0.15;
+    z-index: -1;
+  }
+  @media (max-width: 800px) {
+    .hero-arch, .hero-arch-2 { display: none; }
+  }
+
+  /* ---------- SECTION ---------- */
+  section.doc {
+    padding: 64px 0 40px;
+    border-top: 1px solid var(--border-soft);
+  }
+  section.doc.no-border { border-top: none; }
+
+  .doc-head { margin-bottom: 40px; max-width: 900px; }
+  .doc-head .number {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 1;
+    color: var(--coral-500);
+    margin-bottom: 12px;
+  }
+  .doc-head h2 {
+    font-family: var(--display);
+    font-size: clamp(40px, 5vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+  }
+  .doc-head .subtitle {
+    font-size: 18px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 680px;
+  }
+
+  h3.doc-h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--text-primary);
+    margin: 48px 0 20px;
+    letter-spacing: -0.01em;
+  }
+  h4.doc-h4 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 32px 0 16px;
+  }
+  p.doc { max-width: 720px; color: var(--text-secondary); margin-bottom: 16px; }
+  p.doc.wide { max-width: 900px; }
+
+  /* ---------- PRINCIPLES GRID ---------- */
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+    margin-top: 32px;
+  }
+  .principle {
+    padding: 36px 32px 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .principle::before {
+    content: "";
+    position: absolute;
+    top: -20px; left: 24px;
+    width: 40px; height: 50px;
+    background: var(--coral-500);
+    border-radius: var(--arch-full);
+    opacity: 0.9;
+  }
+  .principle h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1.3;
+    margin-top: 42px;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+  .principle p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  /* ---------- COLOR SWATCHES ---------- */
+  .swatch-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 28px 0;
+  }
+  .swatch {
+    display: flex;
+    flex-direction: column;
+  }
+  .swatch .chip {
+    height: 140px;
+    border-radius: 16px;
+    border: 1px solid var(--border-soft);
+    display: flex;
+    align-items: flex-end;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .swatch .chip.arched::after {
+    content: "";
+    position: absolute;
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    width: 72px; height: 86px;
+    background: currentColor;
+    border-radius: var(--arch-full);
+    opacity: 0.22;
+  }
+  .swatch .name {
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .swatch .hex {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .swatch .use {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.45;
+  }
+
+  /* Palette grid — semantic tokens */
+  .palette-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--bg-card);
+  }
+  .palette-table th, .palette-table td {
+    padding: 14px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 14px;
+    vertical-align: middle;
+  }
+  .palette-table tr:last-child td { border-bottom: none; }
+  .palette-table th {
+    background: var(--bg-alt);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+  .palette-table .dot {
+    width: 24px; height: 24px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.08);
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  .palette-table code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink);
+    background: var(--bg-alt);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* ---------- TYPOGRAPHY DISPLAY ---------- */
+  .type-specimen {
+    padding: 48px 40px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    margin: 28px 0;
+  }
+  .type-specimen .font-label {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--coral-600);
+    margin-bottom: 20px;
+  }
+  .type-specimen .big-serif {
+    font-family: var(--display);
+    font-size: clamp(72px, 12vw, 140px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+  .type-specimen .big-serif em {
+    font-style: italic;
+    color: var(--plum-600);
+  }
+  .type-specimen .big-sans {
+    font-family: var(--sans);
+    font-size: clamp(60px, 10vw, 120px);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+  .type-specimen .meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+  .type-specimen .pangram {
+    font-family: var(--display);
+    font-size: 32px;
+    line-height: 1.35;
+    color: var(--text-secondary);
+    margin-top: 20px;
+    max-width: 720px;
+  }
+  .type-specimen.sans .pangram {
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.5;
+  }
+
+  /* Type scale */
+  .scale-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 1fr;
+    align-items: baseline;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-soft);
+    gap: 24px;
+  }
+  .scale-row:last-child { border-bottom: none; }
+  .scale-meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .scale-sample { overflow: hidden; }
+  .scale-usage {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .sample-h1 { font-family: var(--display); font-size: 64px; line-height: 1.05; letter-spacing: -0.025em; color: var(--text-primary); }
+  .sample-h2 { font-family: var(--display); font-size: 44px; line-height: 1.1; letter-spacing: -0.02em; color: var(--text-primary); }
+  .sample-h3 { font-family: var(--sans); font-weight: 600; font-size: 24px; line-height: 1.3; letter-spacing: -0.01em; color: var(--text-primary); }
+  .sample-h4 { font-family: var(--sans); font-weight: 600; font-size: 18px; line-height: 1.4; color: var(--text-primary); }
+  .sample-body-lg { font-family: var(--sans); font-weight: 400; font-size: 18px; line-height: 1.65; color: var(--text-primary); }
+  .sample-body { font-family: var(--sans); font-weight: 400; font-size: 16px; line-height: 1.65; color: var(--text-primary); }
+  .sample-sm { font-family: var(--sans); font-weight: 500; font-size: 13px; line-height: 1.5; letter-spacing: 0.04em; text-transform: uppercase; color: var(--coral-600); }
+  .sample-caption { font-family: var(--sans); font-weight: 500; font-size: 12px; line-height: 1.5; color: var(--text-muted); }
+  .sample-quote { font-family: var(--display); font-style: italic; font-size: 36px; line-height: 1.3; color: var(--plum-600); letter-spacing: -0.015em; }
+
+  @media (max-width: 760px) {
+    .scale-row { grid-template-columns: 1fr; }
+    .sample-h1 { font-size: 44px; }
+    .sample-h2 { font-size: 32px; }
+    .sample-quote { font-size: 28px; }
+  }
+
+  /* ---------- ARCH MOTIF ---------- */
+  .arch-showcase {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin: 28px 0;
+  }
+  .arch-demo {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .arch-shape {
+    width: 120px;
+    height: 150px;
+    margin: 0 auto 20px;
+    background: var(--plum-600);
+    border-radius: var(--arch-full);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    color: var(--parchment);
+    padding-bottom: 20px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .arch-shape.coral { background: var(--coral-500); }
+  .arch-shape.mist  { background: var(--plum-100); color: var(--plum-600); }
+  .arch-shape.gold  { background: var(--gold-500); }
+  .arch-shape.soft  { border-radius: var(--arch-soft); }
+  .arch-shape.hi    { border-radius: var(--arch-hi); }
+  .arch-demo h5 { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .arch-demo .detail { font-size: 12px; color: var(--text-muted); font-family: var(--mono); }
+
+  /* Arch in context — image frame */
+  .arch-frame-demo {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+  }
+  @media (max-width: 800px) { .arch-frame-demo { grid-template-columns: 1fr; } }
+  .arch-frame {
+    background: linear-gradient(135deg, #8c5a7d, var(--plum-600) 50%, #2a0e27);
+    aspect-ratio: 3 / 4;
+    border-radius: var(--arch-full);
+    position: relative;
+    overflow: hidden;
+  }
+  .arch-frame.coral { background: linear-gradient(135deg, #f5a58e, var(--coral-500) 50%, #7a2a17); }
+  .arch-frame.double {
+    background:
+      radial-gradient(circle at 30% 20%, rgba(232,93,60,0.35) 0%, transparent 45%),
+      linear-gradient(135deg, var(--plum-500), var(--plum-700) 60%, var(--plum-800));
+  }
+  .arch-frame::after {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: var(--arch-full);
+    pointer-events: none;
+  }
+  .arch-frame-caption {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  /* ---------- BUTTONS ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.005em;
+    padding: 14px 32px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s var(--ease-out);
+    min-height: 48px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--plum-600);
+    color: var(--parchment);
+  }
+  .btn-primary:hover {
+    background: var(--plum-700);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  .btn-accent {
+    background: var(--coral-500);
+    color: #ffffff;
+  }
+  .btn-accent:hover {
+    background: var(--coral-700);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--plum-600);
+    border: 1.5px solid var(--plum-600);
+  }
+  .btn-outline:hover {
+    background: var(--plum-600);
+    color: var(--parchment);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 12px 18px;
+  }
+  .btn-ghost:hover {
+    background: rgba(74,25,66,0.08);
+  }
+  .btn-inverse {
+    background: var(--parchment);
+    color: var(--plum-600);
+  }
+  .btn-inverse:hover { background: #FFFFFF; }
+  .btn-outline-inverse {
+    background: transparent;
+    color: var(--parchment);
+    border: 1.5px solid rgba(250,246,240,0.6);
+  }
+  .btn-outline-inverse:hover {
+    border-color: var(--parchment);
+    background: rgba(250,246,240,0.08);
+  }
+  .btn .arrow { transition: transform 0.3s var(--ease-out); font-size: 18px; display: inline-block; }
+  .btn:hover .arrow { transform: translateX(4px); }
+
+  .btn-showcase {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 24px 0;
+  }
+  .btn-showcase.dark {
+    background: var(--plum-800);
+    border-color: var(--plum-700);
+  }
+  .btn-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .btn-row:last-child { margin-bottom: 0; }
+  .btn-row-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .btn-showcase.dark .btn-row-label { color: rgba(250,246,240,0.5); }
+
+  /* ---------- CARDS ---------- */
+  .card-showcase {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin: 28px 0;
+  }
+  .church-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s var(--ease-out);
+  }
+  .church-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    border-color: var(--plum-300);
+  }
+  .card-image {
+    aspect-ratio: 3 / 2;
+    background: linear-gradient(135deg, var(--plum-500), var(--plum-700));
+    position: relative;
+    overflow: hidden;
+  }
+  .card-image.coral { background: linear-gradient(135deg, var(--coral-300), var(--coral-600)); }
+  .card-image.arch-top {
+    border-radius: var(--arch-full);
+    margin: 16px 16px 0;
+    aspect-ratio: 4 / 5;
+  }
+  .card-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(28,10,26,0.4));
+  }
+  .card-body { padding: 24px 28px 28px; }
+  .card-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--coral-600);
+    margin-bottom: 8px;
+  }
+  .card-title {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1.25;
+    letter-spacing: -0.012em;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .card-desc {
+    font-size: 14.5px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+  .card-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--plum-600);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-link:hover { color: var(--coral-600); }
+
+  /* ---------- FORMS ---------- */
+  .form-demo {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 520px;
+    margin: 24px 0;
+  }
+  .form-demo h4 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1.25;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: -0.012em;
+  }
+  .form-demo .form-intro {
+    font-size: 14.5px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--text-primary);
+    background: var(--parchment);
+    border: 1.5px solid var(--border-soft);
+    border-radius: 12px;
+    transition: all 0.2s var(--ease-out);
+    outline: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--plum-600);
+    background: #FFFFFF;
+    box-shadow: 0 0 0 4px rgba(74,25,66,0.08);
+  }
+  .field input::placeholder { color: var(--text-muted); }
+  .field textarea { resize: vertical; min-height: 90px; font-family: var(--sans); }
+
+  /* ---------- SPACING / RADII VIZ ---------- */
+  .spacing-viz {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .spacing-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    padding: 16px;
+    border-radius: 14px;
+    text-align: center;
+  }
+  .spacing-bar {
+    height: 14px;
+    background: var(--plum-600);
+    border-radius: 4px;
+    margin: 0 auto 10px;
+  }
+  .spacing-item .token {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+  .spacing-item .value {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ---------- MOTION ---------- */
+  .motion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin: 24px 0;
+  }
+  .motion-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .motion-card h5 { font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+  .motion-card .timing {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--coral-600);
+    margin-bottom: 8px;
+  }
+  .motion-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* ---------- DO / DON'T ---------- */
+  .do-dont {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 28px 0;
+  }
+  @media (max-width: 760px) { .do-dont { grid-template-columns: 1fr; } }
+  .ddbox {
+    border-radius: 16px;
+    padding: 28px;
+    border: 1px solid;
+  }
+  .ddbox.do {
+    background: rgba(52,127,82,0.04);
+    border-color: rgba(52,127,82,0.2);
+  }
+  .ddbox.dont {
+    background: rgba(184,66,38,0.05);
+    border-color: rgba(184,66,38,0.2);
+  }
+  .ddbox .lbl {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .ddbox.do .lbl { color: #2f6a4e; }
+  .ddbox.dont .lbl { color: var(--coral-700); }
+  .ddbox ul { list-style: none; padding: 0; }
+  .ddbox li {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding-left: 24px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .ddbox.do li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #2f6a4e;
+    font-weight: 700;
+  }
+  .ddbox.dont li::before {
+    content: "×";
+    position: absolute;
+    left: 0;
+    color: var(--coral-700);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  /* ---------- FULL COMPONENT DEMO ---------- */
+  .live-hero {
+    padding: 100px 48px 100px;
+    background: var(--plum-800);
+    color: var(--parchment);
+    margin: 40px -48px 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+  }
+  .live-hero::before {
+    content: "";
+    position: absolute;
+    width: 600px;
+    height: 750px;
+    background: radial-gradient(ellipse at center, rgba(232,93,60,0.35), transparent 65%);
+    border-radius: var(--arch-full);
+    right: -100px;
+    top: -100px;
+    z-index: 0;
+  }
+  .live-hero::after {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 380px;
+    background: rgba(180,138,169,0.15);
+    border-radius: var(--arch-full);
+    left: -80px;
+    bottom: -100px;
+    z-index: 0;
+  }
+  .live-hero > * { position: relative; z-index: 1; }
+  .live-hero .eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--coral-300);
+    margin-bottom: 28px;
+  }
+  .live-hero h3 {
+    font-family: var(--display);
+    font-size: clamp(48px, 7vw, 88px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin-bottom: 28px;
+    max-width: 860px;
+  }
+  .live-hero h3 em {
+    font-style: italic;
+    color: var(--coral-300);
+  }
+  .live-hero .sub {
+    font-size: 19px;
+    color: rgba(250,246,240,0.75);
+    max-width: 580px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+  .live-hero .btns { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    margin-top: 80px;
+    padding: 48px 48px;
+    border-top: 1px solid var(--border-soft);
+    color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.6;
+  }
+  @media print {
+    .topbar { position: static; background: white; }
+    .principle::before, .hero-arch, .hero-arch-2 { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">Jesus House SV <em>— Style Guide</em></div>
+  <nav>
+    <a href="#principles">Principles</a>
+    <a href="#color">Color</a>
+    <a href="#type">Type</a>
+    <a href="#arch">The Arch</a>
+    <a href="#spacing">Spacing</a>
+    <a href="#buttons">Buttons</a>
+    <a href="#cards">Cards</a>
+    <a href="#forms">Forms</a>
+    <a href="#motion">Motion</a>
+    <a href="#demo">In situ</a>
+    <a href="#dos">Do / Don't</a>
+  </nav>
+</div>
+
+<!-- ============================ HERO ============================ -->
+<div class="hero">
+  <div class="hero-arch"></div>
+  <div class="hero-arch-2"></div>
+  <div class="eyebrow">Visual Style Guide · v1.0</div>
+  <h1>A church website that feels <em>like walking in</em>, not logging in.</h1>
+  <p class="lede">This guide defines the visual system for RCCG Jesus House Silicon Valley. It translates who we are — a multicultural, dynamic family of faith in the Bay Area — into a design language that feels bold, warm, distinct, and deeply welcoming. Built to feel modern without feeling corporate. Reverent without feeling dated.</p>
+  <div class="meta">April 2026 · Based on the JHSV Design Review &amp; Sitemap Blueprint</div>
+</div>
+
+<!-- ============================ PRINCIPLES ============================ -->
+<section class="doc no-border" id="principles">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">01</div>
+      <h2>Design Principles</h2>
+      <p class="subtitle">Before we talk color or type, we name what we are &mdash; and what we refuse to be. These six principles are the lens every design decision is checked against.</p>
+    </div>
+
+    <div class="principles">
+      <div class="principle">
+        <h3>Warmth beats polish.</h3>
+        <p>A SaaS site optimizes for conversion; a church site optimizes for <em>welcome</em>. If a choice makes the page feel more "human hands made this," we keep it. If it makes it feel more "a growth team A/B tested this," we cut it.</p>
+      </div>
+      <div class="principle">
+        <h3>Bold, not loud.</h3>
+        <p>Confident typography, a strong accent color, and one distinctive motif (the arch) give the site presence. Noise, gradients-on-everything, and glowing buttons do not. We earn attention through quality, not decibel.</p>
+      </div>
+      <div class="principle">
+        <h3>One voice, not six.</h3>
+        <p>The current site runs six font families. We run two &mdash; a warm display serif and a friendly sans. This single change does more for perceived quality than any other decision in this document.</p>
+      </div>
+      <div class="principle">
+        <h3>Every element earns its place.</h3>
+        <p>Jony Ive's rule, adapted. If a decorative button, a text shadow, or a tiled pattern doesn't serve the visitor's next step, it comes out. White space is not empty &mdash; it's rest.</p>
+      </div>
+      <div class="principle">
+        <h3>Designed for a Sunday morning phone.</h3>
+        <p>The first-time visitor is pulling into the parking lot, checking the address. Buttons are thumb-sized. Type is readable at arm's length. Load is fast on 4G. Nothing important hides below a fold.</p>
+      </div>
+      <div class="principle">
+        <h3>The arch is the soul.</h3>
+        <p>One repeating shape runs through the site &mdash; the rounded archway. It tops photographs, frames section dividers, and holds icons. It's the "front door" motif, used with restraint so it signals us, not overwhelms.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ COLOR ============================ -->
+<section class="doc" id="color">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">02</div>
+      <h2>Color</h2>
+      <p class="subtitle">A palette built on three commitments: a deeper, more refined plum that honors the heritage color; a vibrant coral accent that carries the Bay Area energy; and a warm parchment background that reads less like a tech product and more like a welcoming space.</p>
+    </div>
+
+    <h3 class="doc-h3">Core brand colors</h3>
+    <div class="swatch-row">
+      <div class="swatch">
+        <div class="chip arched" style="background: #4A1942; color: #4A1942;">
+          <div style="color: #FAF6F0; font-family: var(--sans); font-weight: 600; font-size: 14px; letter-spacing: 0.005em;">Sanctuary Plum</div>
+        </div>
+        <div class="name">Sanctuary Plum</div>
+        <div class="hex">#4A1942</div>
+        <div class="use">Primary brand color. Headlines in accent use. Footer background. Primary CTA fill.</div>
+      </div>
+      <div class="swatch">
+        <div class="chip arched" style="background: #E85D3C; color: #E85D3C;">
+          <div style="color: #ffffff; font-family: var(--sans); font-weight: 600; font-size: 14px; letter-spacing: 0.005em;">Coral Flame</div>
+        </div>
+        <div class="name">Coral Flame</div>
+        <div class="hex">#E85D3C</div>
+        <div class="use">Accent color. Eyebrow labels, secondary CTAs, occasional emphasis. Use 10&ndash;15% of surface area max.</div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: #FAF6F0; color: #1C1A23;">
+          <div style="color: #1C1A23; font-family: var(--sans); font-weight: 600; font-size: 14px; letter-spacing: 0.005em;">Warm Parchment</div>
+        </div>
+        <div class="name">Warm Parchment</div>
+        <div class="hex">#FAF6F0</div>
+        <div class="use">Primary page background. Replaces harsh white. Reads as welcoming, not sterile.</div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: #1C1A23; color: #FAF6F0;">
+          <div style="color: #FAF6F0; font-family: var(--sans); font-weight: 600; font-size: 14px; letter-spacing: 0.005em;">Near Ink</div>
+        </div>
+        <div class="name">Near Ink</div>
+        <div class="hex">#1C1A23</div>
+        <div class="use">Primary text. Slight plum undertone so it harmonizes with the brand, not pure #000.</div>
+      </div>
+    </div>
+
+    <h3 class="doc-h3">Extended palette</h3>
+    <p class="doc">Supporting shades for hover states, tints, dark surfaces, and soft backgrounds. Stay within this set &mdash; don't invent new colors per page.</p>
+    <table class="palette-table">
+      <thead>
+        <tr><th>Token</th><th>Swatch</th><th>Hex</th><th>Role</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>--plum-800</code></td><td><span class="dot" style="background:#2A0E27"></span> Dark Aubergine</td><td><code>#2A0E27</code></td><td>Footer, dark hero overlays, dark sections</td></tr>
+        <tr><td><code>--plum-700</code></td><td><span class="dot" style="background:#3A1535"></span> Deep Plum</td><td><code>#3A1535</code></td><td>CTA hover state, strong accent text</td></tr>
+        <tr><td><code>--plum-600</code></td><td><span class="dot" style="background:#4A1942"></span> Sanctuary Plum</td><td><code>#4A1942</code></td><td>Brand primary</td></tr>
+        <tr><td><code>--plum-300</code></td><td><span class="dot" style="background:#B48AA9"></span> Soft Plum</td><td><code>#B48AA9</code></td><td>Badges, subtle accents, lavender ranks</td></tr>
+        <tr><td><code>--plum-100</code></td><td><span class="dot" style="background:#EFE3EC"></span> Pale Plum</td><td><code>#EFE3EC</code></td><td>Section wash backgrounds, quote highlights</td></tr>
+        <tr><td><code>--coral-700</code></td><td><span class="dot" style="background:#B84226"></span> Deep Coral</td><td><code>#B84226</code></td><td>Accent CTA hover</td></tr>
+        <tr><td><code>--coral-500</code></td><td><span class="dot" style="background:#E85D3C"></span> Coral Flame</td><td><code>#E85D3C</code></td><td>Accent</td></tr>
+        <tr><td><code>--coral-100</code></td><td><span class="dot" style="background:#FCE5DB"></span> Coral Tint</td><td><code>#FCE5DB</code></td><td>Badges, highlight bg</td></tr>
+        <tr><td><code>--parchment</code></td><td><span class="dot" style="background:#FAF6F0"></span> Warm Parchment</td><td><code>#FAF6F0</code></td><td>Page background</td></tr>
+        <tr><td><code>--parchment-2</code></td><td><span class="dot" style="background:#F3EEE5"></span> Parchment Alt</td><td><code>#F3EEE5</code></td><td>Section alt background for visual rhythm</td></tr>
+        <tr><td><code>--mist</code></td><td><span class="dot" style="background:#E8E1D9"></span> Warm Mist</td><td><code>#E8E1D9</code></td><td>Borders, dividers</td></tr>
+        <tr><td><code>--ink</code></td><td><span class="dot" style="background:#1C1A23"></span> Near Ink</td><td><code>#1C1A23</code></td><td>Body text</td></tr>
+        <tr><td><code>--ink-60</code></td><td><span class="dot" style="background:#6B6571"></span> Mid Stone</td><td><code>#6B6571</code></td><td>Secondary text, descriptions</td></tr>
+        <tr><td><code>--ink-40</code></td><td><span class="dot" style="background:#9E9AA5"></span> Light Stone</td><td><code>#9E9AA5</code></td><td>Captions, tertiary text</td></tr>
+        <tr><td><code>--gold-500</code></td><td><span class="dot" style="background:#C99A3E"></span> Restrained Gold</td><td><code>#C99A3E</code></td><td>Reserved for special occasions &mdash; Christmas, baptism, anniversaries. Do not use as routine accent.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="doc-h3">Color usage ratio</h3>
+    <p class="doc">A disciplined ratio keeps the palette from feeling chaotic. Aim for <strong>60 / 25 / 10 / 5</strong>: Parchment &amp; neutrals / Plum / Coral / Gold + other.</p>
+    <div style="display: flex; height: 60px; border-radius: 12px; overflow: hidden; margin: 20px 0; border: 1px solid var(--border-soft);">
+      <div style="flex: 60; background: var(--parchment); display: flex; align-items: center; padding: 0 20px; color: var(--text-primary); font-size: 13px; font-weight: 600;">60% &mdash; Parchment &amp; Ink</div>
+      <div style="flex: 25; background: var(--plum-600); display: flex; align-items: center; padding: 0 20px; color: var(--parchment); font-size: 13px; font-weight: 600;">25% &mdash; Plum</div>
+      <div style="flex: 10; background: var(--coral-500); display: flex; align-items: center; padding: 0 12px; color: #fff; font-size: 13px; font-weight: 600;">10% &mdash; Coral</div>
+      <div style="flex: 5; background: var(--gold-500); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; font-weight: 600;">5%</div>
+    </div>
+
+    <h3 class="doc-h3">Accessibility notes</h3>
+    <p class="doc">Every text-on-background pairing is checked for WCAG AA contrast (4.5:1 for body text, 3:1 for large text ≥18px).</p>
+    <table class="palette-table">
+      <thead><tr><th>Pairing</th><th>Contrast</th><th>Level</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td>Near Ink on Parchment</td><td><code>15.2 : 1</code></td><td style="color:#2f6a4e; font-weight:600;">AAA</td><td>All body text</td></tr>
+        <tr><td>Sanctuary Plum on Parchment</td><td><code>12.0 : 1</code></td><td style="color:#2f6a4e; font-weight:600;">AAA</td><td>Accent headlines, links</td></tr>
+        <tr><td>Mid Stone on Parchment</td><td><code>5.3 : 1</code></td><td style="color:#2f6a4e; font-weight:600;">AA</td><td>Secondary text (use at 15px+)</td></tr>
+        <tr><td>Coral Flame on Parchment</td><td><code>3.2 : 1</code></td><td style="color:#c2410c; font-weight:600;">Large text only</td><td>Never for body. Use for ≥18px headlines or on neutral backgrounds only.</td></tr>
+        <tr><td>Parchment on Sanctuary Plum</td><td><code>12.0 : 1</code></td><td style="color:#2f6a4e; font-weight:600;">AAA</td><td>Text on dark sections, primary CTA</td></tr>
+        <tr><td>White on Coral Flame</td><td><code>3.6 : 1</code></td><td style="color:#c2410c; font-weight:600;">Large only</td><td>Button labels only (buttons are large text)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================ TYPOGRAPHY ============================ -->
+<section class="doc" id="type">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">03</div>
+      <h2>Typography</h2>
+      <p class="subtitle">Two fonts. One voice. A warm display serif for moments that should feel like they're speaking to you, paired with a friendly sans for everything you need to read, click, or navigate.</p>
+    </div>
+
+    <h3 class="doc-h3">Display &mdash; DM Serif Display</h3>
+    <div class="type-specimen">
+      <div class="font-label">The Display Face · For H1, H2, and pull quotes only (32px and up)</div>
+      <div class="big-serif">Come as <em>you are.</em></div>
+      <div class="meta">DM SERIF DISPLAY · REGULAR · ITALIC</div>
+      <p class="pangram">The quick brown fox jumps over the lazy dog &mdash; and finds himself welcomed home on a Sunday morning.</p>
+    </div>
+    <p class="doc wide">DM Serif Display is a high-contrast display serif &mdash; thick verticals, hairline horizontals &mdash; built for moments that should feel confident and present. At 56px and up, those contrasted strokes look sharp and editorial. The italic carries dramatic energy, ideal for the kind of emphasis we want in hero headlines (<em>"come as you are"</em>). It ships in just one weight (Regular) plus its italic, which forces the discipline we want: this face is <strong>only ever used at display sizes</strong> &mdash; 32px and above. Anything smaller falls to Manrope. Stretching DM Serif Display to small sizes makes the thin strokes fragile and the page feels weak; respecting its scale makes the page feel intentional.</p>
+
+    <h3 class="doc-h3">Sans &mdash; Manrope</h3>
+    <div class="type-specimen sans">
+      <div class="font-label">The UI face · For H3&ndash;H6, body, navigation, buttons, forms</div>
+      <div class="big-sans">Plan Your Visit</div>
+      <div class="meta">MANROPE · WEIGHTS 300 / 400 / 500 / 600 / 700</div>
+      <p class="pangram">A multicultural and dynamic church where people from a variety of backgrounds and walks of life come together to worship and to connect.</p>
+    </div>
+    <p class="doc wide">Manrope is friendlier than Inter and warmer than Helvetica. Its slightly rounded terminals and generous apertures make it readable at every size without feeling corporate or toy-like. Because DM Serif Display is restricted to 32px and above, Manrope carries <strong>more</strong> of the typographic load on this site than in most two-font systems &mdash; it owns navigation, body, buttons, forms, and all subheads down to card titles. We stick to three weights: <strong>400 Regular</strong> for body, <strong>500 Medium</strong> for navigation and small labels, <strong>600 SemiBold</strong> for buttons, card titles, and subheads. Never above 600 &mdash; heavier weights compete with the drama of DM Serif Display's display moments.</p>
+
+    <h3 class="doc-h3">The type scale</h3>
+    <p class="doc">A contained scale. Four type families at most on any given page: display headline, sans subheadings, body, and supporting caption.</p>
+
+    <div style="background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 20px; padding: 24px 32px; margin-top: 20px;">
+      <div class="scale-row">
+        <div class="scale-meta">H1 · Hero<br/>64&ndash;96px<br/>DM Serif Display 400</div>
+        <div class="scale-sample"><span class="sample-h1">A home for <em style="font-style: italic; color: var(--plum-600);">everyone.</em></span></div>
+        <div class="scale-usage">One per page. Used only for the hero headline. Lowercase + occasional italic emphasis.</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta">H2 · Section<br/>40&ndash;56px<br/>DM Serif Display 400</div>
+        <div class="scale-sample"><span class="sample-h2">Who we are.</span></div>
+        <div class="scale-usage">Major section headings. Always sentence case. Never "WHO WE ARE!"</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta">H3 · Subhead<br/>22&ndash;24px<br/>Manrope 600</div>
+        <div class="scale-sample"><span class="sample-h3">Join a small group this season</span></div>
+        <div class="scale-usage">Card titles, sub-sections, navigation labels in the mobile overlay menu.</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta">H4 · Support<br/>18px<br/>Manrope 600</div>
+        <div class="scale-sample"><span class="sample-h4">What to expect on your first visit</span></div>
+        <div class="scale-usage">Page subsections, form group headings.</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta">Body Large<br/>18px<br/>Manrope 400</div>
+        <div class="scale-sample"><span class="sample-body-lg">A multicultural and dynamic church where people from a variety of backgrounds come together to worship.</span></div>
+        <div class="scale-usage">Hero subtitles, page intros, lede paragraphs.</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta">Body<br/>16px<br/>Manrope 400</div>
+        <div class="scale-sample"><span class="sample-body">The church is more than a Sunday service. It's a family, and you're invited to be a part of it.</span></div>
+        <div class="scale-usage">Default paragraph. Line length: max-width 680px on desktop.</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta">Eyebrow<br/>13px<br/>Manrope 600<br/>UPPERCASE</div>
+        <div class="scale-sample"><span class="sample-sm">This Sunday · 10:30 AM</span></div>
+        <div class="scale-usage">Tiny section labels, eyebrow text above headlines. Coral color.</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta">Caption<br/>12px<br/>Manrope 500</div>
+        <div class="scale-sample"><span class="sample-caption">PHOTO BY [CREDIT] · JULY 2025</span></div>
+        <div class="scale-usage">Image captions, form hints, fine print.</div>
+      </div>
+      <div class="scale-row">
+        <div class="scale-meta">Pull Quote<br/>32&ndash;44px<br/>DM Serif Display Italic</div>
+        <div class="scale-sample"><span class="sample-quote">"They welcomed us on our very first visit &mdash; it was the start of a family."</span></div>
+        <div class="scale-usage">Testimonials, scripture references, editorial moments.</div>
+      </div>
+    </div>
+
+    <h4 class="doc-h4">Typography rules</h4>
+    <p class="doc"><strong>Always sentence case.</strong> Never ALL CAPS except the tiny eyebrow label. The current site uses "WELCOME! WE ARE GLAD YOU ARE HERE" &mdash; we don't do that. Sentence case feels human; caps feel shouty.</p>
+    <p class="doc"><strong>No text shadows, ever.</strong> Removed in the review; stays removed.</p>
+    <p class="doc"><strong>DM Serif Display lives at 32px and above &mdash; never below.</strong> This is the most important rule in the whole guide. The thin strokes that make this typeface beautiful at hero size become fragile at small sizes. Card titles, subheads, body, navigation &mdash; everything below 32px &mdash; uses Manrope. Respecting this boundary is what keeps the page feeling sharp; breaking it is what makes a high-contrast serif look weak.</p>
+    <p class="doc"><strong>Italics are emphasis, not decoration.</strong> DM Serif Display's italics carry real drama &mdash; use them 1&ndash;2 words at a time inside a headline ("come as <em>you are</em>"), not for whole paragraphs.</p>
+    <p class="doc"><strong>Line length 45&ndash;75 characters.</strong> Bodies wider than 75 characters get hard to track on big screens. Use max-width 680px on the body column, never more.</p>
+  </div>
+</section>
+
+<!-- ============================ THE ARCH ============================ -->
+<section class="doc" id="arch">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">04</div>
+      <h2>The Arch &mdash; our signature shape</h2>
+      <p class="subtitle">A single repeating motif gives the site its fingerprint. Ours is the rounded archway &mdash; the universal shape of a doorway, a sanctuary window, an invitation to enter. It appears with discipline across the site so it becomes unmistakably ours.</p>
+    </div>
+
+    <h3 class="doc-h3">The three arch variants</h3>
+    <div class="arch-showcase">
+      <div class="arch-demo">
+        <div class="arch-shape">Full Arch</div>
+        <h5>Full Arch</h5>
+        <div class="detail">50% 50% 0 0 / 30% 30% 0 0</div>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">Image frames, hero decoration, icon containers</p>
+      </div>
+      <div class="arch-demo">
+        <div class="arch-shape soft">Soft Arch</div>
+        <h5>Soft Arch</h5>
+        <div class="detail">50% 50% 0 0 / 18% 18% 0 0</div>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">Subtle card tops, section dividers</p>
+      </div>
+      <div class="arch-demo">
+        <div class="arch-shape hi">Tall Arch</div>
+        <h5>Tall Arch</h5>
+        <div class="detail">50% 50% 0 0 / 45% 45% 0 0</div>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">Dramatic hero backgrounds, decorative moments</p>
+      </div>
+    </div>
+
+    <h3 class="doc-h3">Where the arch appears</h3>
+    <p class="doc"><strong>Image frames</strong> are the arch's primary habitat. Portrait photography &mdash; pastors, congregation candids, ministry leads &mdash; is always framed inside a full arch. Landscape photos (event shots, sanctuary interiors) stay as rounded rectangles.</p>
+    <div class="arch-frame-demo">
+      <div>
+        <div class="arch-frame"></div>
+        <div class="arch-frame-caption">Portrait &mdash; Pastor bio</div>
+      </div>
+      <div>
+        <div class="arch-frame coral"></div>
+        <div class="arch-frame-caption">Community &mdash; Get Connected</div>
+      </div>
+      <div>
+        <div class="arch-frame double"></div>
+        <div class="arch-frame-caption">Editorial moment</div>
+      </div>
+    </div>
+
+    <h4 class="doc-h4">Rules of the arch</h4>
+    <p class="doc"><strong>Two arches per viewport, maximum.</strong> If a section already has an arched image, don't add an arched icon nearby. The arch earns its power through restraint.</p>
+    <p class="doc"><strong>Never arch a button.</strong> Buttons are pills or rounded rectangles. An arched button reads as a tombstone.</p>
+    <p class="doc"><strong>Arches open upward.</strong> Never flip one so the rounded side is on the bottom &mdash; it reads as a keystone, not an entryway.</p>
+    <p class="doc"><strong>Inside dark sections</strong>, arches can glow softly as atmospheric background elements (see the hero demo below). Used as light-through-stained-glass, they transform from a shape into an <em>ambience</em>.</p>
+  </div>
+</section>
+
+<!-- ============================ SPACING ============================ -->
+<section class="doc" id="spacing">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">05</div>
+      <h2>Spacing &amp; Radius</h2>
+      <p class="subtitle">An 8-point grid keeps everything in rhythm. Large values between sections (80&ndash;120px) give the page room to breathe &mdash; essential for a brand whose job is contemplation, not conversion.</p>
+    </div>
+
+    <h4 class="doc-h4">Spacing tokens</h4>
+    <div class="spacing-viz">
+      <div class="spacing-item"><div class="spacing-bar" style="width: 8px;"></div><div class="token">xs</div><div class="value">8px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="width: 16px;"></div><div class="token">sm</div><div class="value">16px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="width: 24px;"></div><div class="token">md</div><div class="value">24px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="width: 40px;"></div><div class="token">lg</div><div class="value">40px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="width: 64px;"></div><div class="token">xl</div><div class="value">64px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="width: 96px;"></div><div class="token">2xl</div><div class="value">96px</div></div>
+      <div class="spacing-item"><div class="spacing-bar" style="width: 120px;"></div><div class="token">3xl</div><div class="value">120px</div></div>
+    </div>
+
+    <h4 class="doc-h4">Radius tokens</h4>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px;">
+      <div style="text-align: center;">
+        <div style="width: 100px; height: 100px; background: var(--plum-600); border-radius: 8px; margin-bottom: 8px;"></div>
+        <div class="token" style="font-family: var(--mono); font-size: 12px; font-weight: 600;">radius-sm</div>
+        <div style="font-family: var(--mono); font-size: 11px; color: var(--text-muted);">8px · inputs</div>
+      </div>
+      <div style="text-align: center;">
+        <div style="width: 100px; height: 100px; background: var(--plum-600); border-radius: 12px; margin-bottom: 8px;"></div>
+        <div class="token" style="font-family: var(--mono); font-size: 12px; font-weight: 600;">radius-md</div>
+        <div style="font-family: var(--mono); font-size: 11px; color: var(--text-muted);">12px · form fields</div>
+      </div>
+      <div style="text-align: center;">
+        <div style="width: 100px; height: 100px; background: var(--plum-600); border-radius: 20px; margin-bottom: 8px;"></div>
+        <div class="token" style="font-family: var(--mono); font-size: 12px; font-weight: 600;">radius-lg</div>
+        <div style="font-family: var(--mono); font-size: 11px; color: var(--text-muted);">20px · cards</div>
+      </div>
+      <div style="text-align: center;">
+        <div style="width: 100px; height: 100px; background: var(--plum-600); border-radius: 999px; margin-bottom: 8px;"></div>
+        <div class="token" style="font-family: var(--mono); font-size: 12px; font-weight: 600;">radius-pill</div>
+        <div style="font-family: var(--mono); font-size: 11px; color: var(--text-muted);">full · buttons</div>
+      </div>
+      <div style="text-align: center;">
+        <div style="width: 100px; height: 125px; background: var(--plum-600); border-radius: var(--arch-full); margin-bottom: 8px;"></div>
+        <div class="token" style="font-family: var(--mono); font-size: 12px; font-weight: 600;">radius-arch</div>
+        <div style="font-family: var(--mono); font-size: 11px; color: var(--text-muted);">signature shape</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ BUTTONS ============================ -->
+<section class="doc" id="buttons">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">06</div>
+      <h2>Buttons</h2>
+      <p class="subtitle">Pill-shaped, warm, confident. Never more than one filled primary button visible per viewport &mdash; clarity of the next action matters more than button variety.</p>
+    </div>
+
+    <div class="btn-showcase">
+      <div class="btn-row-label">On light backgrounds (primary site surfaces)</div>
+      <div class="btn-row">
+        <a class="btn btn-primary">Plan Your Visit <span class="arrow">→</span></a>
+        <a class="btn btn-accent">Give Now</a>
+        <a class="btn btn-outline">Learn More</a>
+        <a class="btn btn-ghost">See all sermons <span class="arrow">→</span></a>
+      </div>
+      <div style="margin-top: 16px; font-size: 13px; color: var(--text-secondary);">Primary (plum) is the default. Coral accent is reserved for give/action emphasis. Outline for secondary, ghost for tertiary.</div>
+    </div>
+
+    <div class="btn-showcase dark">
+      <div class="btn-row-label">On dark backgrounds (footer, hero overlay, CTA bands)</div>
+      <div class="btn-row">
+        <a class="btn btn-inverse">Plan Your Visit <span class="arrow">→</span></a>
+        <a class="btn btn-accent">Watch Live</a>
+        <a class="btn btn-outline-inverse">Explore sermons</a>
+      </div>
+    </div>
+
+    <h3 class="doc-h3">Button rules</h3>
+    <p class="doc"><strong>Minimum height 48px</strong> on every button, everywhere. Makes thumb-targeting easy on mobile; doesn't feel small on desktop.</p>
+    <p class="doc"><strong>Always pill-shaped (border-radius 999px).</strong> Pills read warmer than rounded rectangles &mdash; they match the brand's welcoming tone. Exception: form submit buttons inside dense forms can be rounded-rect to match the input shape.</p>
+    <p class="doc"><strong>Arrow glyph on link-style buttons only.</strong> Not on primary CTAs (the button is the action; an arrow is redundant). Arrows animate 4px right on hover to hint at forward motion without being loud about it.</p>
+    <p class="doc"><strong>One primary per viewport.</strong> If your hero has "Plan Your Visit" as the primary, everything else in that viewport is outline or ghost. Two filled primaries halve the attention on each.</p>
+  </div>
+</section>
+
+<!-- ============================ CARDS ============================ -->
+<section class="doc" id="cards">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">07</div>
+      <h2>Cards &amp; Containers</h2>
+      <p class="subtitle">Content cards carry the bulk of the page: sermons, events, ministries, next steps. They use generous radius (20px), soft shadow, and lift on hover &mdash; a quiet physical gesture, not a digital effect.</p>
+    </div>
+
+    <div class="card-showcase">
+      <div class="church-card">
+        <div class="card-image"></div>
+        <div class="card-body">
+          <div class="card-eyebrow">This Sunday</div>
+          <div class="card-title">When faith feels quiet</div>
+          <div class="card-desc">Pastor Daniel on the in-between seasons of the Christian walk. Matthew 11:28&ndash;30.</div>
+          <a class="card-link">Plan your visit →</a>
+        </div>
+      </div>
+      <div class="church-card">
+        <div class="card-image coral arch-top"></div>
+        <div class="card-body">
+          <div class="card-eyebrow">Get Connected</div>
+          <div class="card-title">Find your people</div>
+          <div class="card-desc">Small groups meet across the Bay. There's one near you &mdash; and they've saved a seat.</div>
+          <a class="card-link">Browse groups →</a>
+        </div>
+      </div>
+      <div class="church-card">
+        <div class="card-image"></div>
+        <div class="card-body">
+          <div class="card-eyebrow">Latest Sermon</div>
+          <div class="card-title">The upper room</div>
+          <div class="card-desc">Watch this week's message on our YouTube channel.</div>
+          <a class="card-link">Watch now →</a>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="doc-h3">Card anatomy</h3>
+    <p class="doc"><strong>Image zone</strong> (aspect 3:2 default, or 4:5 with arch-top for portrait-oriented cards like "Get Connected"). Always real photography &mdash; never stock. A soft bottom gradient preserves legibility if text overlays later.</p>
+    <p class="doc"><strong>Eyebrow label</strong> (Coral, uppercase 12px) sets context in one or two words. Examples: "This Sunday" / "Latest Sermon" / "Get Connected."</p>
+    <p class="doc"><strong>Title</strong> (Manrope SemiBold, 22px, sentence case). Card titles sit below DM Serif Display's 32px floor, so they live in the sans family. Written as a hook, not a header. "When faith feels quiet" beats "Upcoming Sermon."</p>
+    <p class="doc"><strong>Description</strong> (Manrope, 14.5px). One to two sentences. Tells the visitor <em>why they should click</em>. Does not repeat the title.</p>
+    <p class="doc"><strong>Link, not a button.</strong> Cards use text links ("Watch now →"), not filled CTAs. Buttons on every card create visual noise; the whole card is already the affordance.</p>
+    <p class="doc"><strong>Lift on hover</strong> (<code>translateY(-2px)</code>, shadow grows, border warms to Soft Plum). The gesture is tiny &mdash; it acknowledges the pointer without performing for it.</p>
+  </div>
+</section>
+
+<!-- ============================ FORMS ============================ -->
+<section class="doc" id="forms">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">08</div>
+      <h2>Forms</h2>
+      <p class="subtitle">Forms are the site's moments of highest vulnerability &mdash; a first-time visitor sharing their name, a prayer request sent into the unknown. They must feel safe. Large touch targets, quiet labels, clear focus states, no dark patterns.</p>
+    </div>
+
+    <div class="form-demo">
+      <h4>Let us know you're coming</h4>
+      <p class="form-intro">We'll send a short note so you know what to expect on Sunday &mdash; no spam, promise.</p>
+      <div class="field">
+        <label>First name</label>
+        <input type="text" placeholder="Your name">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label>Planned visit</label>
+        <select>
+          <option>This Sunday</option>
+          <option>Next Sunday</option>
+          <option>I'm not sure yet</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Prayer request (optional)</label>
+        <textarea placeholder="If there's something we can pray with you about, let us know. Kept private."></textarea>
+      </div>
+      <a class="btn btn-primary">Let us know you're coming</a>
+    </div>
+
+    <h3 class="doc-h3">Form rules</h3>
+    <p class="doc"><strong>Input height 48px minimum.</strong> Padded 14px vertical, 16px horizontal. Never a cramped input.</p>
+    <p class="doc"><strong>Labels sit above fields, never inside.</strong> In-field labels that animate away (Material Design style) confuse older users and are a pain on mobile autofill.</p>
+    <p class="doc"><strong>Focus states are loud on purpose.</strong> 4px plum-tinted halo + white background + plum border. On a warm parchment page, the focused field should feel like a spotlight.</p>
+    <p class="doc"><strong>The submit button says what happens.</strong> "Let us know you're coming" &mdash; not "Submit." Every form button echoes the form's purpose in the visitor's own words.</p>
+    <p class="doc"><strong>No required-field asterisks.</strong> Inline text ("optional") is gentler and more modern. Assume fields are required unless marked otherwise.</p>
+  </div>
+</section>
+
+<!-- ============================ MOTION ============================ -->
+<section class="doc" id="motion">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">09</div>
+      <h2>Motion &amp; Micro-interaction</h2>
+      <p class="subtitle">Restraint. Animation exists to acknowledge the visitor's action and soften transitions &mdash; never to impress. If you notice the motion, we've overdone it.</p>
+    </div>
+
+    <div class="motion-grid">
+      <div class="motion-card">
+        <h5>Default ease</h5>
+        <div class="timing">cubic-bezier(0.22, 1, 0.36, 1)</div>
+        <p>Our out-curve. Fast entry, gentle settle. Feels natural, not mechanical. Used on 95% of transitions.</p>
+      </div>
+      <div class="motion-card">
+        <h5>Button hover</h5>
+        <div class="timing">250ms</div>
+        <p>Background shifts 1 shade darker, lifts 1px, soft shadow blooms. Arrow glyph slides 4px right.</p>
+      </div>
+      <div class="motion-card">
+        <h5>Card hover</h5>
+        <div class="timing">300ms</div>
+        <p>translateY(-2px), shadow grows softer &amp; larger, border warms to Soft Plum. A physical acknowledgment, not a dance.</p>
+      </div>
+      <div class="motion-card">
+        <h5>Hero entrance</h5>
+        <div class="timing">600ms + 80ms stagger</div>
+        <p>Eyebrow → headline → lede → CTA. Each element fades up 12px. Plays once on load.</p>
+      </div>
+      <div class="motion-card">
+        <h5>Scroll reveal</h5>
+        <div class="timing">500ms</div>
+        <p>Section content fades + lifts 16px as it enters viewport. IntersectionObserver with <code>prefers-reduced-motion</code> bypass.</p>
+      </div>
+      <div class="motion-card">
+        <h5>Focus ring</h5>
+        <div class="timing">150ms</div>
+        <p>Form field halo appears instantly but softly &mdash; the visitor should feel the field "receive" their attention.</p>
+      </div>
+    </div>
+
+    <h4 class="doc-h4">Accessibility</h4>
+    <p class="doc">Every animation must respect <code>@media (prefers-reduced-motion: reduce)</code>. When reduced-motion is on, durations drop to 0.01s &mdash; elements still change state, they just don't travel.</p>
+  </div>
+</section>
+
+<!-- ============================ DEMO ============================ -->
+<section class="doc" id="demo">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">10</div>
+      <h2>The system in situ</h2>
+      <p class="subtitle">Everything together. Dark section with ambient arch backgrounds, display type in full voice, coral eyebrow, dual CTAs. This is what a real hero banner looks like when every token pulls together.</p>
+    </div>
+
+    <div class="live-hero">
+      <div class="eyebrow">Sundays · 10:30 AM · San Jose</div>
+      <h3>We saved <em>a seat</em> for you.</h3>
+      <p class="sub">A multicultural family of faith in Silicon Valley. You don't have to have it figured out &mdash; you just have to walk in.</p>
+      <div class="btns">
+        <a class="btn btn-inverse">Plan Your Visit <span class="arrow">→</span></a>
+        <a class="btn btn-outline-inverse">Watch This Sunday</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ DO / DON'T ============================ -->
+<section class="doc" id="dos">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">11</div>
+      <h2>What we do &mdash; and what we don't</h2>
+      <p class="subtitle">A checklist for any design decision. When in doubt, run the choice against this list.</p>
+    </div>
+
+    <div class="do-dont">
+      <div class="ddbox do">
+        <div class="lbl">We do</div>
+        <ul>
+          <li>Use two fonts: DM Serif Display (display, 32px+) and Manrope (everything else)</li>
+          <li>Write in sentence case, even in buttons and eyebrows</li>
+          <li>Frame portrait photography inside the arch shape</li>
+          <li>Keep 60% parchment, 25% plum, 10% coral, 5% everything else</li>
+          <li>Let pages breathe &mdash; 80px+ between sections on desktop</li>
+          <li>Use italics sparingly, 1&ndash;2 words at a time, for emphasis</li>
+          <li>Write warmly: "we saved you a seat" not "new visitor form"</li>
+          <li>Make primary CTAs pill-shaped and 48px tall</li>
+          <li>Keep body text under 75 characters per line</li>
+          <li>Test every pairing for WCAG AA contrast</li>
+        </ul>
+      </div>
+      <div class="ddbox dont">
+        <div class="lbl">We don't</div>
+        <ul>
+          <li>Mix more than two type families on a page</li>
+          <li>Use ALL CAPS (except the tiny eyebrow label)</li>
+          <li>Add text shadows, stroke outlines, or glow effects</li>
+          <li>Use pure white (#FFFFFF) as a page background</li>
+          <li>Arch a button. Buttons are pills. Arches frame images.</li>
+          <li>Use gradients as a decorative default &mdash; only for atmospheric hero overlays</li>
+          <li>Write in "corporate church" voice ("Experience community. Encounter God!")</li>
+          <li>Stack more than 2 filled primary CTAs in one viewport</li>
+          <li>Use stock photography &mdash; every photo is real JHSV</li>
+          <li>Animate things just because we can</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>RCCG Jesus House Silicon Valley · Visual Style Guide <em>v1.0</em></div>
+  <div style="margin-top: 8px;">April 2026 · Built on the JHSV Design Review &amp; Sitemap Blueprint</div>
+  <div style="margin-top: 20px; font-family: var(--display); font-style: italic; font-size: 36px; line-height: 1.1; color: var(--plum-600); letter-spacing: -0.015em;">Come as you are.</div>
+</footer>
+
+</body>
+</html>

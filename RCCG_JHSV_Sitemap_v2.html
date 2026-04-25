@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RCCG Jesus House Silicon Valley — Sitemap & IA Blueprint</title>
+<style>
+  :root {
+    --ink: #1A1A2E;
+    --ink-70: #4a4a5e;
+    --ink-50: #7d7d8a;
+    --ink-20: #c9c9d1;
+    --ink-10: #e3e3e8;
+    --paper: #FAFAFA;
+    --white: #FFFFFF;
+    --accent: #7D2F99;
+    --accent-tint: #f3ecf6;
+    --accent-line: #d9c4e3;
+    --flag: #c2410c;
+    --flag-tint: #fff2eb;
+    --ok: #0a7c4a;
+    --ok-tint: #e8f5ee;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 15px;
+  }
+
+  /* Top nav */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--white);
+    border-bottom: 1px solid var(--ink-10);
+    padding: 14px 32px;
+    display: flex; align-items: center; gap: 24px;
+    flex-wrap: wrap;
+  }
+  .topbar .brand { font-weight: 600; font-size: 14px; color: var(--ink); }
+  .topbar .brand span { color: var(--accent); }
+  .topbar nav { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; }
+  .topbar nav a { color: var(--ink-70); text-decoration: none; }
+  .topbar nav a:hover { color: var(--accent); }
+
+  /* Layout */
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 40px 32px 80px; }
+  h1 { font-size: 32px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em; }
+  h2 { font-size: 24px; font-weight: 600; margin: 56px 0 8px; letter-spacing: -0.01em; border-bottom: 1px solid var(--ink-10); padding-bottom: 8px; }
+  h3 { font-size: 18px; font-weight: 600; margin: 32px 0 8px; }
+  h4 { font-size: 14px; font-weight: 600; margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-70); }
+  p { margin: 0 0 12px; }
+  .lede { color: var(--ink-70); max-width: 780px; font-size: 16px; }
+  .meta { color: var(--ink-50); font-size: 13px; margin-top: 4px; }
+  hr { border: none; border-top: 1px solid var(--ink-10); margin: 48px 0; }
+
+  /* Callouts */
+  .callout {
+    background: var(--accent-tint);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: var(--ink);
+    border-radius: 4px;
+  }
+  .callout strong { color: var(--accent); }
+  .callout.flag { background: var(--flag-tint); border-left-color: var(--flag); }
+  .callout.flag strong { color: var(--flag); }
+  .callout.ok { background: var(--ok-tint); border-left-color: var(--ok); }
+  .callout.ok strong { color: var(--ok); }
+
+  /* Tree diagram */
+  .tree {
+    background: var(--white);
+    border: 1px solid var(--ink-10);
+    border-radius: 8px;
+    padding: 28px;
+    margin-top: 16px;
+    overflow-x: auto;
+  }
+  .tree-root {
+    display: flex; justify-content: center; margin-bottom: 32px;
+  }
+  .tree-node {
+    background: var(--ink);
+    color: var(--white);
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-block;
+    text-align: center;
+    min-width: 120px;
+  }
+  .tree-node.primary {
+    background: var(--accent);
+  }
+  .tree-node.secondary {
+    background: var(--white);
+    color: var(--ink);
+    border: 1px solid var(--ink-20);
+    font-weight: 500;
+  }
+  .tree-node .url { display: block; font-size: 11px; font-weight: 400; opacity: 0.8; margin-top: 2px; font-family: ui-monospace, "SF Mono", Consolas, monospace; }
+  .tree-level {
+    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+    padding-top: 24px;
+    position: relative;
+  }
+  .tree-level::before {
+    content: "";
+    position: absolute; top: 0; left: 50%; width: 1px; height: 16px;
+    background: var(--ink-20);
+  }
+  .tree-branch {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .tree-children {
+    display: flex; flex-direction: column; gap: 6px; margin-top: 8px;
+    border-left: 1px dashed var(--ink-20);
+    padding-left: 14px;
+    align-items: flex-start;
+  }
+  .tree-children .tree-node { min-width: 0; font-size: 12px; padding: 6px 12px; }
+
+  /* IA table */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--ink-10); vertical-align: top; }
+  th { background: var(--white); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-70); }
+  tr:hover td { background: var(--accent-tint); }
+  code {
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 12.5px;
+    background: var(--ink-10);
+    padding: 1px 6px; border-radius: 3px;
+  }
+
+  /* Page blueprint */
+  .page {
+    background: var(--white);
+    border: 1px solid var(--ink-10);
+    border-radius: 10px;
+    margin: 24px 0;
+    overflow: hidden;
+  }
+  .page-head {
+    padding: 20px 28px;
+    background: var(--ink);
+    color: var(--white);
+    display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px;
+  }
+  .page-head h3 { color: var(--white); margin: 0; font-size: 20px; }
+  .page-head .path { font-family: ui-monospace, monospace; font-size: 13px; color: rgba(255,255,255,0.7); }
+  .page-purpose {
+    padding: 16px 28px;
+    background: var(--accent-tint);
+    font-size: 14px;
+    color: var(--ink);
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .page-purpose strong { color: var(--accent); }
+  .page-body { padding: 24px 28px; }
+
+  /* Wireframe blocks */
+  .wf {
+    margin: 12px 0;
+    border: 1.5px dashed var(--ink-20);
+    border-radius: 6px;
+    padding: 16px 20px;
+    background: var(--paper);
+    position: relative;
+  }
+  .wf.nav { background: var(--ink); color: var(--white); border-color: var(--ink); border-style: solid; }
+  .wf.nav .wf-label { color: rgba(255,255,255,0.7); }
+  .wf.hero { background: linear-gradient(135deg, #2a1b3d 0%, #1A1A2E 100%); color: var(--white); border-color: transparent; border-style: solid; min-height: 140px; }
+  .wf.hero .wf-label { color: rgba(255,255,255,0.6); }
+  .wf.cta-band { background: var(--accent); color: var(--white); border-color: transparent; border-style: solid; }
+  .wf.cta-band .wf-label { color: rgba(255,255,255,0.7); }
+  .wf.footer { background: var(--ink); color: var(--white); border-color: var(--ink); border-style: solid; }
+  .wf.footer .wf-label { color: rgba(255,255,255,0.7); }
+  .wf-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-50);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .wf-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .wf-content {
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+  .wf-content ul { margin: 6px 0 0; padding-left: 18px; }
+  .wf-content li { margin-bottom: 2px; }
+
+  /* Mock buttons in wireframes */
+  .btn {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 6px 6px 0 0;
+    line-height: 1;
+  }
+  .btn.primary { background: var(--accent); color: var(--white); }
+  .btn.on-dark { background: var(--white); color: var(--accent); }
+  .btn.outlined { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); padding: 6.5px 16.5px; }
+  .btn.outlined-on-dark { background: transparent; color: var(--white); border: 1.5px solid var(--white); padding: 6.5px 16.5px; }
+  .btn.ghost { color: var(--ink); background: var(--ink-10); }
+
+  /* Row layouts inside blueprints */
+  .row { display: grid; gap: 12px; margin: 12px 0; }
+  .row.c2 { grid-template-columns: 1fr 1fr; }
+  .row.c3 { grid-template-columns: 1fr 1fr 1fr; }
+  .row.c4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  @media (max-width: 700px) {
+    .row.c2, .row.c3, .row.c4 { grid-template-columns: 1fr; }
+  }
+
+  /* Annotation */
+  .note {
+    font-size: 12.5px;
+    color: var(--ink-70);
+    background: var(--white);
+    border: 1px solid var(--ink-10);
+    border-left: 3px solid var(--ink-50);
+    padding: 10px 14px;
+    margin: 10px 0;
+    border-radius: 4px;
+  }
+  .note.why { border-left-color: var(--accent); }
+  .note.flag { border-left-color: var(--flag); background: var(--flag-tint); }
+  .note strong { color: var(--ink); }
+
+  /* Pill tags */
+  .pill {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 3px 9px; border-radius: 99px; margin-right: 4px;
+    letter-spacing: 0.03em;
+  }
+  .pill.new { background: var(--accent-tint); color: var(--accent); }
+  .pill.keep { background: var(--ok-tint); color: var(--ok); }
+  .pill.merge { background: #fef3c7; color: #92400e; }
+  .pill.remove { background: var(--flag-tint); color: var(--flag); }
+  .pill.rename { background: #e0e7ff; color: #3730a3; }
+  .pill.phased { background: #fef3c7; color: #c2410c; }
+
+  /* Phased node styling in tree */
+  .tree-node.phased {
+    background: #c2410c;
+  }
+  .tree-node.phased .v-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    margin-left: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Summary cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .summary-card {
+    background: var(--white);
+    border: 1px solid var(--ink-10);
+    padding: 18px 20px;
+    border-radius: 8px;
+  }
+  .summary-card h4 { margin-top: 0; color: var(--accent); border-bottom: none; padding-bottom: 0; }
+  .summary-card p { font-size: 13.5px; color: var(--ink-70); margin-bottom: 0; }
+
+  /* Key/value pairs */
+  .kv { display: grid; grid-template-columns: 140px 1fr; gap: 4px 16px; font-size: 13.5px; margin: 8px 0; }
+  .kv dt { color: var(--ink-50); font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; padding-top: 2px; }
+  .kv dd { margin: 0; }
+
+  @media print {
+    .topbar { position: static; }
+    .page { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">RCCG JHSV <span>/ Sitemap v1</span></div>
+  <nav>
+    <a href="#overview">Overview</a>
+    <a href="#tree">Sitemap Tree</a>
+    <a href="#ia">IA Table</a>
+    <a href="#nav-architecture">Navigation</a>
+    <a href="#home">Home</a>
+    <a href="#new">I'm New</a>
+    <a href="#about">About</a>
+    <a href="#sermons">Sermons</a>
+    <a href="#events">Events</a>
+    <a href="#give">Give</a>
+    <a href="#live">Watch Live</a>
+    <a href="#ministries">Ministries</a>
+    <a href="#media">Media Hub</a>
+    <a href="#contact">Contact</a>
+    <a href="#principles">Principles</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <!-- ============================ OVERVIEW ============================ -->
+  <section id="overview">
+    <h1>RCCG Jesus House Silicon Valley</h1>
+    <p class="meta">Sitemap &amp; Information Architecture Blueprint &middot; Stakeholder Review Draft &middot; April 2026</p>
+    <p class="lede">This document translates the design review into a concrete, functional sitemap. It focuses on <strong>structure, content inventory, and button placement</strong> — not visual design. Wireframes are intentionally low-fidelity so the team can debate <em>what goes where</em> and <em>why</em>, before any pixels are pushed.</p>
+
+    <div class="callout">
+      <strong>The core problem we are solving:</strong> today's site has 20 pages, six fonts, a hidden hamburger nav, and four decorative buttons that lead nowhere informative. The new site consolidates to <strong>8 primary pages</strong>, makes the path to "Plan Your Visit" the most prominent action on every screen, and treats the site as the <strong>single source of truth</strong> for service times, sermons, giving, media, and social — with everything discoverable in ≤2 clicks.
+    </div>
+
+    <h3>What this sitemap improves vs. the current site</h3>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <h4>Discoverability</h4>
+        <p>Desktop gets a visible horizontal nav. No more hamburger-only navigation hiding 9 pages on a 1920px monitor.</p>
+      </div>
+      <div class="summary-card">
+        <h4>Single conversion goal</h4>
+        <p>Every page funnels toward <code>/new</code> (Plan Your Visit) or <code>/live</code>. One hero, one CTA.</p>
+      </div>
+      <div class="summary-card">
+        <h4>Media as a hub</h4>
+        <p>Livestream, gallery, podcast, and social all reachable from the top nav or one click into it. Sermons phased to v2 with YouTube as the interim destination.</p>
+      </div>
+      <div class="summary-card">
+        <h4>Mobile parity</h4>
+        <p>Breakpoints for 320&ndash;767 (mobile), 768&ndash;1023 (tablet), 1024+ (desktop). Touch targets ≥44px.</p>
+      </div>
+      <div class="summary-card">
+        <h4>SEO foundation</h4>
+        <p>Church schema, per-page meta, Google Business Profile, and renamed <code>/blog</code> → <code>/sermons</code>.</p>
+      </div>
+      <div class="summary-card">
+        <h4>Footer as reference, not a map</h4>
+        <p>Footer shrinks from 1,529px to ~320px. Becomes a quick-reference card, not a second navigation.</p>
+      </div>
+    </div>
+
+    <h3>Modern patterns adopted from peer churches reviewed</h3>
+    <table>
+      <thead><tr><th>Pattern</th><th>Seen at</th><th>Applied to JHSV as</th></tr></thead>
+      <tbody>
+        <tr><td>Persistent "Watch Live" button in nav</td><td>Echo, Union, Well, NBCC</td><td>Purple filled button, right side of nav, sticky on scroll</td></tr>
+        <tr><td>Single hero message + one CTA</td><td>Echo ("You Belong Here"), Union ("You belong here"), Well ("You Belong Here.")</td><td>"Come as you are." → <code>Plan Your Visit</code></td></tr>
+        <tr><td>3-card "Next Steps" row on homepage</td><td>Echo, Well, Union</td><td>This Sunday / Latest Sermon / Get Connected</td></tr>
+        <tr><td>"Plan a Visit" as standalone page</td><td>Well (<code>/visit</code>), Union (<code>/welcomehome</code>), Echo (<code>/visit</code>)</td><td><code>/new</code> with expectations, map, FAQ, connection card</td></tr>
+        <tr><td>Sermons organized by series</td><td>Echo, CAG, Redemption</td><td>v1: nav link → YouTube channel. v2: <code>/sermons</code> page with YouTube Data API + series view + search</td></tr>
+        <tr><td>Events aggregated, not scattered</td><td>All six peers</td><td>Single <code>/events</code> page with filter/calendar</td></tr>
+        <tr><td>Compact 3-column dark footer with social</td><td>Echo, Well, Union, NBCC</td><td>Contact / Services / Follow Us + legal row</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============================ TREE ============================ -->
+  <section id="tree">
+    <h2>1. Top-Level Sitemap</h2>
+    <p class="lede">Nine public pages total. Five primary nav links + persistent "Watch Live" CTA + three support pages accessible via footer and contextual links.</p>
+
+    <div class="tree">
+      <div class="tree-root">
+        <div class="tree-branch">
+          <div class="tree-node primary">Home<span class="url">/</span></div>
+          <div class="tree-children">
+            <div class="tree-node secondary">Hero + CTA</div>
+            <div class="tree-node secondary">Who We Are</div>
+            <div class="tree-node secondary">Service Times cards</div>
+            <div class="tree-node secondary">Next Steps (3 cards)</div>
+            <div class="tree-node secondary">Upcoming Events strip</div>
+            <div class="tree-node secondary">Pastors snippet</div>
+            <div class="tree-node secondary">Pre-footer CTA</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tree-level">
+        <div class="tree-branch">
+          <div class="tree-node">I'm New<span class="url">/new</span></div>
+          <div class="tree-children">
+            <div class="tree-node secondary">What to Expect</div>
+            <div class="tree-node secondary">For Families</div>
+            <div class="tree-node secondary">Getting Here</div>
+            <div class="tree-node secondary">Connection Card (form)</div>
+            <div class="tree-node secondary">FAQ</div>
+          </div>
+        </div>
+
+        <div class="tree-branch">
+          <div class="tree-node">About<span class="url">/about</span></div>
+          <div class="tree-children">
+            <div class="tree-node secondary">Our Story</div>
+            <div class="tree-node secondary">What We Believe</div>
+            <div class="tree-node secondary">Leadership (merged)</div>
+            <div class="tree-node secondary">RCCG &amp; Global Family</div>
+            <div class="tree-node secondary">Gallery (embedded)</div>
+          </div>
+        </div>
+
+        <div class="tree-branch">
+          <div class="tree-node phased">Sermons<span class="v-badge">v2</span><span class="url">/sermons</span></div>
+          <div class="tree-children">
+            <div class="tree-node secondary">v1 → YouTube channel</div>
+            <div class="tree-node secondary">v2: YouTube API feed</div>
+            <div class="tree-node secondary">v2: Series archive</div>
+            <div class="tree-node secondary">v2: Search &amp; filter</div>
+            <div class="tree-node secondary">v2: Podcast feeds</div>
+          </div>
+        </div>
+
+        <div class="tree-branch">
+          <div class="tree-node">Events<span class="url">/events</span></div>
+          <div class="tree-children">
+            <div class="tree-node secondary">Upcoming (list/calendar)</div>
+            <div class="tree-node secondary">Weekly Rhythms</div>
+            <div class="tree-node secondary">Event Detail Template</div>
+          </div>
+        </div>
+
+        <div class="tree-branch">
+          <div class="tree-node">Give<span class="url">/give</span></div>
+          <div class="tree-children">
+            <div class="tree-node secondary">Online Giving</div>
+            <div class="tree-node secondary">Ways to Give</div>
+            <div class="tree-node secondary">FAQ / Tax info</div>
+          </div>
+        </div>
+
+        <div class="tree-branch">
+          <div class="tree-node primary">Watch Live<span class="url">/live</span></div>
+          <div class="tree-children">
+            <div class="tree-node secondary">YouTube API (live detect)</div>
+            <div class="tree-node secondary">Auto-latest stream</div>
+            <div class="tree-node secondary">Service schedule</div>
+            <div class="tree-node secondary">Viewer actions (give, prayer)</div>
+            <div class="tree-node secondary">Past services</div>
+          </div>
+        </div>
+      </div>
+
+      <h4 style="text-align:center; margin-top:40px;">Support Pages (footer + contextual access)</h4>
+      <div class="tree-level" style="margin-top:16px;">
+        <div class="tree-branch"><div class="tree-node secondary">Ministries<span class="url">/ministries</span></div></div>
+        <div class="tree-branch"><div class="tree-node secondary">Media Hub<span class="url">/media</span></div></div>
+        <div class="tree-branch"><div class="tree-node secondary">Contact<span class="url">/contact</span></div></div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Two nav items have special behavior:</strong>
+      <ul style="margin:8px 0 0; padding-left: 20px;">
+        <li><strong>Watch Live</strong> — both a page (<code>/live</code>) and a persistent nav button. Page uses the YouTube Data API to auto-detect whether the channel is live, upcoming, or offline, and always embeds the most relevant video so the button never leads to a dead stream.</li>
+        <li><strong>Sermons</strong> — deferred to v2. At launch, the "Sermons" nav link points directly to the church's YouTube channel (external, new tab). In v2, we replace it with a full <code>/sermons</code> page powered by the YouTube Data API so videos flow in automatically — no manual blog posting required.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================ IA TABLE ============================ -->
+  <section id="ia">
+    <h2>2. Information Architecture &mdash; Page Inventory</h2>
+    <p class="lede">What stays, what merges, what goes. Reduces the current 20 pages to 8 primary + 3 supporting = 11 total.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Current page</th>
+          <th>Action</th>
+          <th>New location</th>
+          <th>Rationale</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Home</td><td><span class="pill keep">Keep</span></td><td><code>/</code></td><td>Full rebuild — single CTA hero, modular sections.</td></tr>
+        <tr><td>About Us</td><td><span class="pill keep">Keep</span></td><td><code>/about</code></td><td>Absorbs Leaders. Gallery embeds as a section.</td></tr>
+        <tr><td>Leaders</td><td><span class="pill merge">Merge</span></td><td><code>/about#leadership</code></td><td>Separate page not warranted for one team bio block.</td></tr>
+        <tr><td>Live</td><td><span class="pill keep">Keep</span></td><td><code>/live</code></td><td>Also surfaced as sticky nav button.</td></tr>
+        <tr><td>Online Giving</td><td><span class="pill rename">Rename</span></td><td><code>/give</code></td><td>Shorter URL matches peer convention and nav slot.</td></tr>
+        <tr><td>Blog</td><td><span class="pill phased">Phased</span></td><td>v1: external → YouTube<br>v2: <code>/sermons</code></td><td>Nav item "Sermons" points directly to the YouTube channel at launch (opens new tab). Full <code>/sermons</code> page built in v2 with YouTube Data API pulling videos in automatically. Avoids shipping an empty page before content ops are stood up.</td></tr>
+        <tr><td>Photo Gallery</td><td><span class="pill merge">Merge</span></td><td><code>/about#gallery</code> + <code>/media</code></td><td>Gallery is supporting content, not a destination page.</td></tr>
+        <tr><td>Media &gt; Photo Gallery</td><td><span class="pill merge">Merge</span></td><td><code>/media</code> (new hub)</td><td>One hub for video, audio, photo, podcast.</td></tr>
+        <tr><td>Books</td><td><span class="pill remove">Remove</span></td><td>—</td><td>No active commerce. Reintroduce later under <code>/resources</code> if needed.</td></tr>
+        <tr><td>Women Ministries</td><td><span class="pill merge">Merge</span></td><td><code>/ministries#women</code></td><td>Single ministries page with anchor links.</td></tr>
+        <tr><td>Men of Faith</td><td><span class="pill merge">Merge</span></td><td><code>/ministries#men</code></td><td>Same.</td></tr>
+        <tr><td>Youth</td><td><span class="pill merge">Merge</span></td><td><code>/ministries#youth</code></td><td>Same.</td></tr>
+        <tr><td>Sunday School</td><td><span class="pill merge">Merge</span></td><td><code>/ministries#sunday-school</code></td><td>Same.</td></tr>
+        <tr><td>Contact</td><td><span class="pill keep">Keep</span></td><td><code>/contact</code></td><td>Form + map + prayer request.</td></tr>
+        <tr><td>Facebook / YouTube (as nav pages)</td><td><span class="pill remove">Remove</span></td><td>Footer social icons only</td><td>External destinations should not be navigation entries.</td></tr>
+        <tr><td>Fullscreen Page</td><td><span class="pill remove">Remove</span></td><td>—</td><td>Pro Gallery artifact. Delete.</td></tr>
+        <tr><td>—</td><td><span class="pill new">New</span></td><td><code>/new</code> (I'm New)</td><td>Dedicated first-time visitor conversion page.</td></tr>
+        <tr><td>—</td><td><span class="pill new">New</span></td><td><code>/events</code></td><td>Aggregated events with filter/calendar.</td></tr>
+        <tr><td>—</td><td><span class="pill new">New</span></td><td><code>/ministries</code></td><td>Single parent page for all sub-ministries.</td></tr>
+        <tr><td>—</td><td><span class="pill new">New</span></td><td><code>/media</code></td><td>Gallery + video archive + podcast + social.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============================ NAVIGATION ARCHITECTURE ============================ -->
+  <section id="nav-architecture">
+    <h2>3. Global Navigation Architecture</h2>
+
+    <h3>3.1 Desktop header (≥1024px)</h3>
+    <div class="wf nav">
+      <div class="wf-label">Sticky header &middot; 72px tall &middot; transparent over hero, white on scroll</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;">
+        <div style="font-weight:600; font-size:14px;">[LOGO]&nbsp;Jesus House SV</div>
+        <div style="display:flex; gap:20px; font-size:13px;">
+          <span>Home</span>
+          <span>I'm New</span>
+          <span>About</span>
+          <span>Sermons</span>
+          <span>Events</span>
+          <span>Give</span>
+        </div>
+        <span class="btn primary">● Watch Live</span>
+      </div>
+    </div>
+    <div class="note why"><strong>Why this order:</strong> "I'm New" sits second — directly next to Home — because first-time visitors are the site's highest-value user. "Watch Live" stays on the far right as a persistent CTA (matches Echo, Union, Well, NBCC pattern). "Contact" is intentionally <em>not</em> in the top nav; it lives in the footer to reduce competition with conversion goals.</div>
+    <div class="note flag"><strong>Two nav items use YouTube as their live source:</strong> at v1, the <strong>Sermons</strong> link is a direct URL to the church's YouTube channel (<code>target="_blank"</code>). The <strong>Watch Live</strong> button routes to <code>/live</code>, where a YouTube Data API call determines whether to show the live stream, an upcoming countdown, or the latest past broadcast. Both depend on the church's YouTube channel being kept organized and current.</div>
+
+    <h3>3.2 Mobile header (&lt;768px)</h3>
+    <div class="wf nav">
+      <div class="wf-label">56px tall &middot; logo left, hamburger right</div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-weight:600; font-size:14px;">[LOGO]</div>
+        <div style="font-family:monospace;">☰ MENU</div>
+      </div>
+    </div>
+    <div class="wf" style="background: var(--white); border-style: solid; border-color: var(--ink-20);">
+      <div class="wf-label">Full-screen overlay menu</div>
+      <div style="font-size:14px; line-height:2;">
+        Home<br>I'm New<br>About<br>Sermons<br>Events<br>Give<br>Ministries<br>Contact<br>
+        <div style="margin-top:12px;"><span class="btn primary" style="width:100%; display:block; text-align:center;">● Watch Live</span></div>
+        <div style="margin-top:12px; font-size:12px; color: var(--ink-50);">Social row: FB · IG · YT</div>
+      </div>
+    </div>
+
+    <h3>3.3 Footer navigation (all breakpoints)</h3>
+    <div class="wf footer">
+      <div class="wf-label">~300px tall &middot; 3-column on desktop &middot; stacked on mobile</div>
+      <div class="row c3" style="font-size:13px; margin-top:10px;">
+        <div>
+          <div style="font-weight:600; margin-bottom:8px;">Contact</div>
+          474 Piercy Road<br>San Jose, CA 95138<br>(925) 759-8930<br>info@rccgjhsv.org
+        </div>
+        <div>
+          <div style="font-weight:600; margin-bottom:8px;">Services</div>
+          Sunday · 10:30 AM<br>Wednesday Bible Study · 7:00 PM<br>
+          <div style="margin-top:8px; font-size:12px; opacity:0.7;">Links: Ministries · Media · Privacy</div>
+        </div>
+        <div>
+          <div style="font-weight:600; margin-bottom:8px;">Follow Us</div>
+          Facebook · Instagram · YouTube<br>
+          <div style="margin-top:8px; font-size:12px; opacity:0.7;">Newsletter signup (email field + Subscribe)</div>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,0.15); margin-top:16px; padding-top:10px; font-size:11px; opacity:0.6; text-align:center;">
+        © 2026 RCCG Jesus House Silicon Valley &middot; Redeemed Christian Church of God
+      </div>
+    </div>
+    <div class="note why"><strong>Why compact:</strong> the current footer is 1,529px tall and duplicates the entire nav. A footer is a reference card, not a second site map. Current Gmail address is replaced with a branded <code>info@rccgjhsv.org</code>.</div>
+  </section>
+
+  <!-- ============================ HOME ============================ -->
+  <section id="home">
+    <h2>4. Page Blueprints</h2>
+    <p class="lede">Each blueprint shows the section stack top-to-bottom, the content that lives in it, the CTAs and where they go, plus annotations on <em>why</em> each choice was made.</p>
+
+    <div class="page">
+      <div class="page-head">
+        <h3>Home</h3>
+        <span class="path">/</span>
+      </div>
+      <div class="page-purpose">
+        <strong>Primary goal:</strong> convert a first-time visitor to click "Plan Your Visit." <strong>Secondary goal:</strong> give returning members one-tap access to sermons, giving, livestream.
+      </div>
+      <div class="page-body">
+
+        <div class="wf nav">
+          <div class="wf-label">1 &middot; Sticky Nav</div>
+          <div class="wf-content">Logo · Home · I'm New · About · Sermons · Events · Give · <span style="background:var(--accent); padding:2px 10px; border-radius:4px; font-weight:600;">Watch Live</span></div>
+        </div>
+
+        <div class="wf hero">
+          <div class="wf-label">2 &middot; Hero &middot; 85vh / 70vh mobile</div>
+          <div class="wf-title" style="color:white; font-size:24px;">"Come as you are."</div>
+          <div class="wf-content">Subtitle: <strong>Sundays at 10:30 AM · 474 Piercy Road, San Jose, CA</strong><br>Background: single compressed WebP photo of congregation (no video). Dark overlay 55–75%.</div>
+          <span class="btn on-dark">Plan Your Visit →</span>
+        </div>
+        <div class="note why"><strong>One CTA, not two.</strong> Current site has "Watch Live" + "New Here?" side by side in the hero. Splitting attention halves conversion. "Watch Live" already lives in the nav, so we don't repeat it here.</div>
+
+        <div class="wf">
+          <div class="wf-label">3 &middot; Welcome / Who We Are</div>
+          <div class="wf-title">Who We Are</div>
+          <div class="wf-content">Single centered column, max-width 680px. 2-3 sentence mission statement — multicultural, dynamic, Christ-centered.</div>
+          <span class="btn outlined">Learn More →</span>
+          <span style="font-size:11px; color:var(--ink-50); margin-left:4px;">→ /about</span>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">4 &middot; Service Times + Location</div>
+          <div class="wf-title">Join us this week</div>
+          <div class="row c2">
+            <div style="background:white; padding:12px; border-radius:6px; border:1px solid var(--ink-10);">
+              <div style="font-weight:600;">Sunday Service</div>
+              <div style="color:var(--accent); font-weight:600; font-size:18px;">10:30 AM</div>
+              <div style="font-size:12px; color:var(--ink-70);">474 Piercy Road, San Jose</div>
+              <span class="btn outlined" style="margin-top:8px;">Get Directions →</span>
+            </div>
+            <div style="background:white; padding:12px; border-radius:6px; border:1px solid var(--ink-10);">
+              <div style="font-weight:600;">Wednesday Bible Study</div>
+              <div style="color:var(--accent); font-weight:600; font-size:18px;">7:00 PM</div>
+              <div style="font-size:12px; color:var(--ink-70);">In person or online</div>
+              <span class="btn outlined" style="margin-top:8px;">Watch Online →</span>
+            </div>
+          </div>
+        </div>
+        <div class="note why"><strong>Service times are a homepage fixture, not footer-only.</strong> Currently visitors have to scroll 1,500px into the footer to find service times. That is the #1 thing a first-time visitor wants to know. Surface it above the fold on the second scroll.</div>
+
+        <div class="wf">
+          <div class="wf-label">5 &middot; Next Steps — 3 Content Cards (updated weekly)</div>
+          <div class="row c3">
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);">
+              <div style="background:var(--ink-10); height:60px; border-radius:4px; margin-bottom:6px; display:flex; align-items:center; justify-content:center; font-size:11px; color:var(--ink-50);">[sermon photo]</div>
+              <div style="font-weight:600; font-size:13px;">This Sunday</div>
+              <div style="font-size:12px; color:var(--ink-70);">[Sermon title] — Pastor [name]</div>
+              <span class="btn outlined" style="font-size:11px;">Plan Visit</span>
+            </div>
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);">
+              <div style="background:var(--ink-10); height:60px; border-radius:4px; margin-bottom:6px; display:flex; align-items:center; justify-content:center; font-size:11px; color:var(--ink-50);">[YouTube thumb]</div>
+              <div style="font-weight:600; font-size:13px;">Latest Sermon</div>
+              <div style="font-size:12px; color:var(--ink-70);">Watch the message from this past Sunday</div>
+              <span class="btn outlined" style="font-size:11px;">Watch →</span>
+            </div>
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);">
+              <div style="background:var(--ink-10); height:60px; border-radius:4px; margin-bottom:6px; display:flex; align-items:center; justify-content:center; font-size:11px; color:var(--ink-50);">[community photo]</div>
+              <div style="font-weight:600; font-size:13px;">Get Connected</div>
+              <div style="font-size:12px; color:var(--ink-70);">Find your community. Join a small group.</div>
+              <span class="btn outlined" style="font-size:11px;">Learn More</span>
+            </div>
+          </div>
+        </div>
+        <div class="note why"><strong>Replaces the current 4-button wall.</strong> The existing "New Here? / Contact Us / Watch Live / Donate" row uses large buttons with no explanation of what's behind them. These three cards each have image + title + one-sentence context + CTA. The visitor knows what they're clicking into.</div>
+
+        <div class="wf">
+          <div class="wf-label">6 &middot; Upcoming Events Strip</div>
+          <div class="wf-title">Upcoming Events</div>
+          <div class="row c3" style="font-size:12px;">
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);"><strong>[Event 1]</strong><br><span style="color:var(--ink-50);">Date · Time</span></div>
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);"><strong>[Event 2]</strong><br><span style="color:var(--ink-50);">Date · Time</span></div>
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);"><strong>[Event 3]</strong><br><span style="color:var(--ink-50);">Date · Time</span></div>
+          </div>
+          <div style="margin-top:10px;"><span class="btn ghost">See All Events →</span></div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">7 &middot; Meet Our Pastors (snippet)</div>
+          <div class="wf-title">Led by a faithful team</div>
+          <div class="wf-content">Two-column: left = pastor photo; right = 2-3 sentence bio + CTA to full leadership on About page.</div>
+          <span class="btn outlined">Meet the Team →</span>
+        </div>
+        <div class="note why"><strong>Peer pattern:</strong> Echo, Well, Union all feature a pastor photo + short intro on the home page. Puts a human face on the church before the visitor has even walked in. Keep this restrained to one block; the full team bios live on /about.</div>
+
+        <div class="wf cta-band">
+          <div class="wf-label">8 &middot; Pre-Footer CTA Banner</div>
+          <div class="wf-title" style="color:white;">We'd love to meet you.</div>
+          <span class="btn on-dark">Plan Your Visit</span>
+          <span class="btn outlined-on-dark">Watch Online</span>
+        </div>
+
+        <div class="wf footer">
+          <div class="wf-label">9 &middot; Footer (global, compact)</div>
+          <div class="wf-content">Contact · Services · Follow Us + newsletter signup + legal row. See §3.3.</div>
+        </div>
+
+        <h4>CTA inventory on Home</h4>
+        <table>
+          <thead><tr><th>CTA</th><th>Style</th><th>Placement</th><th>Destination</th></tr></thead>
+          <tbody>
+            <tr><td>Watch Live</td><td>Primary filled</td><td>Nav (persistent)</td><td><code>/live</code></td></tr>
+            <tr><td>Plan Your Visit</td><td>Primary on-dark</td><td>Hero</td><td><code>/new</code></td></tr>
+            <tr><td>Learn More</td><td>Outlined</td><td>Who We Are</td><td><code>/about</code></td></tr>
+            <tr><td>Get Directions</td><td>Outlined</td><td>Sunday card</td><td>Google Maps (new tab)</td></tr>
+            <tr><td>Watch Online</td><td>Outlined</td><td>Wednesday card</td><td><code>/live</code></td></tr>
+            <tr><td>Plan Visit / Watch / Learn More</td><td>Outlined (small)</td><td>3 content cards</td><td><code>/new</code> · <code>/sermons</code> · <code>/ministries</code></td></tr>
+            <tr><td>See All Events</td><td>Ghost</td><td>Events strip</td><td><code>/events</code></td></tr>
+            <tr><td>Meet the Team</td><td>Outlined</td><td>Pastors snippet</td><td><code>/about#leadership</code></td></tr>
+            <tr><td>Plan Your Visit + Watch Online</td><td>On-dark + Outlined-on-dark</td><td>Pre-footer CTA band</td><td><code>/new</code> · <code>/live</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ I'M NEW ============================ -->
+  <section id="new">
+    <div class="page">
+      <div class="page-head">
+        <h3>I'm New</h3>
+        <span class="path">/new</span>
+      </div>
+      <div class="page-purpose">
+        <strong>Primary goal:</strong> remove every unknown for a first-time visitor so that showing up Sunday feels obvious and low-risk.
+      </div>
+      <div class="page-body">
+
+        <div class="wf hero" style="min-height:100px;">
+          <div class="wf-label">1 &middot; Hero &middot; 50vh</div>
+          <div class="wf-title" style="color:white; font-size:20px;">"We saved you a seat."</div>
+          <div class="wf-content">Warm candid photo. Subtitle: "Here's everything you need to know about your first visit."</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">2 &middot; What to Expect — 4 Icon Tiles</div>
+          <div class="row c4" style="font-size:12px;">
+            <div><strong>⏱ Service Length</strong><br>~90 minutes of worship &amp; teaching</div>
+            <div><strong>👕 Dress Code</strong><br>Come as you are. Jeans are welcome.</div>
+            <div><strong>🎵 Worship Style</strong><br>Contemporary, multicultural, Spirit-filled</div>
+            <div><strong>📖 Teaching</strong><br>Bible-centered, practical for daily life</div>
+          </div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">3 &middot; For Families</div>
+          <div class="wf-content">2-col: left = photo of kids area; right = copy about age groups, childcare, safety protocols, and check-in process. CTA: <span class="btn outlined">Learn About Kids Church</span></div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">4 &middot; Getting Here</div>
+          <div class="wf-content">
+            <strong>Embedded Google Map</strong> (full-width).<br>
+            Below map: 2-col
+            <div class="row c2">
+              <div>• Address: 474 Piercy Road, San Jose CA 95138<br>• Parking: free on-site, overflow on [street]<br>• Entrance: [description + photo]</div>
+              <div>• Public transit: [nearest stop]<br>• ADA accessibility notes<br>• What to do if you're late</div>
+            </div>
+            <span class="btn primary">Get Directions</span>
+          </div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">5 &middot; Digital Connection Card (inline form)</div>
+          <div style="background:white; padding:14px; border-radius:6px; border:1px solid var(--ink-10); max-width:480px; margin:0 auto;">
+            <div style="font-weight:600;">Let us know you're coming</div>
+            <div style="font-size:12px; color:var(--ink-70); margin-bottom:8px;">We'll send you a note so you know what to expect — no spam, promise.</div>
+            <div style="font-size:11px; color:var(--ink-50);">First Name · Last Name · Email · Planned Visit (Sun / Next Sun / Not sure) · Prayer Request (optional)</div>
+            <span class="btn primary" style="margin-top:8px;">Let us know you're coming</span>
+          </div>
+        </div>
+        <div class="note why"><strong>The connection card is the most important form on the site.</strong> It's the only way to turn a passive reader into a known name we can follow up with. Must trigger a 3-email welcome sequence (immediate confirmation, Monday sermon recap, Day-7 community invite).</div>
+
+        <div class="wf">
+          <div class="wf-label">6 &middot; FAQ (expandable accordion)</div>
+          <div class="wf-content" style="font-size:13px;">
+            ▸ Do I need to bring anything?<br>
+            ▸ What if I'm late?<br>
+            ▸ Is there coffee / refreshments?<br>
+            ▸ Can I watch online instead?<br>
+            ▸ What does RCCG stand for?<br>
+            ▸ What should my kids expect?<br>
+            ▸ How do I get connected beyond Sunday?
+          </div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">7 &middot; Pastor Welcome Video (optional, high-impact)</div>
+          <div class="wf-content">60-second YouTube embed. One take, phone camera is fine. Caption: "A personal hello from Pastor [name]."</div>
+        </div>
+
+        <div class="wf cta-band">
+          <div class="wf-label">8 &middot; Closing CTA</div>
+          <div class="wf-title" style="color:white;">Still have questions?</div>
+          <span class="btn on-dark">Contact Us</span>
+          <span class="btn outlined-on-dark">Watch Last Sunday</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ ABOUT ============================ -->
+  <section id="about">
+    <div class="page">
+      <div class="page-head">
+        <h3>About</h3>
+        <span class="path">/about</span>
+      </div>
+      <div class="page-purpose">
+        <strong>Primary goal:</strong> tell the story, the beliefs, and the people — in that order. Close with an invite to visit.
+      </div>
+      <div class="page-body">
+
+        <div class="wf hero" style="min-height:100px;">
+          <div class="wf-label">1 &middot; Hero &middot; 45vh</div>
+          <div class="wf-title" style="color:white; font-size:20px;">Our Story</div>
+          <div class="wf-content">Subtitle: "A multicultural and dynamic family of faith in Silicon Valley."</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">2 &middot; Our Story (#story)</div>
+          <div class="wf-content">2-col: narrative of how the church began + key milestones. Include founding year, pastor's calling story, current size/reach. Embedded photo strip of significant moments.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">3 &middot; Mission &amp; Vision (#mission)</div>
+          <div class="wf-content">Two concise statements. Max 2 sentences each. No business-speak.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">4 &middot; What We Believe (#beliefs)</div>
+          <div class="wf-content">Core doctrinal statements as an expandable list (Scripture, Trinity, Salvation, Holy Spirit, the Church, etc.). Link out to RCCG's official statement of faith for depth.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">5 &middot; Leadership (#leadership) — merges current Leaders page</div>
+          <div class="wf-content">
+            Grid of pastor + leadership photos (3-col on desktop, 1-col mobile). Each card: photo, name, title, 1 paragraph bio, optional email. Start with Senior Pastor(s) at top, then pastoral staff, then elders/board.
+          </div>
+        </div>
+        <div class="note why"><strong>Leaders folds into About, not a standalone page.</strong> Separate "Leaders" page gets very low traffic on peer sites. Keeping it as a section on /about with a deep anchor link (<code>/about#leadership</code>) preserves linkability while cutting a nav item.</div>
+
+        <div class="wf">
+          <div class="wf-label">6 &middot; RCCG &amp; Our Global Family (#rccg)</div>
+          <div class="wf-content">Short explainer: "RCCG" = Redeemed Christian Church of God. Global footprint. How JHSV fits into the broader network. Outbound link to RCCGNA.org.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">7 &middot; Gallery (#gallery) — embedded, not a separate page</div>
+          <div class="wf-content">12-image lightbox grid. Candid service, baptisms, fellowship, community outreach. Link to full archive at <code>/media</code>.</div>
+          <span class="btn outlined">See Full Media Library →</span>
+        </div>
+        <div class="note why"><strong>Gallery as a section, not a destination page.</strong> Standalone "Photo Gallery" pages get single-digit traffic. Embedding a curated 12-image strip inside About is more likely to be scrolled through, and the full library lives in <code>/media</code> for completists.</div>
+
+        <div class="wf cta-band">
+          <div class="wf-label">8 &middot; Invite CTA</div>
+          <div class="wf-title" style="color:white;">Meet us in person.</div>
+          <span class="btn on-dark">Plan Your Visit</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ SERMONS ============================ -->
+  <section id="sermons">
+    <div class="page">
+      <div class="page-head" style="background: #c2410c;">
+        <h3>Sermons <span style="background:rgba(255,255,255,0.2); font-size:12px; padding:3px 8px; border-radius:4px; margin-left:8px; vertical-align:middle;">PHASE 2</span></h3>
+        <span class="path">/sermons</span>
+      </div>
+      <div class="page-purpose" style="background:#fef3c7; border-bottom-color:#fbbf24;">
+        <strong style="color:#c2410c;">Launch strategy — phased.</strong> <strong>v1:</strong> the "Sermons" nav item links directly to the church's YouTube channel (opens in new tab). No internal page built at launch. <strong>v2:</strong> replace the external link with a full <code>/sermons</code> page powered by the YouTube Data API v3 — videos flow in automatically, organized by series, with on-site player and podcast feed.
+      </div>
+      <div class="page-body">
+
+        <h4 style="margin-top:0;">v1 behavior at launch (weeks 1–8)</h4>
+        <div class="wf">
+          <div class="wf-label">Nav item: "Sermons"</div>
+          <div class="wf-content">
+            Nav link <code>href="https://www.youtube.com/@[channel-handle]"</code> with <code>target="_blank" rel="noopener"</code>.<br>
+            <strong>Destination:</strong> the church's YouTube channel page.<br>
+            <strong>User experience:</strong> click "Sermons" in nav → new tab opens YouTube → user browses the channel's Videos tab, Live tab, or Playlists.
+          </div>
+          <span class="btn primary">Sermons ↗</span>
+          <span style="font-size:11px; color:var(--ink-50); margin-left:4px;">→ opens YouTube channel in new tab</span>
+        </div>
+        <div class="note why"><strong>Why defer the page:</strong> a <code>/sermons</code> archive only feels full if it's kept fed. Shipping an empty page before the weekly content cadence is proven creates a worse first impression than routing visitors to YouTube — which is <em>already</em> a polished archive of the church's full sermon library. YouTube also has search, captions, and playback speed controls built in.</div>
+
+        <div class="note flag"><strong>Required before v1 launch:</strong> verify the YouTube channel has (a) a recognizable handle/URL, (b) a custom banner and logo, (c) at least the most recent 6 sermons uploaded as public videos, and (d) one "Sermons" playlist that pins or highlights current content. Without these, the YouTube tab will look neglected.</div>
+
+        <hr style="margin: 32px 0; border-top: 2px dashed var(--ink-10);">
+
+        <h4 style="margin-top:0;">v2 page design (post-launch build)</h4>
+        <p style="font-size:14px; color:var(--ink-70);">Full <code>/sermons</code> page architecture. Implementation triggered when weekly content ops are stable (typically month 3+).</p>
+
+        <div class="wf">
+          <div class="wf-label">0 &middot; YouTube Data API Integration</div>
+          <div class="wf-content">
+            Every page load (or cached, hourly) the page calls <code>youtube.v3.search.list</code> / <code>playlistItems.list</code> against the church's channel ID to pull:
+            <ul style="margin:6px 0; padding-left:18px;">
+              <li>The 12 most recent uploads (for "Latest" and list view)</li>
+              <li>Playlists tagged as sermon series (for "All Series" grid)</li>
+              <li>Live broadcast status (to surface a banner if currently streaming)</li>
+            </ul>
+            Data cached server-side (or via Wix Velo backend) to stay within API quota (10,000 units/day default). No manual blog posting required — every new YouTube upload appears on the site automatically.
+          </div>
+        </div>
+        <div class="note why"><strong>Why YouTube API, not manual posts:</strong> the original plan assumed weekly manual sermon blog entries with 3-paragraph summaries. That's a real ongoing content lift. YouTube API integration cuts the weekly ops to zero — upload to YouTube, it appears on the site. Summaries/SEO content can be layered on later if desired.</div>
+
+        <div class="wf">
+          <div class="wf-label">1 &middot; Current Series Banner (Featured)</div>
+          <div class="wf-content">Full-width banner pulled from the featured YouTube playlist: artwork + series title + description + "Week N of M".</div>
+          <span class="btn primary">Start This Series →</span>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">2 &middot; Latest Sermon (Large Card)</div>
+          <div class="wf-content">Auto-pulled from YouTube API. Thumbnail + title + speaker (from video description or uploaded metadata) + date + embedded YouTube player. Share buttons below.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">3 &middot; Search &amp; Filter Bar</div>
+          <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10); display:flex; gap:8px; flex-wrap:wrap; font-size:12px;">
+            <span style="background:var(--ink-10); padding:4px 10px; border-radius:4px;">🔍 Search keyword</span>
+            <span style="background:var(--ink-10); padding:4px 10px; border-radius:4px;">Series ▾</span>
+            <span style="background:var(--ink-10); padding:4px 10px; border-radius:4px;">Speaker ▾</span>
+            <span style="background:var(--ink-10); padding:4px 10px; border-radius:4px;">Year ▾</span>
+          </div>
+          <div style="font-size:12px; color:var(--ink-50); margin-top:6px;">Search queries the cached YouTube metadata (title + description) client-side. Series filter maps to YouTube playlists.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">4 &middot; All Series (Grid, auto-populated from YouTube playlists)</div>
+          <div class="row c3" style="font-size:12px;">
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);">
+              <div style="background:var(--ink-10); height:60px; border-radius:4px; margin-bottom:6px;"></div>
+              <strong>Series Title</strong><br><span style="color:var(--ink-50);">6 messages · 2026</span>
+            </div>
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);">
+              <div style="background:var(--ink-10); height:60px; border-radius:4px; margin-bottom:6px;"></div>
+              <strong>Series Title</strong><br><span style="color:var(--ink-50);">4 messages · 2025</span>
+            </div>
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);">
+              <div style="background:var(--ink-10); height:60px; border-radius:4px; margin-bottom:6px;"></div>
+              <strong>Series Title</strong><br><span style="color:var(--ink-50);">3 messages · 2025</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">5 &middot; Recent Sermons (List View, Paginated)</div>
+          <div class="wf-content">Reverse-chronological list rendered from YouTube upload history: thumbnail + title + date + series tag. 12 per page.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">6 &middot; Subscribe &amp; Listen Anywhere (Podcast Row)</div>
+          <div class="wf-content">Row of buttons: Apple Podcasts · Spotify · Google Podcasts · Amazon Music · YouTube. RSS link for completeness. Podcast feed is standalone (Anchor/Podbean) — not tied to the YouTube API integration.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">7 &middot; Sermon Detail URL (e.g. /sermons/[youtube-video-id])</div>
+          <div class="wf-content" style="font-size:13px;">
+            • Pulled from YouTube video metadata<br>
+            • Title · Upload date · Duration<br>
+            • Embedded YouTube video player<br>
+            • Video description (from YouTube) rendered below player<br>
+            • Scripture / speaker / series (parsed from description tags or manual override)<br>
+            • Share buttons<br>
+            • "Up Next in This Series" — pulled from playlist position<br>
+            • Sticky invite CTA at bottom: "Join us this Sunday at 10:30 AM"
+          </div>
+        </div>
+
+        <h4>v2 implementation requirements</h4>
+        <table>
+          <thead><tr><th>Requirement</th><th>Owner</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>YouTube channel ID + API key</td><td>Church / dev</td><td>Obtain from Google Cloud Console. Restrict key by referrer.</td></tr>
+            <tr><td>Backend proxy for API calls</td><td>Dev</td><td>Wix Velo backend function (or Cloudflare Worker). Keeps API key server-side. Caches results.</td></tr>
+            <tr><td>YouTube channel hygiene</td><td>Media team</td><td>Consistent video titling. Playlists for each sermon series. Description template with speaker/scripture.</td></tr>
+            <tr><td>Series artwork library</td><td>Design</td><td>1920×1080 per series. Uploaded to YouTube as playlist thumbnails; re-used on site.</td></tr>
+            <tr><td>Podcast feed (separate)</td><td>Media team</td><td>Anchor or Podbean. Audio extracted from video. Submit to Apple/Spotify.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ EVENTS ============================ -->
+  <section id="events">
+    <div class="page">
+      <div class="page-head">
+        <h3>Events</h3>
+        <span class="path">/events</span>
+      </div>
+      <div class="page-purpose">
+        <strong>Primary goal:</strong> one place to see everything happening, from weekly rhythms to one-off events. Registerable in-page or via linked tool.
+      </div>
+      <div class="page-body">
+
+        <div class="wf">
+          <div class="wf-label">1 &middot; Page Header</div>
+          <div class="wf-title">What's Happening</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">2 &middot; View Toggle + Filter</div>
+          <div style="font-size:12px;">
+            View: <span style="font-weight:600;">[List]</span> / [Calendar] · Filter: All · Women · Men · Youth · Kids · Prayer · Special
+          </div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">3 &middot; Featured / Upcoming Special Event (Hero Card)</div>
+          <div class="wf-content">The next "big" event (e.g., Easter, Christmas, conference) gets a full-width hero card at top: artwork + title + date/time/location + RSVP button.</div>
+          <span class="btn primary">Register →</span>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">4 &middot; Upcoming Events Grid (this month + next)</div>
+          <div class="row c3" style="font-size:12px;">
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);"><div style="background:var(--ink-10); height:60px; border-radius:4px; margin-bottom:6px;"></div><strong>Event</strong><br>Date · Time · Location</div>
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);"><div style="background:var(--ink-10); height:60px; border-radius:4px; margin-bottom:6px;"></div><strong>Event</strong><br>Date · Time · Location</div>
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);"><div style="background:var(--ink-10); height:60px; border-radius:4px; margin-bottom:6px;"></div><strong>Event</strong><br>Date · Time · Location</div>
+          </div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">5 &middot; Weekly Rhythms (always-on section)</div>
+          <div class="wf-content" style="font-size:13px;">
+            • Sunday Service — 10:30 AM weekly<br>
+            • Wednesday Bible Study — 7:00 PM weekly<br>
+            • Prayer Meeting — [day/time] weekly<br>
+            • Small Groups — ongoing (link to /ministries)
+          </div>
+        </div>
+        <div class="note why"><strong>Why "Weekly Rhythms" is separate:</strong> recurring events shouldn't clutter the "upcoming events" list with 52 identical entries. A dedicated section communicates the heartbeat of the church.</div>
+
+        <div class="wf">
+          <div class="wf-label">6 &middot; Event Detail Page Template (e.g. /events/mens-retreat-2026)</div>
+          <div class="wf-content" style="font-size:13px;">Hero artwork · Title · Date/time/location · Full description · Speakers/hosts · Schedule · Cost · Register button · Share · "Add to Calendar" (ICS download)</div>
+        </div>
+
+        <div class="wf cta-band">
+          <div class="wf-label">7 &middot; CTA — Subscribe</div>
+          <div class="wf-title" style="color:white;">Never miss what's happening.</div>
+          <div style="color:white; font-size:13px; margin-bottom:8px;">Email signup for monthly events digest.</div>
+          <span class="btn on-dark">Subscribe</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ GIVE ============================ -->
+  <section id="give">
+    <div class="page">
+      <div class="page-head">
+        <h3>Give</h3>
+        <span class="path">/give</span>
+      </div>
+      <div class="page-purpose">
+        <strong>Primary goal:</strong> make giving fast, trusted, and mobile-first. Minimize friction between intent and completion.
+      </div>
+      <div class="page-body">
+
+        <div class="wf hero" style="min-height:100px;">
+          <div class="wf-label">1 &middot; Hero</div>
+          <div class="wf-title" style="color:white; font-size:20px;">Give Generously</div>
+          <div class="wf-content">One-sentence scriptural framing. Keep short.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">2 &middot; Online Giving Form (embedded)</div>
+          <div class="wf-content">
+            Embedded form (Tithe.ly / Pushpay / Stripe / Wix Payments). Fields: Amount · Fund (Tithe / Missions / Building / Benevolence / Other) · Frequency (One-time / Weekly / Monthly) · Payment (Card / ACH / Apple Pay / Google Pay).
+          </div>
+          <span class="btn primary">Give Now</span>
+        </div>
+        <div class="note why"><strong>Form lives above the fold.</strong> A donor who has decided to give should not have to scroll past inspirational copy. The hero is already short; the form is the hero's neighbor.</div>
+
+        <div class="wf">
+          <div class="wf-label">3 &middot; Other Ways to Give</div>
+          <div class="row c3" style="font-size:12px;">
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);"><strong>Text to Give</strong><br>Text [AMOUNT] to [NUMBER]</div>
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);"><strong>By Mail</strong><br>Check payable to RCCG JHSV · mailing address</div>
+            <div style="background:white; padding:10px; border-radius:6px; border:1px solid var(--ink-10);"><strong>In Person</strong><br>Drop in offering during any service</div>
+          </div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">4 &middot; What Your Giving Supports</div>
+          <div class="wf-content">3-4 short paragraphs or icons: ministry, missions, facility, benevolence. Concrete, not abstract.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">5 &middot; Giving FAQ</div>
+          <div class="wf-content" style="font-size:13px;">▸ Is my gift tax-deductible? ▸ How do I get a giving statement? ▸ Can I change my recurring gift? ▸ Is my payment secure? ▸ Who can I contact about my gift?</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">6 &middot; Contact for Questions</div>
+          <div class="wf-content">Direct line: "Questions about giving? Email <code>giving@rccgjhsv.org</code> or call (925) 759-8930."</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ LIVE ============================ -->
+  <section id="live">
+    <div class="page">
+      <div class="page-head">
+        <h3>Watch Live</h3>
+        <span class="path">/live</span>
+      </div>
+      <div class="page-purpose">
+        <strong>Primary goal:</strong> zero-friction way to join the service online. The page always shows <em>something playable</em> — never a blank "offline" dead-end. Powered by the YouTube Data API to auto-detect whether the channel is live, scheduled, or offline.
+      </div>
+      <div class="page-body">
+
+        <div class="wf" style="background:#fef3c7; border-color:#fbbf24;">
+          <div class="wf-label" style="color:#c2410c;">0 &middot; YouTube Data API integration</div>
+          <div class="wf-content">
+            On page load, the page calls <code>youtube.v3.search.list</code> against the church's channel ID with three queries to determine state:
+            <ul style="margin:6px 0; padding-left:18px;">
+              <li><code>eventType=live</code> &mdash; is there a broadcast happening right now?</li>
+              <li><code>eventType=upcoming</code> &mdash; is one scheduled within the next 24 hours?</li>
+              <li><code>eventType=completed</code> &mdash; most recent past broadcast (fallback)</li>
+            </ul>
+            The first result that returns a video ID drives the embed. Every "Watch Live" click in the nav lands on a working player — no stale or broken stream URLs to maintain manually.
+          </div>
+          <div class="note why" style="margin-top:10px;"><strong>Implementation detail:</strong> API key stored in a Wix Velo backend function (or lightweight Node proxy), not exposed client-side. Results cached for 60 seconds to stay within the 10,000/day quota and avoid rate-limit issues during peak Sunday traffic.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">1 &middot; Live Status Indicator (dynamic, driven by API result)</div>
+          <div class="wf-content">Badge state switches based on the API response:
+            <ul>
+              <li><strong>🔴 LIVE NOW</strong> — when <code>eventType=live</code> returns a broadcast</li>
+              <li><strong>Upcoming: Sun 10:30 AM PT</strong> — when a stream is scheduled within 24h</li>
+              <li><strong>Most recent service</strong> — when offline; player shows the latest completed broadcast</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">2 &middot; Primary Stream Embed (16:9, full-width)</div>
+          <div class="wf-content">YouTube iframe embed at <code>youtube.com/embed/[video-id]</code>, where the video ID comes from the API call above. If the API fails entirely, fallback to a hard-coded latest-upload embed so the page never renders empty.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">3 &middot; Service Schedule + Add-to-Calendar</div>
+          <div class="wf-content">Sunday · 10:30 AM PT · Wednesday · 7:00 PM PT. "Add to Calendar" button downloads an ICS file so it lands on the viewer's device regardless of calendar app.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">4 &middot; During-Service Actions (right rail on desktop, stacked on mobile)</div>
+          <div class="wf-content" style="font-size:13px;">
+            • <span class="btn primary">Give</span> — quick tap during offering<br>
+            • <span class="btn outlined">Prayer Request</span><br>
+            • <span class="btn outlined">Connection Card</span><br>
+            • Links: Facebook Live mirror · YouTube chat
+          </div>
+        </div>
+        <div class="note why"><strong>Why right-rail actions matter:</strong> a remote viewer who wants to give or submit a prayer request during service must not have to leave the stream. Peer pattern from Echo and Union.</div>
+
+        <div class="wf">
+          <div class="wf-label">5 &middot; Past Services</div>
+          <div class="wf-content">Row of last 3 broadcasts (pulled from same API call with <code>eventType=completed</code>). Each links to the YouTube video, or in v2 routes to the internal <code>/sermons/[id]</code> page.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ MINISTRIES ============================ -->
+  <section id="ministries">
+    <div class="page">
+      <div class="page-head">
+        <h3>Ministries</h3>
+        <span class="path">/ministries</span>
+      </div>
+      <div class="page-purpose">
+        <strong>Primary goal:</strong> one page that shows all ministry tracks in parallel, with a clear CTA per track.
+      </div>
+      <div class="page-body">
+
+        <div class="wf hero" style="min-height:100px;">
+          <div class="wf-label">1 &middot; Hero</div>
+          <div class="wf-title" style="color:white; font-size:20px;">Find Your People</div>
+          <div class="wf-content">"There's a place for every season of life."</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">2 &middot; Ministry Grid (anchor sections, 2-col desktop / 1-col mobile)</div>
+          <div class="row c2" style="font-size:12px;">
+            <div style="background:white; padding:12px; border-radius:6px; border:1px solid var(--ink-10);">
+              <strong>Kids (#kids)</strong><br>
+              Ages 0–12. Safety protocols, check-in, age groups.<br>
+              <span class="btn outlined" style="font-size:11px; margin-top:6px;">Learn More</span>
+            </div>
+            <div style="background:white; padding:12px; border-radius:6px; border:1px solid var(--ink-10);">
+              <strong>Youth (#youth)</strong><br>
+              Teens / Students. Meeting times, activities, leaders.<br>
+              <span class="btn outlined" style="font-size:11px; margin-top:6px;">Learn More</span>
+            </div>
+            <div style="background:white; padding:12px; border-radius:6px; border:1px solid var(--ink-10);">
+              <strong>Women (#women)</strong><br>
+              Bible studies, retreats, fellowship.<br>
+              <span class="btn outlined" style="font-size:11px; margin-top:6px;">Learn More</span>
+            </div>
+            <div style="background:white; padding:12px; border-radius:6px; border:1px solid var(--ink-10);">
+              <strong>Men (#men)</strong><br>
+              Men of Faith — studies, retreats, accountability.<br>
+              <span class="btn outlined" style="font-size:11px; margin-top:6px;">Learn More</span>
+            </div>
+            <div style="background:white; padding:12px; border-radius:6px; border:1px solid var(--ink-10);">
+              <strong>Small Groups (#groups)</strong><br>
+              Weekly groups in homes across the Bay Area.<br>
+              <span class="btn outlined" style="font-size:11px; margin-top:6px;">Find a Group</span>
+            </div>
+            <div style="background:white; padding:12px; border-radius:6px; border:1px solid var(--ink-10);">
+              <strong>Sunday School (#sunday-school)</strong><br>
+              Teaching tracks before main service.<br>
+              <span class="btn outlined" style="font-size:11px; margin-top:6px;">Learn More</span>
+            </div>
+            <div style="background:white; padding:12px; border-radius:6px; border:1px solid var(--ink-10);">
+              <strong>Prayer (#prayer)</strong><br>
+              Corporate prayer nights + prayer request form.<br>
+              <span class="btn outlined" style="font-size:11px; margin-top:6px;">Submit Request</span>
+            </div>
+            <div style="background:white; padding:12px; border-radius:6px; border:1px solid var(--ink-10);">
+              <strong>Serve (#serve)</strong><br>
+              Join a volunteer team (greeters, worship, media, hospitality).<br>
+              <span class="btn outlined" style="font-size:11px; margin-top:6px;">Apply to Serve</span>
+            </div>
+          </div>
+        </div>
+        <div class="note why"><strong>One parent page, many anchors.</strong> Instead of 6 standalone pages that each get ~10 visits a month, one <code>/ministries</code> page with deep anchor links (<code>/ministries#youth</code>) gives each ministry its own shareable URL without fragmenting the nav. Each section can be expanded later if it grows into a destination.</div>
+
+        <div class="wf cta-band">
+          <div class="wf-label">3 &middot; CTA</div>
+          <div class="wf-title" style="color:white;">Not sure where to start?</div>
+          <span class="btn on-dark">Talk to Someone</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ MEDIA HUB ============================ -->
+  <section id="media">
+    <div class="page">
+      <div class="page-head">
+        <h3>Media Hub</h3>
+        <span class="path">/media</span>
+      </div>
+      <div class="page-purpose">
+        <strong>Primary goal:</strong> one place for video archive, full photo gallery, podcast feed, and social links — the "source of truth" for all JHSV media output.
+      </div>
+      <div class="page-body">
+
+        <div class="wf">
+          <div class="wf-label">1 &middot; Section — Sermons &amp; Video</div>
+          <div class="wf-content">Pull-through of latest 6 sermons. "See all" → <code>/sermons</code>. Below: link to YouTube channel.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">2 &middot; Section — Podcast</div>
+          <div class="wf-content">Podcast artwork + 3 latest episodes + subscribe buttons (Apple / Spotify / Google / Amazon / RSS).</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">3 &middot; Section — Photo Gallery (Full Archive)</div>
+          <div class="wf-content">Filterable masonry grid by event/year. Lightbox on click. This is the full archive; curated strip lives on <code>/about</code>.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">4 &middot; Section — Social Wall</div>
+          <div class="wf-content">
+            Live pull of the last 6 posts from Instagram + Facebook (Curator.io or Juicer widget). Each tile clickable out to the post. Below: big icon links to follow on each platform.<br>
+            <strong>Platforms:</strong> Facebook · Instagram · YouTube · TikTok (optional)
+          </div>
+        </div>
+        <div class="note why"><strong>Why a Media Hub page:</strong> currently the site has Facebook and YouTube as <em>nav entries</em> (which is wrong — external links shouldn't be in primary nav) and a separate "Photo Gallery" that's disconnected from everything else. Consolidating into <code>/media</code> gives us one URL to send people to for "here's everything we've ever put out."</div>
+
+        <div class="wf">
+          <div class="wf-label">5 &middot; Section — Newsletter</div>
+          <div class="wf-content">Monthly digest signup. Field + Subscribe button. Same form as footer + events page (unified list).</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ CONTACT ============================ -->
+  <section id="contact">
+    <div class="page">
+      <div class="page-head">
+        <h3>Contact</h3>
+        <span class="path">/contact</span>
+      </div>
+      <div class="page-purpose">
+        <strong>Primary goal:</strong> make it obvious how to reach the church — by form, phone, email, map, or prayer request.
+      </div>
+      <div class="page-body">
+
+        <div class="wf">
+          <div class="wf-label">1 &middot; Header</div>
+          <div class="wf-title">We'd love to hear from you</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">2 &middot; Two-Column: Form + Contact Card</div>
+          <div class="row c2" style="font-size:12px;">
+            <div style="background:white; padding:12px; border-radius:6px; border:1px solid var(--ink-10);">
+              <strong>Contact Form</strong><br>
+              Name · Email · Phone (opt) · Purpose (General / Prayer / Pastoral / Ministries / Media) · Message<br>
+              <span class="btn primary" style="font-size:11px; margin-top:6px;">Send</span>
+            </div>
+            <div style="background:white; padding:12px; border-radius:6px; border:1px solid var(--ink-10);">
+              <strong>Reach Us</strong><br>
+              474 Piercy Road, San Jose CA 95138<br>
+              (925) 759-8930<br>
+              info@rccgjhsv.org<br>
+              Office hours: [list]<br>
+              Social icons row
+            </div>
+          </div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">3 &middot; Embedded Google Map (full-width)</div>
+          <div class="wf-content">Large pinned map + "Get Directions" button.</div>
+        </div>
+
+        <div class="wf">
+          <div class="wf-label">4 &middot; Prayer Request (separate form, lower commitment)</div>
+          <div class="wf-content">Simple: Name (optional) · Email (optional) · Prayer Request textarea · Consent checkbox. Goes to a private pastoral email list, not a public board.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ PRINCIPLES ============================ -->
+  <section id="principles">
+    <h2>5. Button &amp; CTA Placement Principles</h2>
+    <p class="lede">Rules the team agrees on upfront so every page gets the same treatment.</p>
+
+    <table>
+      <thead><tr><th>Principle</th><th>Rule</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>One hero, one CTA</td>
+          <td>Every hero has exactly one primary CTA. "Watch Live" in the nav bar is the escape hatch for the other audience.</td>
+          <td>Two hero buttons halve conversion on each. Peer sites (Echo, Union, Well) all converged on a single hero CTA.</td>
+        </tr>
+        <tr>
+          <td>Persistent Watch Live</td>
+          <td>Purple filled button, far right of nav, sticky on scroll, visible on every page.</td>
+          <td>Second-most-common visitor intent after "plan a visit." Needs zero-click access.</td>
+        </tr>
+        <tr>
+          <td>Primary vs. Outlined</td>
+          <td>Primary filled = one per section max. Outlined = everything secondary. Ghost/text = tertiary.</td>
+          <td>Button hierarchy has to be visual, not accidental.</td>
+        </tr>
+        <tr>
+          <td>CTAs belong near content that earns them</td>
+          <td>"Learn More" lives under the paragraph that introduced what to learn about. No floating orphan buttons.</td>
+          <td>A button without context is a gamble the visitor won't take (Issue #5 in the review).</td>
+        </tr>
+        <tr>
+          <td>Mobile: full-width buttons</td>
+          <td>All primary buttons go to 100% width on mobile with 24px side padding.</td>
+          <td>Touch targets + thumb reach. Echo, Well, and Union all do this.</td>
+        </tr>
+        <tr>
+          <td>Pre-footer CTA band on every page</td>
+          <td>Purple band above the footer with the page's most relevant next action.</td>
+          <td>Catches scrollers who didn't convert higher up. Last chance before they leave.</td>
+        </tr>
+        <tr>
+          <td>External links open in new tab</td>
+          <td>Google Maps, YouTube, Facebook, Instagram, giving platform — <code>target="_blank" rel="noopener"</code>.</td>
+          <td>Don't lose the visitor to a back-button round-trip.</td>
+        </tr>
+        <tr>
+          <td>No hover-only affordances</td>
+          <td>Tap targets must be obvious without hover. iPad + touch laptops have no hover.</td>
+          <td>Accessibility + modern device reality.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Spacing awareness — the cross-page grid</h3>
+    <table>
+      <thead><tr><th>Context</th><th>Desktop</th><th>Tablet</th><th>Mobile</th></tr></thead>
+      <tbody>
+        <tr><td>Content max-width</td><td>1120px</td><td>960px (landscape), 100% (portrait)</td><td>100% (20px side padding)</td></tr>
+        <tr><td>Section vertical padding</td><td>64–120px</td><td>48–80px</td><td>40–64px</td></tr>
+        <tr><td>Card gap</td><td>24px</td><td>20px</td><td>16px</td></tr>
+        <tr><td>Text width (body copy)</td><td>max 680px</td><td>max 580px</td><td>100%</td></tr>
+        <tr><td>Button min-height (touch)</td><td>44px</td><td>44px</td><td>48px (full-width)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Stakeholder review questions</h3>
+    <ol>
+      <li>Do we agree the primary nav is <strong>Home · I'm New · About · Sermons · Events · Give + Watch Live</strong> — and that "Ministries" lives in the mobile menu and footer but not desktop top nav?</li>
+      <li>Do we agree Sermons is phased to v2, with the nav link pointing directly to YouTube at launch? (See Sermons page blueprint for required channel hygiene before v1 ships.)</li>
+      <li>Who owns the YouTube channel? Do we have the handle/URL, channel ID, and access to Google Cloud Console for issuing an API key?</li>
+      <li>Do we keep Gallery as a section inside <code>/about</code> + full archive in <code>/media</code>, or should Gallery be promoted to the top nav?</li>
+      <li>Is "I'm New" the right label, or do we prefer "Plan Your Visit" / "Visit"? (Shorter labels scan better on mobile.)</li>
+      <li>Who owns the connection card inbox and the 3-email welcome sequence?</li>
+      <li>Which giving platform? (Tithe.ly, Pushpay, Stripe, or keeping current Wix-embedded solution?)</li>
+      <li>Do we launch a Media Hub (<code>/media</code>) at v1, or defer to v2 alongside <code>/sermons</code>?</li>
+      <li>What's the trigger to start v2 work? (E.g., "once we've published 12 consecutive weeks of sermons to YouTube with clean metadata," or a date-based commit.)</li>
+    </ol>
+
+    <div class="callout ok">
+      <strong>Recommendation — v1 launch scope:</strong> ship <strong>7 built pages</strong> (Home, I'm New, About, Events, Give, Live, Contact) plus a <strong>Sermons nav link that redirects to the church's YouTube channel</strong>. Watch Live uses the YouTube Data API to surface the current broadcast state. Defer <code>/sermons</code>, <code>/ministries</code>, and <code>/media</code> to v2 — trigger the v2 build once the YouTube channel has 12 weeks of consistent uploads and the weekly content ops have stabilized.
+    </div>
+    <div class="callout">
+      <strong>Why this scope works:</strong> the highest-value pages for a first-time visitor (<code>/new</code>, Home, service times, giving, live service) all ship at v1. The Sermons-via-YouTube interim gives visitors access to the full sermon archive from day one — YouTube is already a polished player with search, captions, and mobile apps. The team avoids building hubs they can't feed, and the v2 build becomes easier because the YouTube channel is already the canonical source of truth.
+    </div>
+  </section>
+
+  <hr>
+  <p class="meta">Sitemap v2 · Draft for stakeholder review · Based on the JHSV Design Review &amp; Redesign Plan (Apr 2026) and peer-site review of Echo.Church, The Well, Union Church, My Redemption SJ, NBCC Bay Area, and CAG.org. Revised: Sermons phased to v2, YouTube serves as interim sermon destination, YouTube Data API integration planned for both /sermons (v2) and /live (v1).</p>
+
+</div>
+</body>
+</html>
