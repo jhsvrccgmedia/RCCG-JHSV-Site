@@ -997,6 +997,9 @@
     <a href="#motion">Motion</a>
     <a href="#demo">In situ</a>
     <a href="#dos">Do / Don't</a>
+    <a href="#responsive">Responsive</a>
+    <a href="#performance">Performance</a>
+    <a href="#seo">SEO</a>
   </nav>
 </div>
 
@@ -1576,6 +1579,176 @@
         </ul>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============================ RESPONSIVE ============================ -->
+<section class="doc" id="responsive">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">12</div>
+      <h2>Responsive &amp; breakpoints</h2>
+      <p class="subtitle">Designed for a Sunday morning phone first, then scaled up. Four breakpoints, explicit container widths, and touch targets sized for the parking-lot moment &mdash; not the studio mockup.</p>
+    </div>
+
+    <h3 class="doc-h3">Breakpoints</h3>
+    <table class="palette-table">
+      <thead><tr><th>Range</th><th>Name</th><th>Targets</th></tr></thead>
+      <tbody>
+        <tr><td><code>320 &ndash; 767px</code></td><td>Mobile</td><td>iPhone SE through iPhone 15 Pro Max</td></tr>
+        <tr><td><code>768 &ndash; 1023px</code></td><td>iPad Portrait</td><td>iPad Mini, iPad, iPad Air (portrait)</td></tr>
+        <tr><td><code>1024 &ndash; 1279px</code></td><td>iPad Landscape</td><td>iPad Pro (landscape), small laptops</td></tr>
+        <tr><td><code>1280px+</code></td><td>Desktop</td><td>Laptops, monitors</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="doc-h3">Container widths</h3>
+    <table class="palette-table">
+      <thead><tr><th>Breakpoint</th><th>Content max-width</th><th>Side padding</th></tr></thead>
+      <tbody>
+        <tr><td>Mobile</td><td>100%</td><td>20px each side</td></tr>
+        <tr><td>iPad Portrait</td><td>100%</td><td>32px each side</td></tr>
+        <tr><td>iPad Landscape</td><td>960px</td><td>auto (centered)</td></tr>
+        <tr><td>Desktop</td><td>1120px</td><td>auto (centered)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="doc-h3">Type scale by breakpoint</h3>
+    <p class="doc">The display sizes in &sect;03 use <code>clamp()</code> so they fluidly resize across viewports. These are the explicit anchor values per breakpoint &mdash; useful when you can't use clamp (e.g. inside Wix's text editor).</p>
+    <table class="palette-table">
+      <thead><tr><th>Element</th><th>Mobile</th><th>iPad</th><th>Desktop</th></tr></thead>
+      <tbody>
+        <tr><td>H1 &middot; Hero</td><td>32px</td><td>44px</td><td>56&ndash;96px</td></tr>
+        <tr><td>H2 &middot; Section</td><td>28px</td><td>34px</td><td>40&ndash;56px</td></tr>
+        <tr><td>H3 &middot; Subhead</td><td>20px</td><td>22px</td><td>24px</td></tr>
+        <tr><td>Body large</td><td>16px</td><td>17px</td><td>18px</td></tr>
+        <tr><td>Body</td><td>15px</td><td>15px</td><td>16px</td></tr>
+        <tr><td>Button</td><td>14px</td><td>15px</td><td>16px</td></tr>
+        <tr><td>Caption</td><td>12px</td><td>12px</td><td>13px</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="doc-h3">Touch targets</h3>
+    <p class="doc">Touch beats hover. Every interactive element must clear the iOS Human Interface Guidelines minimum &mdash; which is also what older hands need.</p>
+    <table class="palette-table">
+      <thead><tr><th>Element</th><th>Minimum</th><th>Recommended</th></tr></thead>
+      <tbody>
+        <tr><td>Buttons</td><td>44px height</td><td>48px</td></tr>
+        <tr><td>Mobile nav rows</td><td>44px row</td><td>56px</td></tr>
+        <tr><td>Social icons</td><td>44 &times; 44px</td><td>48 &times; 48px</td></tr>
+        <tr><td>Inline links in body</td><td>44px line-height</td><td>Use buttons where possible</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="doc-h3">iPad-specific behavior</h3>
+    <div class="motion-grid">
+      <div class="motion-card">
+        <h5>Split-screen / Slide Over</h5>
+        <p>Test at 50% iPad screen width (~512px on iPad Pro). Mobile layout should activate at this width.</p>
+      </div>
+      <div class="motion-card">
+        <h5>No hover</h5>
+        <p>iPad has no hover state. Never put critical info or navigation behind <code>:hover</code>.</p>
+      </div>
+      <div class="motion-card">
+        <h5>Orientation</h5>
+        <p>Portrait gets the tablet layout; landscape gets the small-desktop layout.</p>
+      </div>
+      <div class="motion-card">
+        <h5>Safe areas</h5>
+        <p>20px minimum padding from edges so rounded-corner displays don't clip CTAs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PERFORMANCE ============================ -->
+<section class="doc" id="performance">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">13</div>
+      <h2>Performance budget</h2>
+      <p class="subtitle">A Sunday-morning phone on patchy 4G in a parking lot is the device this site is designed for. Hard limits on weight and Core Web Vitals; everything else is a budget call.</p>
+    </div>
+
+    <h3 class="doc-h3">Core Web Vitals targets</h3>
+    <table class="palette-table">
+      <thead><tr><th>Metric</th><th>Target</th><th>Why it matters</th></tr></thead>
+      <tbody>
+        <tr><td>LCP (Largest Contentful Paint)</td><td><code>&lt; 2.5s</code></td><td>Hero image and headline must be on screen by 2.5s on a mid-tier mobile + 4G.</td></tr>
+        <tr><td>CLS (Cumulative Layout Shift)</td><td><code>&lt; 0.1</code></td><td>Images get explicit dimensions. Fonts use <code>font-display: swap</code> with a metrics-matched fallback so the page doesn't shift when DM Serif Display loads.</td></tr>
+        <tr><td>Total page weight</td><td><code>&lt; 2 MB</code></td><td>Above this, the page becomes a problem on the freeway, not in the foyer.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="doc-h3">Things we don't ship</h3>
+    <table class="palette-table">
+      <thead><tr><th>Anti-pattern</th><th>Cost</th><th>Replace with</th></tr></thead>
+      <tbody>
+        <tr><td>Background video on hero</td><td>2&ndash;4 MB; drains mobile battery</td><td>Single compressed WebP, &lt; 300 KB</td></tr>
+        <tr><td>More than two font families</td><td>~500 KB+ of font files; render-blocking</td><td>DM Serif Display + Manrope only (per &sect;03)</td></tr>
+        <tr><td>Tiled background patterns</td><td>Extra image requests; rendering complexity</td><td>Solid parchment or plum surfaces</td></tr>
+        <tr><td>Auto-loaded chat widgets</td><td>~200 KB+ JS, third-party</td><td>Contact form on <code>/contact</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="doc-h3">Image rules</h3>
+    <p class="doc"><strong>Photography is always real JHSV, never stock.</strong> Format: WebP with AVIF fallback. Hero photos: 2400 &times; 1600px source, compressed to &lt; 300 KB via <a href="https://squoosh.app" style="color: var(--plum-600);">squoosh.app</a> at quality ~80. Card thumbnails: 800px wide, &lt; 80 KB. Always specify <code>width</code> and <code>height</code> attributes to lock layout and protect CLS.</p>
+
+    <h3 class="doc-h3">Font loading</h3>
+    <p class="doc">Both fonts load from Google Fonts via the existing <code>preconnect</code> + <code>display=swap</code> pattern in the document head. We load only the weights we use: DM Serif Display (Regular + Italic) and Manrope (300 / 400 / 500 / 600 / 700). No additional weights, no additional families &mdash; ever.</p>
+  </div>
+</section>
+
+<!-- ============================ SEO ============================ -->
+<section class="doc" id="seo">
+  <div class="wrap">
+    <div class="doc-head">
+      <div class="number">14</div>
+      <h2>SEO foundations</h2>
+      <p class="subtitle">A first-time visitor in San Jose searches "church near me." The single biggest lever is making sure Google knows where we are, when we meet, and that we're a church &mdash; via structured data and an active Google Business Profile.</p>
+    </div>
+
+    <h3 class="doc-h3">Meta strategy</h3>
+    <table class="palette-table">
+      <thead><tr><th>Tag</th><th>Pattern</th></tr></thead>
+      <tbody>
+        <tr><td>Title (Home)</td><td>RCCG Jesus House Silicon Valley &mdash; Church in San Jose, CA</td></tr>
+        <tr><td>Description (Home)</td><td>A multicultural church in San Jose, CA. Join us Sundays at 10:30 AM at 474 Piercy Road. Watch sermons online, connect with our community, and grow in faith.</td></tr>
+        <tr><td>Title (other pages)</td><td>[Page name] &mdash; RCCG Jesus House Silicon Valley</td></tr>
+        <tr><td>og:site_name</td><td>RCCG Jesus House Silicon Valley</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="doc-h3">Church schema (JSON-LD)</h3>
+    <p class="doc">Add to Wix &rsaquo; Settings &rsaquo; Advanced &rsaquo; Custom Code &rsaquo; Head, on every page (or at minimum the homepage and <code>/contact</code>).</p>
+    <pre style="background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 12px; padding: 20px 24px; font-family: var(--mono); font-size: 12.5px; line-height: 1.55; color: var(--text-primary); overflow-x: auto; margin: 16px 0;">{
+  "@context": "https://schema.org",
+  "@type": "Church",
+  "name": "RCCG Jesus House Silicon Valley",
+  "description": "A multicultural and dynamic church in San Jose, California",
+  "url": "https://www.rccgjhsv.org",
+  "telephone": "+1-925-759-8930",
+  "email": "info@rccgjhsv.org",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "474 Piercy Road",
+    "addressLocality": "San Jose",
+    "addressRegion": "CA",
+    "postalCode": "95138",
+    "addressCountry": "US"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday",    "opens": "10:30", "closes": "12:30" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "19:00", "closes": "21:00" }
+  ]
+}</pre>
+
+    <h3 class="doc-h3">Google Business Profile</h3>
+    <p class="doc">The single highest-impact channel for local discovery. Claim or create the listing at <a href="https://business.google.com" style="color: var(--plum-600);">business.google.com</a>, complete every field (name, category = Church, address, phone, website, hours), upload 10+ real photos, post weekly with the upcoming sermon topic, and ask members to leave reviews &mdash; target 20+ in the first month.</p>
+
+    <h3 class="doc-h3">Branded email</h3>
+    <p class="doc">The current public email (<code>rccgjhsv2013@gmail.com</code>) undermines credibility when the church already owns <code>rccgjhsv.org</code>. Migrate to <code>info@rccgjhsv.org</code> using domain-registrar email forwarding plus a Gmail "Send as" alias. Update the schema, the footer, and <code>/contact</code> in the same pass.</p>
   </div>
 </section>
 
