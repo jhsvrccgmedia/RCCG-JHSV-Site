@@ -91,10 +91,17 @@ a:hover { color: var(--plum-700); }
 .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
 @media (max-width: 600px) { .wrap { padding: 0 20px; } }
 
-section { padding: 96px 0; }
-section.alt { background: var(--bg-alt); }
+section { padding: 112px 0; }
+/* Alt section — barely-there warm wash so the surface reads as
+   parchment with sunlight on it, not a flat color swatch. */
+section.alt {
+  background:
+    radial-gradient(60% 80% at 0% 0%, rgba(180, 138, 169, 0.10), transparent 60%),
+    radial-gradient(50% 70% at 100% 100%, rgba(232, 93, 60, 0.07), transparent 60%),
+    var(--bg-alt);
+}
 section.dark { background: var(--bg-dark); color: var(--text-inverse); }
-@media (max-width: 800px) { section { padding: 64px 0; } }
+@media (max-width: 800px) { section { padding: 72px 0; } }
 
 /* Eyebrow label */
 .eyebrow {
@@ -179,7 +186,7 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   opacity: 0.9;
 }
 .topbar nav {
-  display: flex; gap: 24px;
+  display: flex; align-items: center; gap: 24px;
   font-size: 14px; font-weight: 500;
 }
 .topbar nav a { color: var(--text-secondary); }
@@ -243,13 +250,33 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   transform: translateY(-1px);
 }
 
+/* Coral CTA — Apple-style "this surface has weight"
+   Vertical luminance gradient + warm color-tinted shadow + subtle inner highlight.
+   White text always. The button reads as a polished material, not a flat sticker. */
 .btn-accent {
-  background: var(--coral-500); color: #fff; border-color: var(--coral-500);
+  background: linear-gradient(180deg, #F2704C 0%, #E85D3C 55%, #D94F2E 100%);
+  color: #fff;
+  border-color: transparent;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    0 8px 22px -8px rgba(184, 66, 38, 0.55),
+    0 1px 2px rgba(28,26,35,0.06);
 }
 .btn-accent:hover {
-  background: var(--coral-700); border-color: var(--coral-700); color: #fff;
-  box-shadow: var(--shadow-md);
+  background: linear-gradient(180deg, #FF7C57 0%, #F26B47 55%, #E04F2C 100%);
+  color: #fff;
+  border-color: transparent;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.32),
+    0 12px 28px -8px rgba(184, 66, 38, 0.65),
+    0 2px 4px rgba(28,26,35,0.10);
   transform: translateY(-1px);
+}
+.btn-accent:active {
+  transform: translateY(0);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    0 4px 12px -4px rgba(184, 66, 38, 0.50);
 }
 
 .btn-outline {
@@ -276,19 +303,31 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 }
 
 .btn-watch {
-  background: var(--coral-500); color: #fff; border-color: var(--coral-500);
+  background: linear-gradient(180deg, #F2704C 0%, #E85D3C 55%, #D94F2E 100%);
+  color: #fff;
+  border-color: transparent;
   padding: 10px 20px; font-size: 14px; min-height: 40px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    0 6px 16px -6px rgba(184, 66, 38, 0.50),
+    0 1px 2px rgba(28,26,35,0.05);
 }
 .btn-watch::before {
   content: ''; width: 8px; height: 8px;
   border-radius: 999px; background: #fff;
   display: inline-block;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.25);
   animation: pulse-dot 2s ease-in-out infinite;
 }
 .btn-watch:hover {
-  background: var(--coral-700); border-color: var(--coral-700); color: #fff;
+  background: linear-gradient(180deg, #FF7C57 0%, #F26B47 55%, #E04F2C 100%);
+  color: #fff;
+  border-color: transparent;
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.32),
+    0 10px 22px -6px rgba(184, 66, 38, 0.6),
+    0 2px 4px rgba(28,26,35,0.08);
 }
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; }
@@ -300,8 +339,12 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 /* ----------------------- Hero ----------------------- */
 .hero {
   position: relative;
-  padding: 96px 0 80px;
+  padding: 112px 0 96px;
   overflow: hidden;
+  /* Subtle ambient wash — depth without noise. */
+  background:
+    radial-gradient(45% 60% at 110% -10%, rgba(74, 25, 66, 0.05), transparent 70%),
+    radial-gradient(40% 50% at -10% 90%, rgba(232, 93, 60, 0.05), transparent 70%);
 }
 .hero .wrap { position: relative; z-index: 2; }
 .hero h1 { margin-bottom: 24px; max-width: 980px; }
@@ -339,7 +382,10 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 .hero.compact h1 { font-size: clamp(40px, 5.5vw, 64px); }
 
 .hero.dark {
-  background: var(--bg-dark);
+  background:
+    radial-gradient(55% 65% at 80% 0%, rgba(232, 93, 60, 0.12), transparent 70%),
+    radial-gradient(70% 80% at 15% 100%, rgba(180, 138, 169, 0.18), transparent 70%),
+    linear-gradient(180deg, var(--plum-800) 0%, var(--plum-900) 100%);
   color: var(--text-inverse);
 }
 .hero.dark .display { color: var(--text-inverse); }
@@ -606,11 +652,17 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 }
 .service-card .btn-row { margin-top: 20px; }
 
-/* ----------------------- CTA band ----------------------- */
+/* ----------------------- CTA band -----------------------
+   Atmospheric "light through stained glass" — coral light from one
+   corner, soft plum glow from the other, deep plum base. The arch
+   shapes become ambient highlights, not decorative stickers. */
 .cta-band {
-  background: var(--plum-700);
+  background:
+    radial-gradient(60% 70% at 18% 100%, rgba(232, 93, 60, 0.22), transparent 65%),
+    radial-gradient(48% 60% at 85% -5%, rgba(180, 138, 169, 0.28), transparent 65%),
+    linear-gradient(180deg, var(--plum-700) 0%, var(--plum-800) 100%);
   color: var(--text-inverse);
-  padding: 80px 0;
+  padding: 96px 0;
   position: relative;
   overflow: hidden;
 }
@@ -619,16 +671,17 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   position: absolute;
   border-radius: var(--arch-full);
   pointer-events: none;
+  filter: blur(2px);
 }
 .cta-band::before {
-  top: -80px; left: -60px;
-  width: 240px; height: 300px;
-  background: var(--plum-600);
-  opacity: 0.45;
+  top: -80px; left: -80px;
+  width: 280px; height: 340px;
+  background: var(--plum-500);
+  opacity: 0.22;
 }
 .cta-band::after {
-  bottom: -100px; right: -40px;
-  width: 200px; height: 260px;
+  bottom: -120px; right: -60px;
+  width: 240px; height: 300px;
   background: var(--coral-500);
   opacity: 0.18;
 }
@@ -787,6 +840,54 @@ footer.site-footer a {
 footer.site-footer a:hover { color: var(--text-inverse); }
 footer.site-footer .col p { font-size: 14.5px; line-height: 1.7; }
 footer.site-footer .grid { gap: 40px; }
+
+/* 4-column footer: Visit | Services | Explore | Follow */
+footer.site-footer .footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1.4fr;
+  gap: 48px;
+}
+@media (max-width: 920px) {
+  footer.site-footer .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 36px; }
+}
+@media (max-width: 600px) {
+  footer.site-footer .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* Visit list rows with leading icons */
+footer.site-footer .visit-list {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-top: 0;
+}
+footer.site-footer .visit-list .row {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 14.5px; line-height: 1.55;
+}
+footer.site-footer .visit-list .row svg {
+  width: 16px; height: 16px;
+  margin-top: 3px;
+  color: rgba(250,246,240,0.55);
+  flex-shrink: 0;
+  transition: color 0.25s var(--ease-out);
+}
+footer.site-footer .visit-list .row a,
+footer.site-footer .visit-list .row span {
+  display: inline; padding: 0;
+  color: rgba(250,246,240,0.78);
+  line-height: 1.55;
+}
+footer.site-footer .visit-list .row a:hover { color: var(--text-inverse); }
+footer.site-footer .visit-list .row:hover svg { color: var(--coral-300); }
+
+/* Explore (links) column */
+footer.site-footer .explore-list {
+  display: flex; flex-direction: column;
+  gap: 2px;
+}
+footer.site-footer .explore-list a {
+  font-size: 14.5px;
+  padding: 4px 0;
+}
 footer.site-footer .legal {
   border-top: 1px solid rgba(250,246,240,0.14);
   margin-top: 40px;
