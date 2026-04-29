@@ -768,16 +768,28 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 .photo-arch.has-image .label,
 .photo-arch.has-image::before { display: none; }
 
-/* Brand-color frame around real photos — Sanctuary Plum, arch-shaped
-   (the border inherits the container's arch border-radius). The
-   thickness keeps the photo from going edge-to-edge so it reads as a
-   framed portrait, not a clipped fill. */
+/* Style guide arch-frame ("Portrait — Pastor bio" variant):
+   135° plum gradient as the matte, delicate 1.5px white pinstripe
+   ring inset 14px inside, photo sits 24px inset so the gradient
+   reads as a real picture-frame mat. */
 .photo-arch.has-image {
-  border: 8px solid var(--plum-600);
-  background: var(--plum-600);
+  background: linear-gradient(135deg, #8c5a7d, var(--plum-600) 50%, #2a0e27);
+  border: none;
 }
-.photo-arch.has-image.landscape {
-  border-width: 6px;
+.photo-arch.has-image img {
+  inset: 24px;
+  width: calc(100% - 48px);
+  height: calc(100% - 48px);
+  border-radius: var(--arch-full);
+}
+.photo-arch.has-image::after {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border: 1.5px solid rgba(255, 255, 255, 0.30);
+  border-radius: var(--arch-full);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .photo-rect {
