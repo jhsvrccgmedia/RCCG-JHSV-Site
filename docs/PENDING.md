@@ -2,6 +2,21 @@
 
 Things parked for later so we can keep moving on bigger pieces.
 
+## Hero photo (Home page)
+
+The home page hero now expects a sanctuary / Sunday-service candid photo at:
+
+  `site/assets/photos/hero_sanctuary.jpg`
+
+Until the file is uploaded, the hero falls back to a deep-plum gradient (graceful — no broken image, just less inviting). When you have the photo:
+
+- **Format:** JPG, landscape orientation
+- **Resolution:** 2400&times;1600 minimum (we'll downsize on commit)
+- **Crop:** wide, lots of negative space at the top so the headline sits comfortably; main subject in the lower third
+- **Light:** warm tones (worship lighting, golden hour) photograph best — the dark plum overlay we apply will work with anything
+
+Drop it via GitHub UI or `git push`; it picks up automatically.
+
 ## Logo
 
 The site currently uses a small CSS-drawn arch mark in the header (`.brand .mark` in `site/partials/header.html`) plus the wordmark "Jesus House SV" alongside it. When the real logo file is ready:

@@ -458,11 +458,13 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 .hero.dark .hero-arch { opacity: 0.18; }
 .hero.dark .hero-arch-2 { opacity: 0.28; }
 
-/* ----------------------- Hero v2 (Living Sanctuary) -----------------------
-   Centered editorial typography over a slowly-drifting plum + coral aurora,
-   with a large breathing arch silhouette anchoring the bottom. Animations
-   are continuous CSS keyframes — no JS — and disabled under
-   prefers-reduced-motion. */
+/* ----------------------- Hero v2/v3 (Living Sanctuary) -----------------------
+   Layered hero: real sanctuary photo at the back, dark plum overlay for
+   legibility, drifting plum/coral aurora over that, a breathing arch
+   silhouette anchoring the bottom, and centered editorial typography
+   on top. The bottom edge has a subtle angular cut (clip-path) so the
+   hero feels like a tilted slide rather than a flat block. All
+   animations are pure CSS keyframes; disabled under prefers-reduced-motion. */
 .hero.hero-v2 {
   min-height: 92vh;
   padding: 0;
@@ -471,15 +473,43 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background: var(--parchment);
+  background: var(--plum-900);  /* fallback if photo + gradient layers fail */
+  /* Angular bottom edge — right side ends 72px above the bottom, slope
+     down to bottom-left. Subtle, modern, suggests forward motion. */
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 72px), 0 100%);
 }
 .hero.hero-v2 .hero-arch,
 .hero.hero-v2 .hero-arch-2 { display: none; } /* legacy decoration off in v2 */
 
+/* Photo background. Layered: dark plum gradient overlay on top of the
+   photo so text stays legible regardless of what's in the image. If the
+   photo file is missing, the gradient still renders — graceful fallback. */
+.hero-v2 .hero-photo {
+  position: absolute; inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(180deg,
+      rgba(31, 3, 44, 0.62) 0%,
+      rgba(74, 25, 66, 0.55) 45%,
+      rgba(42, 14, 39, 0.78) 100%),
+    url('assets/photos/hero_sanctuary.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* Slow continuous zoom so the still photo feels alive */
+  animation: hero-kenburns 32s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes hero-kenburns {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.06); }
+}
+
 .hero-v2 .aurora {
   position: absolute; inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
+  mix-blend-mode: screen;
 }
 .hero-v2 .aurora-blob {
   position: absolute;
@@ -489,25 +519,26 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 }
 .hero-v2 .aurora-blob--plum {
   width: 70vw; height: 70vw; max-width: 1100px; max-height: 1100px;
-  background: radial-gradient(circle, rgba(180, 138, 169, 0.55), transparent 65%);
+  background: radial-gradient(circle, rgba(180, 138, 169, 0.32), transparent 65%);
   top: -25%; left: -18%;
   animation: hero-drift-1 28s ease-in-out infinite alternate;
 }
 .hero-v2 .aurora-blob--coral {
   width: 55vw; height: 55vw; max-width: 900px; max-height: 900px;
-  background: radial-gradient(circle, rgba(241, 166, 142, 0.45), transparent 65%);
+  background: radial-gradient(circle, rgba(241, 166, 142, 0.28), transparent 65%);
   bottom: -22%; right: -10%;
   animation: hero-drift-2 34s ease-in-out infinite alternate;
 }
 .hero-v2 .aurora-blob--soft {
   width: 40vw; height: 40vw; max-width: 700px; max-height: 700px;
-  background: radial-gradient(circle, rgba(239, 227, 236, 0.7), transparent 65%);
+  background: radial-gradient(circle, rgba(239, 227, 236, 0.22), transparent 65%);
   top: 15%; right: 5%;
   animation: hero-drift-3 22s ease-in-out infinite alternate;
 }
 
 /* Breathing arch silhouette anchoring the bottom — the brand motif as
-   atmosphere, not as a hard frame. */
+   atmosphere, not a hard frame. Now traced in parchment so it reads
+   over the dark photo. */
 .hero-v2 .hero-archlight {
   position: absolute;
   bottom: -12%;
@@ -515,59 +546,112 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   width: clamp(420px, 65vh, 880px);
   aspect-ratio: 4 / 5;
   background: linear-gradient(180deg,
-    rgba(74, 25, 66, 0.10) 0%,
-    rgba(74, 25, 66, 0.04) 60%,
+    rgba(250, 246, 240, 0.08) 0%,
+    rgba(250, 246, 240, 0.02) 60%,
     transparent 100%);
-  border: 1px solid rgba(74, 25, 66, 0.12);
+  border: 1px solid rgba(250, 246, 240, 0.20);
   border-bottom: none;
   border-radius: var(--arch-full);
   transform: translateX(-50%);
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
   animation: hero-breathe 9s ease-in-out infinite;
 }
 
 .hero-v2 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   text-align: center;
   max-width: 940px;
-  padding: 80px 32px;
+  padding: 80px 32px 120px; /* extra bottom for the angled clip */
+  color: var(--text-inverse);
 }
+.hero-v2 .hero-content .eyebrow { color: var(--coral-300); }
 .hero-v2 .hero-content h1.display {
   margin: 16px auto 20px;
   max-width: 14ch;
+  color: var(--text-inverse);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
 }
 .hero-v2 .hero-content .lede {
   margin: 0 auto 32px;
   max-width: 56ch;
+  color: rgba(250, 246, 240, 0.88);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
 }
 .hero-v2 .hero-content .btn-row { margin-bottom: 28px; }
 .hero-v2 .hero-content .meta {
-  color: var(--text-muted);
+  color: rgba(250, 246, 240, 0.65);
   font-size: 13px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 500;
 }
 
-/* Thin pulsing scroll cue */
+/* Outline-on-photo button — like .btn-outline but inverted for the
+   dark photo backdrop. Used for the secondary "Watch this Sunday" CTA. */
+.btn-outline-on-photo {
+  background: transparent;
+  color: var(--text-inverse);
+  border-color: rgba(250, 246, 240, 0.55);
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 999px;
+  text-decoration: none;
+  border: 1.5px solid rgba(250, 246, 240, 0.55);
+  transition: all 0.25s var(--ease-out);
+  min-height: 48px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.btn-outline-on-photo:hover {
+  background: rgba(250, 246, 240, 0.15);
+  border-color: var(--text-inverse);
+  color: var(--text-inverse);
+  transform: translateY(-1px);
+}
+
+/* Functional scroll-down cue. Anchor link with a thin vertical track
+   and a pulsing dash that drifts down. Hovers brighter, scales up. */
 .hero-v2 .scroll-cue {
   position: absolute;
-  bottom: 32px;
+  bottom: 96px; /* sit above the angled clip */
   left: 50%;
   transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: rgba(250, 246, 240, 0.70);
+  text-decoration: none;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+.hero-v2 .scroll-cue:hover { color: var(--text-inverse); transform: translateX(-50%) translateY(2px); }
+.hero-v2 .scroll-cue-line {
+  position: relative;
   width: 1px;
   height: 56px;
-  background: rgba(74, 25, 66, 0.20);
-  z-index: 2;
+  background: rgba(250, 246, 240, 0.25);
+  display: block;
   overflow: hidden;
 }
-.hero-v2 .scroll-cue span {
+.hero-v2 .scroll-cue-line::after {
+  content: '';
   position: absolute;
   top: 0; left: 0;
   width: 1px; height: 28px;
-  background: var(--plum-700);
+  background: var(--text-inverse);
   animation: hero-scroll-pulse 2.4s ease-in-out infinite;
 }
 
@@ -603,7 +687,8 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 @media (prefers-reduced-motion: reduce) {
   .hero-v2 .aurora-blob,
   .hero-v2 .hero-archlight,
-  .hero-v2 .scroll-cue span { animation: none !important; }
+  .hero-v2 .hero-photo,
+  .hero-v2 .scroll-cue-line::after { animation: none !important; }
 }
 
 /* ----------------------- Cards ----------------------- */

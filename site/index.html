@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=15" />
+<link rel="stylesheet" href="styles.css?v=16" />
 </head>
 <body data-page="home">
 
@@ -17,6 +17,10 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero hero-v2">
+  <!-- Sanctuary photo background. Falls back to the deep-plum gradient
+       if assets/photos/hero_sanctuary.jpg is missing. -->
+  <div class="hero-photo" aria-hidden="true"></div>
+
   <!-- Drifting aurora layer -->
   <div class="aurora" aria-hidden="true">
     <div class="aurora-blob aurora-blob--plum"></div>
@@ -33,16 +37,19 @@
     <p class="lede reveal">A vibrant, multicultural faith family in Silicon Valley where you can encounter God, find community, and discover purpose.</p>
     <div class="btn-row reveal" style="justify-content: center;">
       <a class="btn btn-primary" href="new.html" data-magnetic>Plan your visit <span class="arrow">&rarr;</span></a>
-      <a class="btn btn-outline" href="live.html">Watch this Sunday</a>
+      <a class="btn btn-outline-on-photo" href="live.html">Watch this Sunday</a>
     </div>
     <div class="meta reveal">474 Piercy Road &middot; San Jose, CA 95138</div>
   </div>
 
-  <div class="scroll-cue" aria-hidden="true"><span></span></div>
+  <a class="scroll-cue" href="#welcome" aria-label="Scroll to next section">
+    <span class="scroll-cue-line"></span>
+    <span class="scroll-cue-label">Scroll</span>
+  </a>
 </section>
 
 <!-- ============ WHO WE ARE ============ -->
-<section class="alt">
+<section class="alt" id="welcome">
   <div class="wrap">
     <div class="section-head reveal" style="margin: 0 auto 48px; text-align: center;">
       <div class="eyebrow">Who we are</div>
