@@ -729,7 +729,9 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   width: 100%;
   position: relative;
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  /* Soft drop-shadow so the arched portrait reads as a real frame
+     resting on parchment, not a flat decal. */
+  box-shadow: var(--shadow-md);
 }
 .photo-arch::before {
   content: '';
@@ -765,6 +767,30 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 }
 .photo-arch.has-image .label,
 .photo-arch.has-image::before { display: none; }
+
+/* Style guide arch-frame ("Portrait — Pastor bio" variant):
+   135° plum gradient as the matte, delicate 1.5px white pinstripe
+   ring inset 14px inside, photo sits 24px inset so the gradient
+   reads as a real picture-frame mat. */
+.photo-arch.has-image {
+  background: linear-gradient(135deg, #8c5a7d, var(--plum-600) 50%, #2a0e27);
+  border: none;
+}
+.photo-arch.has-image img {
+  inset: 24px;
+  width: calc(100% - 48px);
+  height: calc(100% - 48px);
+  border-radius: var(--arch-full);
+}
+.photo-arch.has-image::after {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border: 1.5px solid rgba(255, 255, 255, 0.30);
+  border-radius: var(--arch-full);
+  pointer-events: none;
+  z-index: 2;
+}
 
 .photo-rect {
   background: var(--plum-100);
