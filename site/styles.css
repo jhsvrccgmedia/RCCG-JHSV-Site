@@ -302,6 +302,39 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   transform: translateY(-1px);
 }
 
+/* Icon-only social button: the logo glyph IS the button.
+   No surrounding pill or circle; tap target preserved via padding. */
+.btn-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--plum-600);
+  transition: color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+.btn-social svg {
+  width: 26px;
+  height: 26px;
+  display: block;
+  transition: transform 0.3s var(--ease-out);
+}
+.btn-social:hover {
+  color: var(--plum-700);
+  transform: translateY(-2px);
+}
+.btn-social:hover svg {
+  transform: scale(1.06);
+}
+.btn-social:focus-visible {
+  outline: 2px solid var(--plum-600);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
 .btn-ghost-on-dark {
   background: transparent; color: var(--text-inverse); border-color: rgba(250,246,240,0.6);
 }
