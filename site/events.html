@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=13" />
+<link rel="stylesheet" href="styles.css?v=14" />
 </head>
 <body data-page="events">
 
@@ -108,17 +108,75 @@
   </div>
 </section>
 
-<!-- ============ UPCOMING (placeholder) ============ -->
+<!-- ============ UPCOMING ============ -->
 <section>
   <div class="wrap">
     <div class="section-head reveal">
       <div class="eyebrow">Upcoming</div>
       <h2 class="display">On the calendar.</h2>
-      <p class="lede">Specific dates appear here as they're announced. Subscribe to the newsletter and you'll never miss one.</p>
+      <p class="lede">Highlighted events for the months ahead. Subscribe to the newsletter and you&rsquo;ll never miss one.</p>
     </div>
-    <div class="notice reveal"><strong>Coming soon:</strong> upcoming-event detail cards with date, time, RSVP link, and add-to-calendar.</div>
+
+    <div class="grid c2 reveal" id="upcomingGrid">
+      <article class="upcoming-event">
+        <div class="event-date" aria-hidden="true">
+          <div class="month">May</div>
+          <div class="day">16</div>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">Saturday &middot; 9:00 AM to 4:00 PM</div>
+          <h3>Family Picnic</h3>
+          <p>One day in the park. Food, games, and friendships that last beyond Sunday.</p>
+          <a class="card-cta" href="#">Add to calendar</a>
+        </div>
+      </article>
+
+      <article class="upcoming-event">
+        <div class="event-date" aria-hidden="true">
+          <div class="month">Jun</div>
+          <div class="day">13</div>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">Saturday &middot; 9:00 AM to 1:00 PM</div>
+          <h3>Triumphant Women Annual Conference</h3>
+          <p>A flagship gathering for the women&rsquo;s ministry. Worship, teaching, intercession, and breakthrough.</p>
+          <a class="card-cta" href="#">Add to calendar</a>
+        </div>
+      </article>
+
+      <article class="upcoming-event">
+        <div class="event-date" aria-hidden="true">
+          <div class="month">Jul</div>
+          <div class="day">06</div>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">Mon to Fri &middot; 9:00 AM to 12:00 PM</div>
+          <h3>Summer Bible Camp for Children</h3>
+          <p>A week of Bible-centered fun for kids: songs, lessons, friendships. Registration opens late spring.</p>
+          <a class="card-cta" href="#">Add to calendar</a>
+        </div>
+      </article>
+
+      <article class="upcoming-event">
+        <div class="event-date" aria-hidden="true">
+          <div class="month">Aug</div>
+          <div class="day">16</div>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">Sunday &middot; 10:30 AM to 2:00 PM</div>
+          <h3>Church Anniversary</h3>
+          <p>Marking another year of God&rsquo;s faithfulness to Jesus House Silicon Valley.</p>
+          <a class="card-cta" href="#">Add to calendar</a>
+        </div>
+      </article>
+    </div>
+
+    <p class="reveal" style="text-align: center; margin-top: 28px; font-size: 13px; color: var(--text-muted);">
+      Live calendar feed coming soon. See <a href="../docs/PENDING.md">docs/PENDING.md</a> for setup notes.
+    </p>
+
     <div class="btn-row reveal" style="justify-content: center; margin-top: 32px;">
-      <a class="btn btn-primary" href="#newsletter" data-magnetic>Subscribe to updates <span class="arrow">→</span></a>
+      <a class="btn btn-primary" href="#newsletter" data-magnetic>Subscribe to updates <span class="arrow">&rarr;</span></a>
     </div>
   </div>
 </section>

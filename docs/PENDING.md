@@ -39,6 +39,39 @@ Two modules from `website-tools/cinematic-sites-agent-kit-master/cinematic-site-
 
 **Accordion Slider** (`accordion-slider.html`) for the About page Departments section. The 16 director roles are currently a flat grid; an accordion lets each panel expand on hover/click to show the lead and assistants. Solves the wall-of-names problem and rewards exploration.
 
+## Live Google Calendar feed (Events page "Upcoming" section)
+
+The 4 highlighted upcoming events on `/events` are currently hand-curated placeholders. To make them update automatically from the church's public Google Calendar (`rccgjhsv2013@gmail.com`):
+
+**Why we can't just fetch the ICS directly.** Google's ICS endpoint (`calendar.google.com/calendar/ical/.../public/basic.ics`) does not return CORS headers, so a browser fetch from the static site is blocked.
+
+**The clean path:** use the Google Calendar Data API. It supports CORS so the browser can fetch events directly with an API key restricted by HTTP referrer.
+
+**Setup steps:**
+
+1. In Google Cloud Console, create a project (or reuse the one you'll use for YouTube live detection).
+2. Enable the **Calendar API**.
+3. Create an **API key**. Under restrictions:
+   - **Application restrictions:** HTTP referrer. Add `https://rccgjhsv.org/*` and `https://*.vercel.app/*` (or whatever final domain).
+   - **API restrictions:** restrict to Calendar API only.
+4. Drop the key in `site/scripts.js` as a constant or pass via a script tag (`<script>window.JHSV_CAL_API_KEY = "..."</script>`).
+5. Add a fetcher that runs on the `/events` page only, calls:
+
+   ```
+   GET https://www.googleapis.com/calendar/v3/calendars/rccgjhsv2013%40gmail.com/events
+       ?key=API_KEY
+       &timeMin=NOW
+       &maxResults=4
+       &singleEvents=true
+       &orderBy=startTime
+   ```
+
+   parses the response, and replaces the contents of `#upcomingGrid` with rendered `.upcoming-event` cards.
+
+6. The same call returns `summary`, `description`, `start.dateTime`, `end.dateTime`, `location`, and `htmlLink` for each event. The "Add to calendar" link uses `htmlLink` (Google's add-to-calendar URL).
+
+**Cost:** Calendar API is free up to 1M queries/day. Cache the response in localStorage for ~10 min to be polite.
+
 ## Multi-app map picker (Get Directions)
 
 When the "Get Directions" button is tapped on iPhone, we'd like a small picker offering Google Maps, Apple Maps, and Waze.
