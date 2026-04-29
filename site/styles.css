@@ -217,6 +217,13 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   }
 }
 
+/* Override the topbar nav a color (Mid Stone) so the Watch Live pill
+   keeps its white text. Specificity 0,3,2 beats both .topbar nav a
+   (0,1,2) and .btn-watch (0,1,0). */
+.topbar nav a.btn-watch,
+.topbar nav a.btn-watch:hover,
+.topbar nav a.btn-watch:focus { color: #fff; }
+
 /* ----------------------- Buttons ----------------------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
@@ -642,45 +649,87 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   .stack-arch { aspect-ratio: 5 / 4; }
 }
 
-/* ----------------------- Service times cards ----------------------- */
-.service-card {
+/* ----------------------- Church card -----------------------
+   Lifted from brand-guidelines/RCCG_JHSV_Style_Guide_v3.html
+   "Cards & Containers" — the "This Sunday / When faith feels quiet"
+   pattern. Image area on top (plum gradient when no real photo),
+   body with eyebrow / title / time / desc / text link. */
+.church-card {
   background: var(--bg-card);
   border: 1px solid var(--border-soft);
   border-radius: 20px;
-  padding: 32px;
-  display: flex; flex-direction: column;
-  gap: 8px;
+  overflow: hidden;
   transition: transform 0.3s var(--ease-out),
               box-shadow 0.3s var(--ease-out),
               border-color 0.3s var(--ease-out);
+  display: flex; flex-direction: column;
 }
-.service-card:hover {
+.church-card:hover {
   transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
   border-color: var(--plum-300);
-  box-shadow: var(--shadow-md);
 }
-.service-card .day {
-  font-family: var(--sans);
-  font-size: 14px; font-weight: 600;
-  letter-spacing: 0.08em; text-transform: uppercase;
+.church-card .card-image {
+  aspect-ratio: 3 / 2;
+  background: linear-gradient(135deg, var(--plum-500), var(--plum-700));
+  position: relative;
+  overflow: hidden;
+}
+.church-card .card-image.coral {
+  background: linear-gradient(135deg, var(--coral-300), var(--coral-600));
+}
+.church-card .card-image::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(28, 10, 26, 0.4));
+}
+.church-card .card-body {
+  padding: 24px 28px 28px;
+  display: flex; flex-direction: column;
+  flex: 1;
+}
+.church-card .card-eyebrow {
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--coral-600);
+  margin-bottom: 8px;
 }
-.service-card .name {
-  font-family: var(--display);
-  font-size: 28px; line-height: 1.15;
+.church-card .card-title {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: -0.012em;
   color: var(--text-primary);
+  margin-bottom: 10px;
 }
-.service-card .time {
+.church-card .card-time {
   font-family: var(--sans);
   font-weight: 600; font-size: 17px;
   color: var(--plum-600);
-  margin-top: 4px;
+  margin-bottom: 8px;
 }
-.service-card .where {
-  font-size: 14px; color: var(--text-secondary);
-  margin-top: 6px;
+.church-card .card-desc {
+  font-size: 14.5px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: 16px;
 }
-.service-card .btn-row { margin-top: 20px; }
+.church-card .card-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--plum-600);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+}
+.church-card .card-link:hover { color: var(--coral-600); }
+.church-card .card-link::after {
+  content: '\2192';
+  transition: transform 0.25s var(--ease-out);
+}
+.church-card .card-link:hover::after { transform: translateX(4px); }
 
 /* ----------------------- CTA band -----------------------
    Atmospheric "light through stained glass" — coral light from one
