@@ -48,6 +48,12 @@
   function initUI() {
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // ---- Dynamic copyright year ----
+    var year = new Date().getFullYear();
+    document.querySelectorAll('[data-current-year]').forEach(function (el) {
+      el.textContent = year;
+    });
+
     // ---- Mobile nav toggle ----
     var topbar = document.querySelector('.topbar');
     var menuBtn = document.querySelector('.topbar .menu-btn');
