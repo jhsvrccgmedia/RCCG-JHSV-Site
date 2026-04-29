@@ -650,10 +650,10 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 }
 
 /* ----------------------- Church card -----------------------
-   Lifted from brand-guidelines/RCCG_JHSV_Style_Guide_v3.html
-   "Cards & Containers" — the "This Sunday / When faith feels quiet"
-   pattern. Image area on top (plum gradient when no real photo),
-   body with eyebrow / title / time / desc / text link. */
+   Per the style guide "Cards & Containers" section, the
+   "This Sunday / When faith feels quiet" pattern. Short fixed-height
+   picture band on top (so every card's image area is identical),
+   then body with eyebrow / title / time / desc / text link. */
 .church-card {
   background: var(--bg-card);
   border: 1px solid var(--border-soft);
@@ -662,7 +662,8 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   transition: transform 0.3s var(--ease-out),
               box-shadow 0.3s var(--ease-out),
               border-color 0.3s var(--ease-out);
-  display: flex; flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 .church-card:hover {
   transform: translateY(-2px);
@@ -670,10 +671,11 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   border-color: var(--plum-300);
 }
 .church-card .card-image {
-  aspect-ratio: 3 / 2;
+  height: 88px;
   background: linear-gradient(135deg, var(--plum-500), var(--plum-700));
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
 }
 .church-card .card-image.coral {
   background: linear-gradient(135deg, var(--coral-300), var(--coral-600));
@@ -681,52 +683,59 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 .church-card .card-image::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 60%, rgba(28, 10, 26, 0.4));
+  background: linear-gradient(180deg, transparent 40%, rgba(28, 10, 26, 0.35));
 }
 .church-card .card-body {
   padding: 24px 28px 28px;
-  display: flex; flex-direction: column;
   flex: 1;
 }
 .church-card .card-eyebrow {
-  font-size: 12px; font-weight: 600;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--coral-600);
-  margin-bottom: 8px;
-}
-.church-card .card-title {
-  font-family: var(--sans);
+  display: block;
+  font-size: 12px;
   font-weight: 600;
-  font-size: 22px;
-  line-height: 1.25;
-  letter-spacing: -0.012em;
-  color: var(--text-primary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--coral-600);
   margin-bottom: 10px;
 }
-.church-card .card-time {
+.church-card .card-title {
+  display: block;
   font-family: var(--sans);
-  font-weight: 600; font-size: 17px;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.church-card .card-time {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 17px;
   color: var(--plum-600);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .church-card .card-desc {
+  display: block;
   font-size: 14.5px;
   color: var(--text-secondary);
   line-height: 1.55;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 .church-card .card-link {
   font-size: 14px;
   font-weight: 600;
   color: var(--plum-600);
+  text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: auto;
 }
 .church-card .card-link:hover { color: var(--coral-600); }
 .church-card .card-link::after {
-  content: '\2192';
+  content: '→';
+  display: inline-block;
   transition: transform 0.25s var(--ease-out);
 }
 .church-card .card-link:hover::after { transform: translateX(4px); }
