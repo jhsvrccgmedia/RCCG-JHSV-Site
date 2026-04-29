@@ -850,6 +850,53 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   z-index: 2;
 }
 
+/* Editorial moment frame (style guide arch-frame.double):
+   plum gradient base + coral radial highlight from upper-left.
+   More dramatic than the standard Pastor-bio gradient. Used for
+   leadership portraits. Works with or without a real image. */
+.photo-arch.editorial,
+.photo-arch.has-image.editorial {
+  background:
+    radial-gradient(circle at 30% 20%, rgba(232, 93, 60, 0.35) 0%, transparent 45%),
+    linear-gradient(135deg, var(--plum-500), var(--plum-700) 60%, var(--plum-800));
+}
+.photo-arch.editorial::before { display: none; }
+.photo-arch.editorial::after {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border: 1.5px solid rgba(255, 255, 255, 0.30);
+  border-radius: var(--arch-full);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Leadership card socials — circular plum buttons with white official
+   icons. Hover lifts and warms to coral. Matches the site palette
+   rather than each platform's brand color. */
+.leader-socials {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 4px;
+}
+.leader-socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px; height: 38px;
+  border-radius: 999px;
+  background: var(--plum-600);
+  color: #fff;
+  transition: background 0.25s var(--ease-out),
+              transform 0.25s var(--ease-out);
+}
+.leader-socials a:hover {
+  background: var(--coral-500);
+  transform: translateY(-2px);
+}
+.leader-socials svg { width: 16px; height: 16px; display: block; }
+
 .photo-rect {
   background: var(--plum-100);
   border: 1px solid var(--border-soft);
