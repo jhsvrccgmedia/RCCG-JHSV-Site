@@ -704,11 +704,16 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   border-color: var(--plum-300);
 }
 .church-card .card-image {
-  height: 88px;
+  height: 168px;
+  margin: 20px 24px 0;
   background: linear-gradient(135deg, var(--plum-500), var(--plum-700));
+  border-radius: var(--arch-full);
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .church-card .card-image.coral {
   background: linear-gradient(135deg, var(--coral-300), var(--coral-600));
@@ -716,7 +721,23 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 .church-card .card-image::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 40%, rgba(28, 10, 26, 0.35));
+  background: radial-gradient(circle at 50% 28%, rgba(255,255,255,0.18), transparent 62%);
+  border-radius: var(--arch-full);
+  pointer-events: none;
+}
+.church-card .card-icon {
+  width: 64px;
+  height: 64px;
+  color: var(--parchment);
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 2px 4px rgba(28, 10, 26, 0.3));
+  transition: transform 0.4s var(--ease-out);
+}
+.church-card:hover .card-icon { transform: scale(1.06); }
+@media (max-width: 600px) {
+  .church-card .card-image { height: 148px; margin: 16px 18px 0; }
+  .church-card .card-icon { width: 56px; height: 56px; }
 }
 .church-card .card-body {
   padding: 24px 28px 28px;
