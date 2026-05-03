@@ -1034,7 +1034,7 @@ body[data-page="home"] section.alt#welcome {
   border: 1px solid var(--border-soft);
   border-radius: 20px;
   padding: 64px 40px;
-  min-height: 400px;
+  min-height: 380px;
   display: flex;
   flex-direction: column;
   justify-content: center;
