@@ -8,7 +8,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=42" />
+<link rel="stylesheet" href="styles.css?v=44" />
+
+<!--
+  Live Google Calendar feed for the "Upcoming" section.
+  Same config + key as /events. Maxed at 3 here (vs. 4 on /events).
+-->
+<script>
+  window.JHSV_CALENDAR = {
+    id:     "rccgjhsv2013@gmail.com",                  // public calendar id
+    apiKey: "AIzaSyAbqbFGmW3VbrykD4TjV-qVtMEbhso0o0U", // referrer-restricted: rccgjhsv.org, *.vercel.app, localhost
+    maxResults: 3
+  };
+</script>
 </head>
 <body data-page="home">
 
@@ -59,7 +71,7 @@
     <div class="section-head reveal" style="margin: 0 auto 48px; text-align: center;">
       <div class="eyebrow">Who we are</div>
       <h2 class="display">To know God and to make Him known.</h2>
-      <p class="lede" style="margin: 16px auto 0;">Our vision is to know God and to make Him known through His word and His power. Our mission is making heaven rejoice and transforming the earth, together, every Sunday, in San Jose.</p>
+      <p class="lede" style="margin: 16px auto 0;">Our vision is to know God and to make Him known through His word and His power. Our mission is making heaven rejoice and transforming the earth, together, in San Jose, across the Bay Area, and online.</p>
     </div>
     <div style="text-align: center;" class="reveal">
       <a class="btn btn-outline" href="about.html">Learn more about us <span class="arrow">→</span></a>
@@ -72,12 +84,12 @@
   <div class="wrap">
     <div class="section-head reveal">
       <div class="eyebrow">Join us this week</div>
-      <h2 class="display">Three rhythms. One family.</h2>
-      <p class="lede">Whether it's Sunday gathering, Wednesday study, or Monday prayer. There's a way to connect.</p>
+      <h2 class="display">Our Three Weekly Services</h2>
+      <p class="lede">We connect in-person on Sundays and host midweek services online &mdash; whether it&rsquo;s a Sunday gathering, Monday prayer, or Wednesday Bible study, there is a way to connect.</p>
     </div>
     <div class="grid c3 reveal">
       <div class="church-card">
-        <div class="card-image"><img src="assets/photos/service_sunday.jpg" alt="Sunday Hours of Transformation service" loading="lazy" /></div>
+        <div class="card-image"><img src="assets/photos/service_sunday.jpg" alt="Sunday Hours of Transformation service in the sanctuary" loading="lazy" /></div>
         <div class="card-body">
           <div class="card-eyebrow">Sunday</div>
           <div class="card-title">Hours of<br />Transformation</div>
@@ -87,22 +99,22 @@
         </div>
       </div>
       <div class="church-card">
-        <div class="card-image"><img src="assets/photos/service_monday.jpg" alt="Monday Prayer Line" loading="lazy" /></div>
+        <div class="card-image"><img src="assets/photos/service_monday.jpg" alt="Monday Prayer Line dial-in" loading="lazy" /></div>
         <div class="card-body">
           <div class="card-eyebrow">Monday</div>
           <div class="card-title">Prayer<br />Line</div>
           <div class="card-time">8:00 PM to 9:00 PM</div>
-          <div class="card-desc">Phone or online. Reach out for the dial-in.</div>
-          <a class="card-link" href="contact.html">Get the dial-in</a>
+          <div class="card-desc">A weekly call to pray together &mdash; intercession, agreement, and the family on the line.</div>
+          <button type="button" class="card-link card-link-button" data-prayer-modal aria-haspopup="dialog">Click below for dial-in information</button>
         </div>
       </div>
       <div class="church-card">
-        <div class="card-image"><img src="assets/photos/service_wednesday.jpg" alt="Wednesday Masterclass Bible Study" loading="lazy" /></div>
+        <div class="card-image"><img src="assets/photos/service_wednesday.jpg" alt="Wednesday Masterclass Bible Study online stream" loading="lazy" /></div>
         <div class="card-body">
           <div class="card-eyebrow">Wednesday</div>
           <div class="card-title">Masterclass<br />Bible Study</div>
           <div class="card-time">7:00 PM to 9:00 PM</div>
-          <div class="card-desc">In person and online. A weekly deep dive into Scripture.</div>
+          <div class="card-desc">Virtual for now. A weekly deep dive into Scripture, streamed online.</div>
           <a class="card-link" href="live.html">Watch online</a>
         </div>
       </div>
@@ -120,7 +132,7 @@
     <div class="spot-grid reveal" id="spotGridNextSteps">
       <div class="spot-card">
         <h3>Plan your first visit</h3>
-        <p>What to expect Sunday morning: service length, dress code, kids ministry, parking. We've thought of everything except your favorite seat.</p>
+        <p>What to expect Sunday morning: service length, dress code, Children&rsquo;s Ministry, parking. We&rsquo;ve thought of everything except your favorite seat.</p>
         <a class="card-cta" href="new.html">I'm new here</a>
       </div>
       <div class="spot-card">
@@ -130,43 +142,81 @@
       </div>
       <div class="spot-card">
         <h3>Find your people</h3>
-        <p>From children's church to the men's and women's ministries. The church is meant to be lived together, not alone.</p>
+        <p>From Children&rsquo;s Church to the Men&rsquo;s and Women&rsquo;s Ministries. The church is meant to be lived together, not alone.</p>
         <a class="card-cta" href="about.html">Meet the ministries</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ UPCOMING EVENTS ============ -->
+<!-- ============ UPCOMING EVENTS — live Google Calendar feed (shared widget) ============ -->
 <section>
   <div class="wrap">
     <div class="section-head reveal" style="display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; max-width: none;">
       <div>
         <div class="eyebrow">Upcoming</div>
-        <h2 class="display">What's happening.</h2>
+        <h2 class="display">What&rsquo;s happening.</h2>
       </div>
-      <a class="btn btn-outline" href="events.html">See all events <span class="arrow">→</span></a>
+      <a class="btn btn-outline" href="events.html">See all events <span class="arrow">&rarr;</span></a>
     </div>
-    <div class="grid c3 reveal">
-      <article class="card">
-        <div class="label">Conference</div>
-        <h3>He-Motion · She-Motion</h3>
-        <p>An annual gathering for the men and women of Jesus House. Worship, teaching, and time set apart from the noise.</p>
-        <a class="card-cta" href="events.html">Learn more</a>
+
+    <div class="grid c2 reveal" id="upcomingGrid">
+      <article class="upcoming-event"
+        data-event
+        data-event-title="Family Picnic"
+        data-event-start="2026-05-16T09:00:00-07:00"
+        data-event-end="2026-05-16T16:00:00-07:00"
+        data-event-location="474 Piercy Road, San Jose, CA 95138"
+        data-event-desc="One day in the park. Food, games, and friendships that last beyond Sunday.">
+        <div class="event-date" aria-hidden="true">
+          <div class="month">May</div>
+          <div class="day">16</div>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">Saturday &middot; 9:00 AM to 4:00 PM</div>
+          <h3>Family Picnic</h3>
+          <p>One day in the park. Food, games, and friendships that last beyond Sunday.</p>
+        </div>
       </article>
-      <article class="card">
-        <div class="label">Family</div>
-        <h3>Annual Family Picnic</h3>
-        <p>A summer day in the park: food, games, and faces you'll keep seeing for years.</p>
-        <a class="card-cta" href="events.html">Learn more</a>
+
+      <article class="upcoming-event"
+        data-event
+        data-event-title="Triumphant Women Annual Conference"
+        data-event-start="2026-06-13T09:00:00-07:00"
+        data-event-end="2026-06-13T13:00:00-07:00"
+        data-event-location="474 Piercy Road, San Jose, CA 95138"
+        data-event-desc="A flagship gathering for the Women's Ministry. Worship, teaching, intercession, and breakthrough.">
+        <div class="event-date" aria-hidden="true">
+          <div class="month">Jun</div>
+          <div class="day">13</div>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">Saturday &middot; 9:00 AM to 1:00 PM</div>
+          <h3>Triumphant Women Annual Conference</h3>
+          <p>A flagship gathering for the Women&rsquo;s Ministry. Worship, teaching, intercession, and breakthrough.</p>
+        </div>
       </article>
-      <article class="card">
-        <div class="label">Children</div>
-        <h3>Summer Bible Camp</h3>
-        <p>A week of Bible-centered fun for kids. Songs, lessons, friendships. Registration opens late spring.</p>
-        <a class="card-cta" href="events.html">Learn more</a>
+
+      <article class="upcoming-event"
+        data-event
+        data-event-title="Summer Bible Day Camp"
+        data-event-start="2026-07-06T09:00:00-07:00"
+        data-event-end="2026-07-06T15:00:00-07:00"
+        data-event-location="474 Piercy Road, San Jose, CA 95138"
+        data-event-desc="A day full of Bible-centered fun for kids, with songs, lessons, and friendships.">
+        <div class="event-date" aria-hidden="true">
+          <div class="month">Jul</div>
+          <div class="day">06</div>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">Monday &middot; 9:00 AM to 3:00 PM</div>
+          <h3>Summer Bible Day Camp</h3>
+          <p>A day full of Bible-centered fun for kids, with songs, lessons, and friendships.</p>
+        </div>
       </article>
     </div>
+
+    <p class="reveal" data-cal-status hidden style="text-align: center; margin-top: 28px; font-size: 13px; color: var(--text-muted);"></p>
   </div>
 </section>
 
@@ -204,9 +254,35 @@
   </div>
 </section>
 
+<!-- ============ PRAYER LINE MODAL (shared dial-in info) ============ -->
+<div class="prayer-overlay" id="prayerOverlay" role="dialog" aria-modal="true" aria-labelledby="prayerModalTitle" hidden>
+  <div class="prayer-detail">
+    <button class="prayer-close" type="button" data-close-prayer aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="prayer-eyebrow">Monday Prayer Line</div>
+    <h2 id="prayerModalTitle">Dial in. Pray together.</h2>
+    <p class="prayer-blurb">Mondays from 8:00 PM to 9:00 PM Pacific Time. Intercession, agreement, and the family on the line.</p>
+    <dl class="prayer-dialin">
+      <dt>Phone</dt>
+      <dd><a href="tel:+19257598930">(925) 759-8930</a></dd>
+      <dt>Access</dt>
+      <dd>Email <a href="mailto:info@rccgjhsv.org?subject=Prayer%20Line%20dial-in%20info">info@rccgjhsv.org</a> for the current dial-in number and access code.<!-- TODO: replace with verified conference dial-in + access code once the church confirms. --></dd>
+      <dt>When</dt>
+      <dd>Every Monday, 8:00 PM &ndash; 9:00 PM PT</dd>
+    </dl>
+    <div class="prayer-actions">
+      <a class="btn btn-primary" href="mailto:info@rccgjhsv.org?subject=Prayer%20Line%20dial-in%20info">Email for dial-in</a>
+      <button class="btn btn-outline" type="button" data-close-prayer>Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============ FOOTER ============ -->
 <div data-include="partials/footer.html"></div>
 
-<script src="scripts.js?v=14"></script>
+<script src="scripts.js?v=15"></script>
 </body>
 </html>

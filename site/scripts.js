@@ -225,12 +225,12 @@
           name: 'Community Life & Connections',
           blurb: 'Men, women, youth, teens, kids — the spaces where the family grows.',
           depts: [
-            { name: "Men's Ministry", lead: 'Tunde O.' },
-            { name: "Women's Ministry", lead: 'Pst. Yemisi A.' },
+            { name: "Men's Ministries", lead: 'Tunde O.' },
+            { name: "Women's Ministries", lead: 'Pst. Yemisi A.' },
             { name: 'Youth & Young Adult Ministry', lead: 'Boris T.' },
             { name: 'Youth Training & Mentorship', lead: 'Dami & Kathleen B.' },
             { name: 'Teen Ministry', lead: 'Toun O.' },
-            { name: 'Children Ministry', lead: 'Chioma A.' },
+            { name: "Children's Ministry", lead: 'Chioma A.' },
             { name: 'New Members Engagement & Integration', lead: null }
           ]
         },
@@ -281,7 +281,7 @@
           return '<li><span class="dept-name">' + escapeHtml(d.name) + '</span>' + leadHtml + '</li>';
         }).join('');
         if (detailContact) {
-          detailContact.href = 'mailto:rccgjhsv2013@gmail.com'
+          detailContact.href = 'mailto:info@rccgjhsv.org'
             + '?subject=' + encodeURIComponent('Ministry inquiry: ' + m.name);
         }
         ministryOverlay.hidden = false;
@@ -609,8 +609,69 @@
     // ---- Family ministries tabs (used on /new for Kids / Teens) ----
     initFamilyTabs();
 
-    // ---- Live Google Calendar feed (used on /events) ----
+    // ---- Live Google Calendar feed (used on /events and home Upcoming) ----
     initEventsPage();
+
+    // ---- Prayer Line modal (Monday Prayer dial-in info) ----
+    initPrayerModal();
+  }
+
+  // ---------------------------------------------------------------------
+  // Prayer Line modal — opens a shared dial-in info dialog from any
+  // [data-prayer-modal] trigger on the page. Mirrors the ministry
+  // overlay pattern from the About page, so styling, focus-trap, and
+  // ESC-to-close behavior stay consistent across both modals.
+  // ---------------------------------------------------------------------
+  function initPrayerModal() {
+    var overlay = document.getElementById('prayerOverlay');
+    if (!overlay) return;
+
+    var triggers = document.querySelectorAll('[data-prayer-modal]');
+    if (!triggers.length) return;
+
+    var lastFocused = null;
+
+    function open() {
+      lastFocused = document.activeElement;
+      overlay.hidden = false;
+      overlay.classList.add('open');
+      void overlay.offsetHeight;
+      overlay.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+      var closeBtn = overlay.querySelector('.prayer-close');
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function close() {
+      overlay.classList.remove('visible');
+      document.body.style.overflow = '';
+      setTimeout(function () {
+        overlay.classList.remove('open');
+        overlay.hidden = true;
+        if (lastFocused && typeof lastFocused.focus === 'function') {
+          lastFocused.focus();
+        }
+      }, 280);
+    }
+
+    triggers.forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        open();
+      });
+    });
+
+    overlay.querySelectorAll('[data-close-prayer]').forEach(function (btn) {
+      btn.addEventListener('click', close);
+    });
+
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !overlay.hidden) close();
+    });
   }
 
   // ---------------------------------------------------------------------
@@ -656,7 +717,7 @@
   // static fallback stays on screen. See docs/PENDING.md for setup.
   // ---------------------------------------------------------------------
   function initEventsPage() {
-    if (document.body.dataset.page !== 'events') return;
+    // Runs on any page that has #upcomingGrid (events page, home page, etc.).
     var grid = document.getElementById('upcomingGrid');
     if (!grid) return;
 
