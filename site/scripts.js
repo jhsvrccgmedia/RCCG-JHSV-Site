@@ -192,23 +192,18 @@
       window.addEventListener('resize', updateTopbar);
     }
 
-    // ---- Tabbed split-scroll (used on /new for Kids / Teens) ----
-    initSplitScroll();
+    // ---- Family ministries tabs (used on /new for Kids / Teens) ----
+    initFamilyTabs();
   }
 
   // ---------------------------------------------------------------------
-  // Tabbed split-scroll: tabs swap which panel is rendered. Within each
-  // panel, the section is 400vh tall; col-inner elements are translated
-  // in opposite directions on scroll so left frames slide up while right
-  // frames slide down. CSS un-pins the section below 820px and respects
-  // prefers-reduced-motion; this JS clears transforms in those modes.
+  // Tab switcher for the static Kids / Teens modules on /new.
+  // Click a .ss-tab to swap which .ss-panel is visible.
   // ---------------------------------------------------------------------
-  function initSplitScroll() {
+  function initFamilyTabs() {
     var tabs = document.querySelectorAll('.ss-tab');
     var panels = document.querySelectorAll('.ss-panel');
     if (!tabs.length || !panels.length) return;
-
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     function activate(name) {
       tabs.forEach(function (t) {
@@ -222,51 +217,10 @@
         if (on) { p.removeAttribute('hidden'); }
         else    { p.setAttribute('hidden', ''); }
       });
-      requestAnimationFrame(applyAll);
     }
 
     tabs.forEach(function (t) {
       t.addEventListener('click', function () { activate(t.dataset.panel); });
     });
-
-    function applyTo(panel) {
-      if (panel.hasAttribute('hidden')) return;
-      var section = panel.querySelector('.split-section');
-      if (!section) return;
-      var leftInner  = panel.querySelector('.split-col-images .split-col-inner');
-      var rightInner = panel.querySelector('.split-col-text   .split-col-inner');
-      if (!leftInner || !rightInner) return;
-
-      if (window.innerWidth <= 820 || reduced.matches) {
-        leftInner.style.transform = '';
-        rightInner.style.transform = '';
-        return;
-      }
-
-      var rect = section.getBoundingClientRect();
-      var totalScroll = section.offsetHeight - window.innerHeight;
-      if (totalScroll <= 0) return;
-      var progress = Math.max(0, Math.min(1, -rect.top / totalScroll));
-
-      var frames = parseInt(section.dataset.frames || '4', 10);
-      var travel = (frames - 1) * window.innerHeight;
-
-      // Left slides UP as progress increases.
-      // Right starts at -travel (last frame visible at top) and slides DOWN to 0.
-      leftInner.style.transform  = 'translateY(' + (-progress * travel) + 'px)';
-      rightInner.style.transform = 'translateY(' + ((progress - 1) * travel) + 'px)';
-    }
-
-    function applyAll() { panels.forEach(applyTo); }
-
-    var raf = null;
-    function onScroll() {
-      if (raf) return;
-      raf = requestAnimationFrame(function () { raf = null; applyAll(); });
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    applyAll();
   }
 })();
