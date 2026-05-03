@@ -347,13 +347,9 @@
     }
 
     function hydrateChannel(channelId, player, grid) {
-      var cacheKey = 'jhsv_yt_v2_' + channelId;
+      var cacheKey = 'jhsv_yt_v3_' + channelId;
       var cacheTtl = 60 * 60 * 1000; // 1 hour
       var rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + channelId;
-      var proxies = [
-        function (u) { return 'https://corsproxy.io/?' + encodeURIComponent(u); },
-        function (u) { return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); }
-      ];
 
       // Try fresh cache first.
       var fresh = readChannelCache(cacheKey, cacheTtl);
@@ -362,9 +358,8 @@
         return;
       }
 
-      tryProxies(proxies, rssUrl, 0)
-        .then(function (xml) {
-          var videos = parseYouTubeFeed(xml);
+      fetchChannelVideos(rssUrl)
+        .then(function (videos) {
           if (!videos.length) throw new Error('Empty feed');
           var keep = videos.slice(0, 5);
           try {
@@ -395,20 +390,72 @@
       return null;
     }
 
-    function tryProxies(proxies, url, idx) {
-      if (idx >= proxies.length) return Promise.reject(new Error('All proxies failed'));
-      return fetch(proxies[idx](url), { cache: 'no-cache' })
+    // Multi-strategy fetch:
+    //   1. api.rss2json.com -> purpose-built, ships JSON with CORS
+    //   2. api.allorigins.win/raw -> raw XML, longer-running proxy
+    //   3. api.codetabs.com/v1/proxy -> raw XML, second backup
+    // Returns a Promise<Array<Video>>. First successful strategy wins.
+    function fetchChannelVideos(rssUrl) {
+      return tryRss2Json(rssUrl)
+        .catch(function () {
+          return tryRawProxy(
+            'https://api.allorigins.win/raw?url=' + encodeURIComponent(rssUrl)
+          );
+        })
+        .catch(function () {
+          return tryRawProxy(
+            'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(rssUrl)
+          );
+        });
+    }
+
+    function tryRss2Json(rssUrl) {
+      var url = 'https://api.rss2json.com/v1/api.json?rss_url='
+        + encodeURIComponent(rssUrl);
+      return fetch(url, { cache: 'no-cache' })
         .then(function (res) {
-          if (!res.ok) throw new Error('HTTP ' + res.status);
+          if (!res.ok) throw new Error('rss2json HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function (json) {
+          if (!json || json.status !== 'ok' || !json.items || !json.items.length) {
+            throw new Error('rss2json bad response');
+          }
+          return json.items
+            .map(function (item) {
+              var videoId = '';
+              var linkMatch = (item.link || '').match(/[?&]v=([A-Za-z0-9_-]{11})/);
+              if (linkMatch) videoId = linkMatch[1];
+              if (!videoId) {
+                var guidMatch = (item.guid || '').match(/([A-Za-z0-9_-]{11})\s*$/);
+                if (guidMatch) videoId = guidMatch[1];
+              }
+              return {
+                id: videoId,
+                title: (item.title || 'Untitled').trim(),
+                published: item.pubDate || '',
+                thumbnail: videoId
+                  ? 'https://i.ytimg.com/vi/' + videoId + '/hqdefault.jpg'
+                  : (item.thumbnail || ''),
+                url: item.link || ('https://www.youtube.com/watch?v=' + videoId)
+              };
+            })
+            .filter(function (v) { return v.id; });
+        });
+    }
+
+    function tryRawProxy(proxyUrl) {
+      return fetch(proxyUrl, { cache: 'no-cache' })
+        .then(function (res) {
+          if (!res.ok) throw new Error('proxy HTTP ' + res.status);
           return res.text();
         })
         .then(function (text) {
           if (!text || text.indexOf('<entry') === -1) {
             throw new Error('Invalid RSS payload');
           }
-          return text;
-        })
-        .catch(function () { return tryProxies(proxies, url, idx + 1); });
+          return parseYouTubeFeed(text);
+        });
     }
 
     function applyChannelData(player, grid, videos) {
