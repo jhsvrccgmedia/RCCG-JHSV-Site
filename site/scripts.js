@@ -347,6 +347,123 @@
       }
     }
 
+    // ---- Recent broadcasts auto-pull (Live page) ----
+    // Pulls the channel's latest 3 uploads from YouTube's public RSS
+    // (https://www.youtube.com/feeds/videos.xml?channel_id=UC...) via
+    // a free CORS proxy so the static cards in HTML get replaced with
+    // the real thing. Result is cached in localStorage for an hour to
+    // keep the proxy load polite. Any failure leaves the static
+    // placeholder cards in place.
+    var broadcastGrid = document.getElementById('broadcastGrid');
+    if (broadcastGrid && broadcastGrid.dataset.ytChannel
+        && /^UC[A-Za-z0-9_-]{22}$/.test(broadcastGrid.dataset.ytChannel)) {
+      loadRecentBroadcasts(broadcastGrid);
+    }
+
+    function loadRecentBroadcasts(grid) {
+      var channelId = grid.dataset.ytChannel;
+      var cacheKey = 'jhsv_broadcasts_v1_' + channelId;
+      var cacheTtl = 60 * 60 * 1000; // 1 hour
+      var rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + channelId;
+      var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(rssUrl);
+
+      // Try fresh cache first.
+      try {
+        var cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+        if (cached && cached.videos && cached.videos.length
+            && Date.now() - cached.fetchedAt < cacheTtl) {
+          renderBroadcasts(grid, cached.videos);
+          return;
+        }
+      } catch (e) { /* ignore */ }
+
+      fetch(proxyUrl, { cache: 'no-cache' })
+        .then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.text();
+        })
+        .then(function (xml) {
+          var videos = parseYouTubeFeed(xml).slice(0, 3);
+          if (!videos.length) return;
+          try {
+            localStorage.setItem(cacheKey, JSON.stringify({
+              fetchedAt: Date.now(),
+              videos: videos
+            }));
+          } catch (e) { /* ignore quota errors */ }
+          renderBroadcasts(grid, videos);
+        })
+        .catch(function () {
+          // On failure, try a stale cache before giving up. If that's
+          // empty too, the static fallback cards in HTML stay visible.
+          try {
+            var stale = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+            if (stale && stale.videos && stale.videos.length) {
+              renderBroadcasts(grid, stale.videos);
+            }
+          } catch (e) { /* ignore */ }
+        });
+    }
+
+    function parseYouTubeFeed(xml) {
+      var doc = new DOMParser().parseFromString(xml, 'text/xml');
+      var entries = doc.getElementsByTagName('entry');
+      var ytNs = 'http://www.youtube.com/xml/schemas/2015';
+      var out = [];
+      for (var i = 0; i < entries.length; i++) {
+        var entry = entries[i];
+        var idEls = entry.getElementsByTagNameNS(ytNs, 'videoId');
+        var videoId = idEls.length ? (idEls[0].textContent || '').trim() : '';
+        if (!videoId) continue;
+        var titleEl = entry.getElementsByTagName('title')[0];
+        var publishedEl = entry.getElementsByTagName('published')[0];
+        out.push({
+          id: videoId,
+          title: titleEl ? (titleEl.textContent || '').trim() : 'Untitled',
+          published: publishedEl ? (publishedEl.textContent || '').trim() : '',
+          thumbnail: 'https://i.ytimg.com/vi/' + videoId + '/hqdefault.jpg',
+          url: 'https://www.youtube.com/watch?v=' + videoId
+        });
+      }
+      return out;
+    }
+
+    function formatBroadcastDate(iso) {
+      if (!iso) return '';
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return '';
+      var months = ['Jan','Feb','Mar','Apr','May','Jun',
+                    'Jul','Aug','Sep','Oct','Nov','Dec'];
+      return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+    }
+
+    function renderBroadcasts(grid, videos) {
+      function esc(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;',
+                   '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+      grid.innerHTML = videos.map(function (v) {
+        return ''
+          + '<a class="broadcast-card" href="' + esc(v.url) + '"'
+          + ' target="_blank" rel="noopener">'
+          +   '<div class="broadcast-thumb">'
+          +     '<img src="' + esc(v.thumbnail) + '"'
+          +     ' alt="' + esc(v.title) + '" loading="lazy" />'
+          +     '<span class="broadcast-play" aria-hidden="true">'
+          +       '<svg viewBox="0 0 24 24" fill="currentColor">'
+          +       '<path d="M8 5v14l11-7z"/></svg>'
+          +     '</span>'
+          +   '</div>'
+          +   '<div class="broadcast-meta">'
+          +     '<h3>' + esc(v.title) + '</h3>'
+          +     '<p>' + esc(formatBroadcastDate(v.published)) + '</p>'
+          +   '</div>'
+          + '</a>';
+      }).join('');
+    }
+
     // ---- Add-to-calendar popovers (Live page schedule cards) ----
     var calToggles = document.querySelectorAll('[data-cal-toggle]');
     if (calToggles.length) {

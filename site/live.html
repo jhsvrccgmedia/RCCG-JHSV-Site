@@ -174,7 +174,11 @@
       </div>
       <a class="btn btn-outline" href="https://www.youtube.com/@jesushousesiliconvalleysan6808/streams" target="_blank" rel="noopener">View all sermons <span class="arrow">↗</span></a>
     </div>
-    <div class="grid c3 reveal" id="broadcastGrid">
+    <!-- scripts.js fetches the channel's RSS through a CORS proxy and
+         replaces the placeholder cards below with the latest 3 uploads.
+         If the fetch fails (proxy down, network error), these stay
+         visible as a graceful fallback. -->
+    <div class="grid c3 reveal" id="broadcastGrid" data-yt-channel="UCvZLhedaDrY625uYKRDcrig">
       <a class="broadcast-card" href="https://www.youtube.com/@jesushousesiliconvalleysan6808/streams" target="_blank" rel="noopener">
         <div class="broadcast-thumb">
           <img src="assets/photos/service_sunday.jpg" alt="The Power of Hope in Trying Times" loading="lazy" />
@@ -231,6 +235,6 @@
 
 <div data-include="partials/footer.html"></div>
 
-<script src="scripts.js?v=11"></script>
+<script src="scripts.js?v=12"></script>
 </body>
 </html>
