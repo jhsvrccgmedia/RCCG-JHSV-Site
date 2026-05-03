@@ -248,6 +248,9 @@
 
     // ---- Family ministries tabs (used on /new for Kids / Teens) ----
     initFamilyTabs();
+
+    // ---- Live Google Calendar feed (used on /events) ----
+    initEventsPage();
   }
 
   // ---------------------------------------------------------------------
@@ -276,5 +279,255 @@
     tabs.forEach(function (t) {
       t.addEventListener('click', function () { activate(t.dataset.panel); });
     });
+  }
+
+  // ---------------------------------------------------------------------
+  // /events — Upcoming section
+  //
+  // 1. Static fallback cards (data-event-* attrs in HTML) get an
+  //    "Add to calendar" dropdown immediately so visitors can save any
+  //    of them to Google / Outlook / Apple Calendar even if the live
+  //    feed is missing or fails.
+  // 2. If window.JHSV_CALENDAR.{id, apiKey} are both filled in, we hit
+  //    the Google Calendar Data API v3, cache the result for 10 minutes
+  //    in localStorage, and replace the grid with the live cards.
+  //
+  // Failures (no config / network error / quota) are silent — the
+  // static fallback stays on screen. See docs/PENDING.md for setup.
+  // ---------------------------------------------------------------------
+  function initEventsPage() {
+    if (document.body.dataset.page !== 'events') return;
+    var grid = document.getElementById('upcomingGrid');
+    if (!grid) return;
+
+    enhanceStaticEvents(grid);
+
+    var cfg = window.JHSV_CALENDAR;
+    if (!cfg || !cfg.id || !cfg.apiKey) return;
+
+    fetchLiveEvents(cfg)
+      .then(function (events) {
+        if (events && events.length) renderLiveEvents(grid, events);
+      })
+      .catch(function (err) {
+        // Static fallback already on screen — log and move on.
+        if (window.console) console.warn('[events] calendar fetch failed; keeping static fallback:', err);
+      });
+  }
+
+  function enhanceStaticEvents(grid) {
+    var cards = grid.querySelectorAll('article.upcoming-event[data-event]');
+    cards.forEach(function (card) {
+      var ev = readEventFromCard(card);
+      var body = card.querySelector('.event-body');
+      if (body) body.insertAdjacentHTML('beforeend', renderAddToCalendar(ev));
+    });
+    bindCalendarToggles(grid);
+  }
+
+  function readEventFromCard(card) {
+    return {
+      title:       card.dataset.eventTitle || '',
+      description: card.dataset.eventDesc || '',
+      start:       card.dataset.eventStart || '',
+      end:         card.dataset.eventEnd || '',
+      location:    card.dataset.eventLocation || '',
+      isAllDay:    false
+    };
+  }
+
+  function fetchLiveEvents(cfg) {
+    var cacheKey = 'jhsv_cal_v1_' + cfg.id;
+    var cached = readCache(cacheKey, 10 * 60 * 1000);
+    if (cached) return Promise.resolve(cached);
+
+    var url = 'https://www.googleapis.com/calendar/v3/calendars/' +
+      encodeURIComponent(cfg.id) + '/events' +
+      '?key=' + encodeURIComponent(cfg.apiKey) +
+      '&timeMin=' + encodeURIComponent(new Date().toISOString()) +
+      '&maxResults=' + (cfg.maxResults || 4) +
+      '&singleEvents=true&orderBy=startTime';
+
+    return fetch(url)
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        var events = (data.items || []).map(normalizeApiEvent);
+        writeCache(cacheKey, events);
+        return events;
+      });
+  }
+
+  function normalizeApiEvent(ev) {
+    return {
+      title:       ev.summary || 'Event',
+      description: stripHtml(ev.description || ''),
+      start:       ev.start.dateTime || ev.start.date,
+      end:         ev.end.dateTime || ev.end.date,
+      location:    ev.location || '',
+      isAllDay:    !ev.start.dateTime
+    };
+  }
+
+  function renderLiveEvents(grid, events) {
+    grid.innerHTML = events.map(renderEventCard).join('');
+    bindCalendarToggles(grid);
+    grid.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+  }
+
+  function renderEventCard(ev) {
+    var TZ = 'America/Los_Angeles';
+    var start = new Date(ev.start);
+    var end   = new Date(ev.end);
+    var month = start.toLocaleString('en-US', { month: 'short',  timeZone: TZ });
+    var day   = start.toLocaleString('en-US', { day:   'numeric', timeZone: TZ });
+    var meta  = formatEventMeta(start, end, ev.isAllDay, TZ);
+
+    return [
+      '<article class="upcoming-event reveal in">',
+        '<div class="event-date" aria-hidden="true">',
+          '<div class="month">', escHtml(month), '</div>',
+          '<div class="day">', escHtml(day), '</div>',
+        '</div>',
+        '<div class="event-body">',
+          '<div class="event-meta">', escHtml(meta), '</div>',
+          '<h3>', escHtml(ev.title), '</h3>',
+          '<p>', escHtml(truncate(ev.description, 200)), '</p>',
+          renderAddToCalendar(ev),
+        '</div>',
+      '</article>'
+    ].join('');
+  }
+
+  function formatEventMeta(start, end, isAllDay, tz) {
+    var dow = start.toLocaleString('en-US', { weekday: 'long', timeZone: tz });
+    if (isAllDay) return dow + ' · All day';
+    var t = function (d) {
+      return d.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: tz });
+    };
+    return dow + ' · ' + t(start) + ' to ' + t(end);
+  }
+
+  function renderAddToCalendar(ev) {
+    var start = new Date(ev.start);
+    var end   = new Date(ev.end);
+    var fmtUtc = function (d) {
+      return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+    };
+    var startUtc = fmtUtc(start);
+    var endUtc   = fmtUtc(end);
+
+    var title = ev.title || 'Event';
+    var desc  = ev.description || '';
+    var loc   = ev.location || '';
+
+    var gUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+      '&text='     + encodeURIComponent(title) +
+      '&dates='    + startUtc + '/' + endUtc +
+      '&details='  + encodeURIComponent(desc) +
+      '&location=' + encodeURIComponent(loc);
+
+    var oUrl = 'https://outlook.live.com/calendar/0/deeplink/compose' +
+      '?path=%2Fcalendar%2Faction%2Fcompose' +
+      '&rru=addevent' +
+      '&subject='  + encodeURIComponent(title) +
+      '&startdt='  + encodeURIComponent(start.toISOString()) +
+      '&enddt='    + encodeURIComponent(end.toISOString()) +
+      '&location=' + encodeURIComponent(loc) +
+      '&body='     + encodeURIComponent(desc);
+
+    var icsHref = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(buildIcs(ev, start, end));
+    var slug = (title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'event') + '.ics';
+
+    return '<div class="cal-add">' +
+      '<button class="cal-cta" type="button" data-cal-toggle aria-expanded="false" aria-haspopup="true">' +
+        'Add to calendar' +
+        '<svg class="cal-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>' +
+      '</button>' +
+      '<div class="cal-menu" data-cal-menu role="menu" hidden>' +
+        '<a role="menuitem" target="_blank" rel="noopener" href="' + gUrl + '">Google Calendar</a>' +
+        '<a role="menuitem" target="_blank" rel="noopener" href="' + oUrl + '">Outlook</a>' +
+        '<a role="menuitem" href="' + icsHref + '" download="' + slug + '">Apple / iCal</a>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function buildIcs(ev, start, end) {
+    var fmtUtc = function (d) {
+      var iso = d.toISOString();
+      return iso.slice(0,4) + iso.slice(5,7) + iso.slice(8,10) + 'T' +
+             iso.slice(11,13) + iso.slice(14,16) + iso.slice(17,19) + 'Z';
+    };
+    var esc = function (s) {
+      return String(s).replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/[,;]/g, '\\$&');
+    };
+    var uid = 'jhsv-' + Date.now() + '-' + Math.random().toString(36).slice(2,8) + '@jesushousesv.org';
+    var lines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Jesus House SV//EN',
+      'CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT',
+      'UID:' + uid,
+      'DTSTAMP:' + fmtUtc(new Date()),
+      'DTSTART:' + fmtUtc(start),
+      'DTEND:'   + fmtUtc(end),
+      'SUMMARY:' + esc(ev.title || 'Event')
+    ];
+    if (ev.description) lines.push('DESCRIPTION:' + esc(ev.description));
+    if (ev.location)    lines.push('LOCATION:'    + esc(ev.location));
+    lines.push('END:VEVENT', 'END:VCALENDAR');
+    return lines.join('\r\n');
+  }
+
+  function bindCalendarToggles(scope) {
+    var toggles = scope.querySelectorAll('[data-cal-toggle]');
+    toggles.forEach(function (btn) {
+      if (btn.dataset.calBound === '1') return;
+      btn.dataset.calBound = '1';
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var menu = btn.parentElement.querySelector('[data-cal-menu]');
+        if (!menu) return;
+        var willOpen = menu.hidden;
+        document.querySelectorAll('[data-cal-menu]').forEach(function (m) { m.hidden = true; });
+        document.querySelectorAll('[data-cal-toggle]').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
+        if (willOpen) {
+          menu.hidden = false;
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  }
+
+  // ---- Tiny helpers (scoped to this IIFE) ----
+  function escHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function stripHtml(s) {
+    var div = document.createElement('div');
+    div.innerHTML = s;
+    return (div.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+  function truncate(s, n) {
+    s = String(s || '');
+    if (s.length <= n) return s;
+    return s.slice(0, n).replace(/\s+\S*$/, '') + '…';
+  }
+  function readCache(key, ttlMs) {
+    try {
+      var raw = localStorage.getItem(key);
+      if (!raw) return null;
+      var entry = JSON.parse(raw);
+      if (Date.now() - entry.t > ttlMs) return null;
+      return entry.v;
+    } catch (_) { return null; }
+  }
+  function writeCache(key, value) {
+    try { localStorage.setItem(key, JSON.stringify({ t: Date.now(), v: value })); } catch (_) {}
   }
 })();

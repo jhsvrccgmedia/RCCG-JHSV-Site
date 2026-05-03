@@ -56,7 +56,9 @@ Two modules from `website-tools/cinematic-sites-agent-kit-master/cinematic-site-
 
 ## Live Google Calendar feed (Events page "Upcoming" section)
 
-The 4 highlighted upcoming events on `/events` are currently hand-curated placeholders. To make them update automatically from the church's public Google Calendar (`rccgjhsv2013@gmail.com`):
+**Status (May 2026):** the client-side fetcher, renderer, and multi-format Add-to-calendar dropdown (Google / Outlook / Apple) are wired up in `site/scripts.js` (`initEventsPage`). The four hardcoded fallback events on `/events` already have functional Add-to-calendar dropdowns. To flip from static fallback to live data, fill in `window.JHSV_CALENDAR.id` and `window.JHSV_CALENDAR.apiKey` at the top of `site/events.html`. The existing API setup notes below still apply.
+
+To make events update automatically from the church's public Google Calendar:
 
 **Why we can't just fetch the ICS directly.** Google's ICS endpoint (`calendar.google.com/calendar/ical/.../public/basic.ics`) does not return CORS headers, so a browser fetch from the static site is blocked.
 

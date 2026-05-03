@@ -1967,6 +1967,37 @@ footer.site-footer .nl-form button {
 }
 .upcoming-event .card-cta:hover { color: var(--coral-600); }
 .upcoming-event .card-cta:hover::after { transform: translateX(4px); }
+
+/* Add-to-calendar trigger inside an .upcoming-event. Visually matches
+   .card-cta but with a chevron instead of an arrow, since it opens
+   a Google / Outlook / Apple choice menu rather than navigating away. */
+.upcoming-event .cal-add { display: inline-block; position: relative; }
+.upcoming-event .cal-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: -0.005em;
+  color: var(--plum-600);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s var(--ease-out);
+}
+.upcoming-event .cal-cta:hover { color: var(--coral-600); }
+.upcoming-event .cal-cta:focus-visible {
+  outline: 2px solid var(--plum-600);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.upcoming-event .cal-cta .cal-chev {
+  width: 10px; height: 10px;
+  transition: transform 0.25s var(--ease-out);
+}
+.upcoming-event .cal-cta[aria-expanded="true"] .cal-chev { transform: rotate(180deg); }
 @media (max-width: 600px) {
   .upcoming-event { padding: 20px; gap: 18px; }
   .upcoming-event .event-date { width: 64px; padding: 12px 4px 14px; }
