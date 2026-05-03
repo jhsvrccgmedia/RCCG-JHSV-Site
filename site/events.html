@@ -8,7 +8,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=42" />
+<link rel="stylesheet" href="styles.css?v=43" />
+
+<!--
+  Live Google Calendar feed for the "Upcoming" section.
+  See docs/PENDING.md ("Live Google Calendar feed") for setup steps.
+-->
+<script>
+  window.JHSV_CALENDAR = {
+    id:     "rccgjhsv2013@gmail.com",                  // public calendar id
+    apiKey: "AIzaSyAbqbFGmW3VbrykD4TjV-qVtMEbhso0o0U", // referrer-restricted: rccgjhsv.org, *.vercel.app, localhost
+    maxResults: 4
+  };
+</script>
 </head>
 <body data-page="events">
 
@@ -73,41 +85,6 @@
   </div>
 </section>
 
-<!-- ============ YEARLY PROGRAM ============ -->
-<section>
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Yearly program</div>
-      <h2 class="display">The year, in gatherings.</h2>
-      <p class="lede">These return every year. Save the dates as they're announced. Most fill up fast.</p>
-    </div>
-    <div class="spot-grid reveal">
-      <div class="spot-card"><div class="label">Date TBA</div><h3>He-Motion · She-Motion Conference</h3><p>An annual conference for the men and women of Jesus House. Worship, teaching, and connection.</p></div>
-      <div class="spot-card"><div class="label">Date TBA</div><h3>Triumphant Women Annual Conference</h3><p>A flagship gathering for the women's ministry. Guest speakers, intercession, and breakthrough.</p></div>
-      <div class="spot-card"><div class="label">Date TBA</div><h3>Community Outreach</h3><p>Serving the wider Bay Area in tangible ways: food, prayer, presence.</p></div>
-      <div class="spot-card"><div class="label">Date TBA</div><h3>Family Picnic</h3><p>One day in the park: food, games, friendships that last beyond Sunday.</p></div>
-      <div class="spot-card"><div class="label">Date TBA</div><h3>Annual Prophetic Solution — Patmos</h3><p>A retreat for prophetic encounter and prayer.</p></div>
-      <div class="spot-card"><div class="label">Date TBA</div><h3>Maintain Your Steadfastness</h3><p>An annual emphasis on persevering in the faith.</p></div>
-      <div class="spot-card"><div class="label">Date TBA</div><h3>PMSEC</h3><p>Pastor's annual seminar for ministers and serving leaders.</p></div>
-      <div class="spot-card"><div class="label">Date TBA</div><h3>Breakfast Women's Conference</h3><p>A morning of teaching, fellowship, and breakfast. Together.</p></div>
-      <div class="spot-card"><div class="label">Date TBA</div><h3>Summer Bible Camp for Children</h3><p>A week of Bible-centered fun for kids. Songs, lessons, friendships.</p></div>
-      <div class="spot-card"><div class="label">Date TBA</div><h3>Church Anniversary</h3><p>Marking another year of God's faithfulness to Jesus House Silicon Valley.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ QUARTERLY ============ -->
-<section class="alt">
-  <div class="wrap" style="max-width: 760px; text-align: center;">
-    <div class="reveal">
-      <div class="eyebrow">Quarterly</div>
-      <h2 class="display">LRPM class.</h2>
-      <p class="lede" style="margin: 16px auto 28px;">A foundational class for those stepping into deeper commitment in the church. Offered four times a year.</p>
-      <a class="btn btn-outline" href="contact.html">Get the next dates <span class="arrow">→</span></a>
-    </div>
-  </div>
-</section>
-
 <!-- ============ UPCOMING ============ -->
 <section>
   <div class="wrap">
@@ -118,7 +95,13 @@
     </div>
 
     <div class="grid c2 reveal" id="upcomingGrid">
-      <article class="upcoming-event">
+      <article class="upcoming-event"
+        data-event
+        data-event-title="Family Picnic"
+        data-event-start="2026-05-16T09:00:00-07:00"
+        data-event-end="2026-05-16T16:00:00-07:00"
+        data-event-location="474 Piercy Road, San Jose, CA 95138"
+        data-event-desc="One day in the park. Food, games, and friendships that last beyond Sunday.">
         <div class="event-date" aria-hidden="true">
           <div class="month">May</div>
           <div class="day">16</div>
@@ -127,11 +110,16 @@
           <div class="event-meta">Saturday &middot; 9:00 AM to 4:00 PM</div>
           <h3>Family Picnic</h3>
           <p>One day in the park. Food, games, and friendships that last beyond Sunday.</p>
-          <a class="card-cta" href="#">Add to calendar</a>
         </div>
       </article>
 
-      <article class="upcoming-event">
+      <article class="upcoming-event"
+        data-event
+        data-event-title="Triumphant Women Annual Conference"
+        data-event-start="2026-06-13T09:00:00-07:00"
+        data-event-end="2026-06-13T13:00:00-07:00"
+        data-event-location="474 Piercy Road, San Jose, CA 95138"
+        data-event-desc="A flagship gathering for the women's ministry. Worship, teaching, intercession, and breakthrough.">
         <div class="event-date" aria-hidden="true">
           <div class="month">Jun</div>
           <div class="day">13</div>
@@ -140,11 +128,16 @@
           <div class="event-meta">Saturday &middot; 9:00 AM to 1:00 PM</div>
           <h3>Triumphant Women Annual Conference</h3>
           <p>A flagship gathering for the women&rsquo;s ministry. Worship, teaching, intercession, and breakthrough.</p>
-          <a class="card-cta" href="#">Add to calendar</a>
         </div>
       </article>
 
-      <article class="upcoming-event">
+      <article class="upcoming-event"
+        data-event
+        data-event-title="Summer Bible Camp for Children"
+        data-event-start="2026-07-06T09:00:00-07:00"
+        data-event-end="2026-07-06T12:00:00-07:00"
+        data-event-location="474 Piercy Road, San Jose, CA 95138"
+        data-event-desc="A week of Bible-centered fun for kids: songs, lessons, friendships. Registration opens late spring. Runs Monday through Friday.">
         <div class="event-date" aria-hidden="true">
           <div class="month">Jul</div>
           <div class="day">06</div>
@@ -153,11 +146,16 @@
           <div class="event-meta">Mon to Fri &middot; 9:00 AM to 12:00 PM</div>
           <h3>Summer Bible Camp for Children</h3>
           <p>A week of Bible-centered fun for kids: songs, lessons, friendships. Registration opens late spring.</p>
-          <a class="card-cta" href="#">Add to calendar</a>
         </div>
       </article>
 
-      <article class="upcoming-event">
+      <article class="upcoming-event"
+        data-event
+        data-event-title="Church Anniversary"
+        data-event-start="2026-08-16T10:30:00-07:00"
+        data-event-end="2026-08-16T14:00:00-07:00"
+        data-event-location="474 Piercy Road, San Jose, CA 95138"
+        data-event-desc="Marking another year of God's faithfulness to Jesus House Silicon Valley.">
         <div class="event-date" aria-hidden="true">
           <div class="month">Aug</div>
           <div class="day">16</div>
@@ -166,17 +164,64 @@
           <div class="event-meta">Sunday &middot; 10:30 AM to 2:00 PM</div>
           <h3>Church Anniversary</h3>
           <p>Marking another year of God&rsquo;s faithfulness to Jesus House Silicon Valley.</p>
-          <a class="card-cta" href="#">Add to calendar</a>
         </div>
       </article>
     </div>
 
-    <p class="reveal" style="text-align: center; margin-top: 28px; font-size: 13px; color: var(--text-muted);">
-      Live calendar feed coming soon. See <a href="../docs/PENDING.md">docs/PENDING.md</a> for setup notes.
-    </p>
+    <p class="reveal" data-cal-status hidden style="text-align: center; margin-top: 28px; font-size: 13px; color: var(--text-muted);"></p>
 
     <div class="btn-row reveal" style="justify-content: center; margin-top: 32px;">
       <a class="btn btn-primary" href="#newsletter" data-magnetic>Subscribe to updates <span class="arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ YEARLY CALENDAR ============ -->
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Yearly calendar</div>
+      <h2 class="display">The year, in gatherings.</h2>
+      <p class="lede">Six gatherings that return every year, in the order they fall on the calendar. Save the dates as they&rsquo;re announced &mdash; most fill up fast.</p>
+    </div>
+    <div class="spot-grid reveal">
+      <div class="spot-card"><div class="label">Feb &ndash; Mar</div><h3>He-Motion &middot; She-Motion Conference</h3><p>An early-spring conference for the men and women of Jesus House. Worship, teaching, and connection.</p></div>
+      <div class="spot-card"><div class="label">May</div><h3>Church Anniversary</h3><p>Marking another year of God&rsquo;s faithfulness to Jesus House Silicon Valley.</p></div>
+      <div class="spot-card"><div class="label">May</div><h3>Community Outreach</h3><p>Serving the wider Bay Area in tangible ways: food, prayer, and presence.</p></div>
+      <div class="spot-card"><div class="label">July</div><h3>Summer Bible Day Camp</h3><p>A week of Bible-centered fun for kids &mdash; songs, lessons, and friendships. Day camp; registration opens late spring.</p></div>
+      <div class="spot-card"><div class="label">Jul &ndash; Aug</div><h3>Family Picnic</h3><p>One day in the park: food, games, and friendships that last beyond Sunday.</p></div>
+      <div class="spot-card"><div class="label">August</div><h3>Triumphant Women Annual Conference</h3><p>A flagship gathering for the women&rsquo;s ministry. Guest speakers, intercession, and breakthrough.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLASSES ============ -->
+<section id="classes">
+  <div class="wrap">
+    <div class="section-head reveal" style="text-align: center; margin: 0 auto 40px; max-width: 720px;">
+      <div class="eyebrow">Grow with us</div>
+      <h2 class="display">Classes &amp; training.</h2>
+      <p class="lede" style="margin: 16px auto 0;">Foundational courses for stepping into deeper commitment, baptism, or service in the body.</p>
+    </div>
+    <div class="grid c3 reveal">
+      <div class="card" style="padding: 36px;">
+        <div class="label">LRPM</div>
+        <h3 style="font-family: var(--display); font-size: 26px; line-height: 1.15; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 12px;">Leadership, Renewal &amp; Personal Ministry</h3>
+        <p>A four-times-a-year foundational class for those stepping into deeper commitment, taking responsibility, and learning to lead.</p>
+      </div>
+      <div class="card" style="padding: 36px;">
+        <div class="label">Baptism</div>
+        <h3 style="font-family: var(--display); font-size: 26px; line-height: 1.15; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 12px;">Faith Foundations</h3>
+        <p>For anyone preparing for water baptism. The basics of the faith &mdash; who Jesus is, what salvation means, and why baptism matters.</p>
+      </div>
+      <div class="card" style="padding: 36px;">
+        <div class="label">Serve</div>
+        <h3 style="font-family: var(--display); font-size: 26px; line-height: 1.15; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 12px;">Workers-in-Training</h3>
+        <p>For those called to serve on a ministry team. Protocol, music, media, ushering, kids&rsquo; church, and more.</p>
+      </div>
+    </div>
+    <div class="btn-row reveal" style="justify-content: center; margin-top: 32px;">
+      <a class="btn btn-outline" href="#newsletter">Express your interest <span class="arrow">&rarr;</span></a>
     </div>
   </div>
 </section>
