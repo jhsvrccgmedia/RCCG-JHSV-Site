@@ -118,11 +118,18 @@
     }
 
     // ---- Sticky stack ----
+    // Picks the card whose vertical center is closest to a tracking line
+    // 42% down the viewport. Recomputed on scroll/resize. This avoids the
+    // intersection-threshold flakiness where multiple cards could be
+    // partially visible and the "winner" depended on entry order.
     var stack = document.querySelector('[data-stack]');
     if (stack) {
-      var cards = stack.querySelectorAll('.stack-card');
+      var cards = Array.prototype.slice.call(stack.querySelectorAll('.stack-card'));
       var states = stack.querySelectorAll('.stack-state');
+      var activeFeature = null;
       function activate(num) {
+        if (num === activeFeature) return;
+        activeFeature = num;
         cards.forEach(function (c) {
           c.classList.toggle('active', c.dataset.feature === num);
         });
@@ -130,19 +137,34 @@
           s.classList.toggle('active', s.dataset.state === num);
         });
       }
-      if ('IntersectionObserver' in window) {
-        var stackIO = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              activate(entry.target.dataset.feature);
-            }
-          });
-        }, { threshold: 0.6 });
-        cards.forEach(function (c) { stackIO.observe(c); });
-      } else {
-        cards.forEach(function (c) { c.classList.add('active'); });
-        states.forEach(function (s) { s.classList.add('active'); });
+      function pickActive() {
+        var trackY = window.innerHeight * 0.42;
+        var best = null, bestDist = Infinity;
+        cards.forEach(function (c) {
+          var rect = c.getBoundingClientRect();
+          // Skip cards completely off-screen
+          if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+          var cardCenter = rect.top + rect.height / 2;
+          var dist = Math.abs(cardCenter - trackY);
+          if (dist < bestDist) {
+            bestDist = dist;
+            best = c.dataset.feature;
+          }
+        });
+        if (best) activate(best);
       }
+      var stackTicking = false;
+      function onStackScroll() {
+        if (stackTicking) return;
+        stackTicking = true;
+        window.requestAnimationFrame(function () {
+          pickActive();
+          stackTicking = false;
+        });
+      }
+      window.addEventListener('scroll', onStackScroll, { passive: true });
+      window.addEventListener('resize', pickActive);
+      pickActive();
     }
 
     // ---- Newsletter / form stub ----
