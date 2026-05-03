@@ -56,7 +56,31 @@ Two modules from `website-tools/cinematic-sites-agent-kit-master/cinematic-site-
 
 ## Live Google Calendar feed (Events page "Upcoming" section)
 
-**Status (May 2026):** the client-side fetcher, renderer, and multi-format Add-to-calendar dropdown (Google / Outlook / Apple) are wired up in `site/scripts.js` (`initEventsPage`). The four hardcoded fallback events on `/events` already have functional Add-to-calendar dropdowns. To flip from static fallback to live data, fill in `window.JHSV_CALENDAR.id` and `window.JHSV_CALENDAR.apiKey` at the top of `site/events.html`. The existing API setup notes below still apply.
+**Status (May 2026):** Live. Wired to the church's public Google Calendar (`rccgjhsv2013@gmail.com`) via the Calendar API v3 in `site/scripts.js` (`initEventsPage`). The four upcoming-event cards on `/events` now render from live data, refreshed every 10 minutes via `localStorage` cache. Each card has a working Add-to-calendar dropdown (Google / Outlook / Apple-iCal). All-day events are handled via `VALUE=DATE` in ICS and `allday=true` in Outlook deep-links.
+
+### Filter logic (current, May 2026)
+
+The fetcher requests up to 25 events from the API with `singleEvents=true`, then drops any item that carries a `recurringEventId` — i.e. instances of recurring weekly services (Sunday Service, Wednesday Bible Study, etc.). Only one-off / special events make it into the Upcoming grid. If the calendar has no special events at all, the static fallback (Family Picnic, Triumphant Women, Summer Camp, Anniversary) stays on screen.
+
+### Improvement to make later: dedicated "Special Events" calendar
+
+The current setup mixes weekly services and special events on one calendar (`rccgjhsv2013@gmail.com`) and filters services out client-side. That works, but the cleaner long-term shape is:
+
+1. Create a second public Google Calendar in the JHSV account, named something like **"JHSV Events"** or **"JHSV — Save the Dates"**.
+2. Put only one-off events on it (conferences, picnics, anniversaries, outreach days).
+3. Keep weekly services on the original calendar untouched.
+4. Update `window.JHSV_CALENDAR.id` in `site/events.html` to the new calendar's ID.
+5. Drop the `recurringEventId` filter in `fetchLiveEvents` — no longer needed.
+
+Why bother:
+
+- Removes the silent-empty failure mode where misfiling an event as recurring makes it disappear from the site.
+- Lets us show **both** feeds cleanly later if we want — recurring on a "This week" panel, special events on "Save the date".
+- Makes calendar admin clearer for whoever's maintaining content.
+
+This is non-urgent — today's filter is correct and stable. Pick it up when content ops grow past one calendar's worth of detail.
+
+### Original API setup notes
 
 To make events update automatically from the church's public Google Calendar:
 

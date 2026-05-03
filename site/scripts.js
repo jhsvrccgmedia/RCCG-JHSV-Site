@@ -341,11 +341,17 @@
     var cached = readCache(cacheKey, 10 * 60 * 1000);
     if (cached) return Promise.resolve(cached);
 
+    var max = cfg.maxResults || 4;
+    // Pull a wider window from the API so we have headroom after filtering
+    // out recurring weekly services (Sunday Service, Wednesday Bible Study,
+    // etc.). Special one-off events float to the top by date order.
+    var serverMax = Math.max(25, max * 6);
+
     var url = 'https://www.googleapis.com/calendar/v3/calendars/' +
       encodeURIComponent(cfg.id) + '/events' +
       '?key=' + encodeURIComponent(cfg.apiKey) +
       '&timeMin=' + encodeURIComponent(new Date().toISOString()) +
-      '&maxResults=' + (cfg.maxResults || 4) +
+      '&maxResults=' + serverMax +
       '&singleEvents=true&orderBy=startTime';
 
     return fetch(url)
@@ -354,7 +360,15 @@
         return res.json();
       })
       .then(function (data) {
-        var events = (data.items || []).map(normalizeApiEvent);
+        // Drop instances of recurring events. Each instance carries a
+        // recurringEventId pointing back to its parent series; one-off
+        // events don't. See docs/PENDING.md "Live Google Calendar feed"
+        // for the long-term plan to use a separate special-events calendar
+        // and remove this filter.
+        var oneOffs = (data.items || []).filter(function (ev) {
+          return !ev.recurringEventId;
+        });
+        var events = oneOffs.slice(0, max).map(normalizeApiEvent);
         writeCache(cacheKey, events);
         return events;
       });
@@ -377,13 +391,32 @@
     grid.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
   }
 
+  // Parse a YYYY-MM-DD all-day date as local-noon (avoids the
+  // common UTC-midnight-then-shift-back-a-day display bug).
+  function parseLocalDate(dateStr) {
+    var p = String(dateStr).split('-');
+    return new Date(+p[0], +p[1] - 1, +p[2], 12, 0, 0, 0);
+  }
+
   function renderEventCard(ev) {
     var TZ = 'America/Los_Angeles';
-    var start = new Date(ev.start);
-    var end   = new Date(ev.end);
-    var month = start.toLocaleString('en-US', { month: 'short',  timeZone: TZ });
-    var day   = start.toLocaleString('en-US', { day:   'numeric', timeZone: TZ });
-    var meta  = formatEventMeta(start, end, ev.isAllDay, TZ);
+    var month, day, meta;
+
+    if (ev.isAllDay) {
+      var d = parseLocalDate(ev.start);
+      month = d.toLocaleString('en-US', { month: 'short' });
+      day   = String(d.getDate());
+      meta  = d.toLocaleString('en-US', { weekday: 'long' }) + ' · All day';
+    } else {
+      var start = new Date(ev.start);
+      var end   = new Date(ev.end);
+      month = start.toLocaleString('en-US', { month: 'short',  timeZone: TZ });
+      day   = start.toLocaleString('en-US', { day:   'numeric', timeZone: TZ });
+      var t = function (x) {
+        return x.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: TZ });
+      };
+      meta = start.toLocaleString('en-US', { weekday: 'long', timeZone: TZ }) + ' · ' + t(start) + ' to ' + t(end);
+    }
 
     return [
       '<article class="upcoming-event reveal in">',
@@ -401,31 +434,32 @@
     ].join('');
   }
 
-  function formatEventMeta(start, end, isAllDay, tz) {
-    var dow = start.toLocaleString('en-US', { weekday: 'long', timeZone: tz });
-    if (isAllDay) return dow + ' · All day';
-    var t = function (d) {
-      return d.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: tz });
-    };
-    return dow + ' · ' + t(start) + ' to ' + t(end);
-  }
-
   function renderAddToCalendar(ev) {
-    var start = new Date(ev.start);
-    var end   = new Date(ev.end);
-    var fmtUtc = function (d) {
-      return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
-    };
-    var startUtc = fmtUtc(start);
-    var endUtc   = fmtUtc(end);
-
     var title = ev.title || 'Event';
     var desc  = ev.description || '';
     var loc   = ev.location || '';
 
+    var gDates, oStart, oEnd;
+    if (ev.isAllDay) {
+      // Google Calendar accepts YYYYMMDD/YYYYMMDD for all-day. Outlook
+      // accepts plain YYYY-MM-DD for startdt/enddt with allday=true.
+      gDates = String(ev.start).replace(/-/g, '') + '/' + String(ev.end).replace(/-/g, '');
+      oStart = ev.start;
+      oEnd   = ev.end;
+    } else {
+      var start = new Date(ev.start);
+      var end   = new Date(ev.end);
+      var fmtUtc = function (d) {
+        return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+      };
+      gDates = fmtUtc(start) + '/' + fmtUtc(end);
+      oStart = start.toISOString();
+      oEnd   = end.toISOString();
+    }
+
     var gUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
       '&text='     + encodeURIComponent(title) +
-      '&dates='    + startUtc + '/' + endUtc +
+      '&dates='    + gDates +
       '&details='  + encodeURIComponent(desc) +
       '&location=' + encodeURIComponent(loc);
 
@@ -433,12 +467,13 @@
       '?path=%2Fcalendar%2Faction%2Fcompose' +
       '&rru=addevent' +
       '&subject='  + encodeURIComponent(title) +
-      '&startdt='  + encodeURIComponent(start.toISOString()) +
-      '&enddt='    + encodeURIComponent(end.toISOString()) +
+      '&startdt='  + encodeURIComponent(oStart) +
+      '&enddt='    + encodeURIComponent(oEnd) +
       '&location=' + encodeURIComponent(loc) +
-      '&body='     + encodeURIComponent(desc);
+      '&body='     + encodeURIComponent(desc) +
+      (ev.isAllDay ? '&allday=true' : '');
 
-    var icsHref = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(buildIcs(ev, start, end));
+    var icsHref = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(buildIcs(ev));
     var slug = (title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'event') + '.ics';
 
     return '<div class="cal-add">' +
@@ -454,7 +489,7 @@
     '</div>';
   }
 
-  function buildIcs(ev, start, end) {
+  function buildIcs(ev) {
     var fmtUtc = function (d) {
       var iso = d.toISOString();
       return iso.slice(0,4) + iso.slice(5,7) + iso.slice(8,10) + 'T' +
@@ -471,11 +506,17 @@
       'CALSCALE:GREGORIAN',
       'BEGIN:VEVENT',
       'UID:' + uid,
-      'DTSTAMP:' + fmtUtc(new Date()),
-      'DTSTART:' + fmtUtc(start),
-      'DTEND:'   + fmtUtc(end),
-      'SUMMARY:' + esc(ev.title || 'Event')
+      'DTSTAMP:' + fmtUtc(new Date())
     ];
+    if (ev.isAllDay) {
+      // RFC 5545 all-day form: VALUE=DATE with no time component.
+      lines.push('DTSTART;VALUE=DATE:' + String(ev.start).replace(/-/g, ''));
+      lines.push('DTEND;VALUE=DATE:'   + String(ev.end).replace(/-/g, ''));
+    } else {
+      lines.push('DTSTART:' + fmtUtc(new Date(ev.start)));
+      lines.push('DTEND:'   + fmtUtc(new Date(ev.end)));
+    }
+    lines.push('SUMMARY:' + esc(ev.title || 'Event'));
     if (ev.description) lines.push('DESCRIPTION:' + esc(ev.description));
     if (ev.location)    lines.push('LOCATION:'    + esc(ev.location));
     lines.push('END:VEVENT', 'END:VCALENDAR');
