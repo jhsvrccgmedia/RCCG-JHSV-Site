@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=14" />
+<link rel="stylesheet" href="styles.css?v=25" />
 </head>
 <body data-page="home">
 
@@ -16,23 +16,45 @@
 <div data-include="partials/header.html"></div>
 
 <!-- ============ HERO ============ -->
-<section class="hero">
-  <div class="hero-arch" aria-hidden="true"></div>
-  <div class="hero-arch-2" aria-hidden="true"></div>
-  <div class="wrap">
-    <div class="eyebrow reveal">Sundays · 10:30 AM · San Jose</div>
+<section class="hero hero-v2">
+  <!-- Sanctuary photo background. Drop hero_background.jpg into
+       site/assets/photos/. Falls back to deep plum if missing. -->
+  <div class="hero-photo" aria-hidden="true"></div>
+
+  <!-- Drifting aurora layer -->
+  <div class="aurora" aria-hidden="true">
+    <div class="aurora-blob aurora-blob--plum"></div>
+    <div class="aurora-blob aurora-blob--coral"></div>
+    <div class="aurora-blob aurora-blob--soft"></div>
+  </div>
+
+  <!-- Breathing arch silhouette -->
+  <div class="hero-archlight" aria-hidden="true"></div>
+
+  <div class="wrap hero-content">
+    <div class="eyebrow reveal">Sundays &middot; 10:30 AM &middot; San Jose</div>
     <h1 class="display reveal">We saved a seat for you.</h1>
     <p class="lede reveal">A vibrant, multicultural faith family in Silicon Valley where you can encounter God, find community, and discover purpose.</p>
-    <div class="btn-row reveal">
-      <a class="btn btn-primary" href="new.html" data-magnetic>Plan your visit <span class="arrow">→</span></a>
-      <a class="btn btn-outline" href="live.html">Watch this Sunday</a>
+    <div class="btn-row reveal" style="justify-content: center;">
+      <a class="btn btn-primary" href="new.html" data-magnetic>Plan your visit <span class="arrow">&rarr;</span></a>
+      <a class="btn btn-outline-on-photo" href="live.html">Watch this Sunday</a>
     </div>
-    <div class="meta reveal">474 Piercy Road · San Jose, CA 95138</div>
+    <a class="meta meta-link reveal" href="https://maps.app.goo.gl/nTiaMmKCsiDoEQuT8" target="_blank" rel="noopener">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 22s7-7.5 7-13a7 7 0 1 0-14 0c0 5.5 7 13 7 13z"/>
+        <circle cx="12" cy="9" r="2.5"/>
+      </svg>
+      474 Piercy Road &middot; San Jose, CA 95138
+    </a>
   </div>
+
+  <a class="scroll-cue" href="#welcome" aria-label="Scroll to next section">
+    <span class="scroll-cue-line"></span>
+  </a>
 </section>
 
 <!-- ============ WHO WE ARE ============ -->
-<section class="alt">
+<section class="alt" id="welcome">
   <div class="wrap">
     <div class="section-head reveal" style="margin: 0 auto 48px; text-align: center;">
       <div class="eyebrow">Who we are</div>
@@ -55,19 +77,7 @@
     </div>
     <div class="grid c3 reveal">
       <div class="church-card">
-        <div class="card-image">
-          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="4"/>
-            <path d="M12 3v2"/>
-            <path d="M12 19v2"/>
-            <path d="M3 12h2"/>
-            <path d="M19 12h2"/>
-            <path d="M5.6 5.6l1.4 1.4"/>
-            <path d="M17 17l1.4 1.4"/>
-            <path d="M5.6 18.4l1.4-1.4"/>
-            <path d="M17 7l1.4-1.4"/>
-          </svg>
-        </div>
+        <div class="card-image"></div>
         <div class="card-body">
           <div class="card-eyebrow">Sunday</div>
           <div class="card-title">Hours of<br />Transformation</div>
@@ -77,11 +87,7 @@
         </div>
       </div>
       <div class="church-card">
-        <div class="card-image coral">
-          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
-          </svg>
-        </div>
+        <div class="card-image"></div>
         <div class="card-body">
           <div class="card-eyebrow">Monday</div>
           <div class="card-title">Prayer<br />Line</div>
@@ -91,13 +97,7 @@
         </div>
       </div>
       <div class="church-card">
-        <div class="card-image">
-          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M2 4.5h7a3 3 0 0 1 3 3V20a2.2 2.2 0 0 0-2.2-2.2H2z"/>
-            <path d="M22 4.5h-7a3 3 0 0 0-3 3V20a2.2 2.2 0 0 1 2.2-2.2H22z"/>
-            <path d="M12 7.5V20"/>
-          </svg>
-        </div>
+        <div class="card-image"></div>
         <div class="card-body">
           <div class="card-eyebrow">Wednesday</div>
           <div class="card-title">Masterclass<br />Bible Study</div>
@@ -207,6 +207,6 @@
 <!-- ============ FOOTER ============ -->
 <div data-include="partials/footer.html"></div>
 
-<script src="scripts.js?v=2"></script>
+<script src="scripts.js?v=5"></script>
 </body>
 </html>

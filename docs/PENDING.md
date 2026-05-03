@@ -2,6 +2,21 @@
 
 Things parked for later so we can keep moving on bigger pieces.
 
+## Hero background photo (Home page)
+
+The home hero uses a single static background image. Drop the file at:
+
+  `site/assets/photos/hero_background.jpg`
+
+**File specs:**
+
+- **Format:** JPG, landscape orientation
+- **Resolution:** 2400&times;1600 minimum (we'll downsize on commit, same as the other portraits)
+- **Crop:** wide, with breathing room around the subject — the dark plum overlay we apply (62-78% opacity) sits on top, and centered text overlays everything
+- **Subject ideas:** Sunday-morning candid of the congregation, sanctuary interior with worship lighting, baptism, fellowship moment
+
+**Fallback:** if the file is missing, the deep-plum gradient backdrop renders alone — the hero never breaks.
+
 ## Logo
 
 The site currently uses a small CSS-drawn arch mark in the header (`.brand .mark` in `site/partials/header.html`) plus the wordmark "Jesus House SV" alongside it. When the real logo file is ready:

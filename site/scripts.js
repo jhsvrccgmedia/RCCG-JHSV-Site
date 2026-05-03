@@ -156,5 +156,40 @@
         }
       });
     });
+
+    // ---- Measure topbar height so the home hero can extend up under it ----
+    var topbarEl = document.querySelector('.topbar');
+    if (topbarEl) {
+      var setTopbarHeight = function () {
+        var h = topbarEl.offsetHeight;
+        if (h) document.documentElement.style.setProperty('--topbar-height', h + 'px');
+      };
+      setTopbarHeight();
+      window.addEventListener('resize', setTopbarHeight);
+      // Re-measure once images / fonts settle
+      window.addEventListener('load', setTopbarHeight);
+    }
+
+    // ---- Transparent topbar over the home hero ----
+    var topbar = document.querySelector('.topbar');
+    var heroV2 = document.querySelector('.hero.hero-v2');
+    if (topbar && heroV2 && document.body.dataset.page === 'home') {
+      var updateTopbar = function () {
+        if (window.innerWidth <= 920) {
+          topbar.classList.remove('over-hero');
+          return;
+        }
+        var heroBottom = heroV2.offsetTop + heroV2.offsetHeight;
+        var threshold = heroBottom - topbar.offsetHeight - 40;
+        if (window.scrollY < threshold) {
+          topbar.classList.add('over-hero');
+        } else {
+          topbar.classList.remove('over-hero');
+        }
+      };
+      updateTopbar();
+      window.addEventListener('scroll', updateTopbar, { passive: true });
+      window.addEventListener('resize', updateTopbar);
+    }
   }
 })();

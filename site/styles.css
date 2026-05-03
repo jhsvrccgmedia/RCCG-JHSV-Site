@@ -154,7 +154,7 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 
 /* ----------------------- Top nav ----------------------- */
 .topbar {
-  position: sticky; top: 0; z-index: 100;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   background: rgba(250, 246, 240, 0.86);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -163,6 +163,13 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   display: flex; align-items: center; justify-content: space-between;
   gap: 16px;
 }
+
+/* Default: body adds top padding equal to the topbar height so content
+   starts below the fixed bar. JS keeps --topbar-height in sync with
+   the actual rendered topbar. Home overrides this to 0 so the hero
+   can fill the entire viewport with the topbar floating over it. */
+body { padding-top: var(--topbar-height, 72px); }
+body[data-page="home"] { padding-top: 0; }
 .topbar .brand {
   font-family: var(--sans);
   font-weight: 700;
@@ -223,6 +230,44 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 .topbar nav a.btn-watch,
 .topbar nav a.btn-watch:hover,
 .topbar nav a.btn-watch:focus { color: #fff; }
+
+/* Transparent topbar overlaid on the home hero. JS toggles .over-hero
+   when the scroll position is still within the hero. Smooth crossfade
+   to the default parchment-translucent state once you scroll past it.
+   Desktop only — mobile keeps the always-solid bar for legibility on
+   the smaller hamburger menu. */
+.topbar {
+  transition:
+    background 0.45s var(--ease-out),
+    border-bottom-color 0.45s var(--ease-out),
+    backdrop-filter 0.45s var(--ease-out);
+}
+.topbar .brand,
+.topbar nav a:not(.btn-watch) {
+  transition: color 0.45s var(--ease-out);
+}
+@media (min-width: 921px) {
+  body[data-page="home"] .topbar.over-hero {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom-color: transparent;
+  }
+  body[data-page="home"] .topbar.over-hero .brand {
+    color: rgba(250, 246, 240, 0.95);
+  }
+  /* The wordmark accent (the inline-styled JHSV span) — flip to coral
+     so the brand reads correctly on dark photo backdrop. */
+  body[data-page="home"] .topbar.over-hero .brand span {
+    color: var(--coral-300) !important;
+  }
+  body[data-page="home"] .topbar.over-hero nav a:not(.btn-watch) {
+    color: rgba(250, 246, 240, 0.85);
+  }
+  body[data-page="home"] .topbar.over-hero nav a:not(.btn-watch):hover {
+    color: var(--text-inverse);
+  }
+}
 
 /* ----------------------- Buttons ----------------------- */
 .btn {
@@ -458,6 +503,282 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 .hero.dark .hero-arch { opacity: 0.18; }
 .hero.dark .hero-arch-2 { opacity: 0.28; }
 
+/* ----------------------- Hero v2/v3 (Living Sanctuary) -----------------------
+   Layered hero: real sanctuary photo at the back, dark plum overlay for
+   legibility, drifting plum/coral aurora over that, a breathing arch
+   silhouette anchoring the bottom, and centered editorial typography
+   on top. The bottom edge has a subtle angular cut (clip-path) so the
+   hero feels like a tilted slide rather than a flat block. All
+   animations are pure CSS keyframes; disabled under prefers-reduced-motion. */
+.hero.hero-v2 {
+  min-height: 100vh;
+  padding: 0;
+  display: flex;
+  align-items: flex-end;            /* anchor content near bottom */
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--plum-900);  /* fallback if photo + gradient layers fail */
+}
+.hero.hero-v2 .hero-arch,
+.hero.hero-v2 .hero-arch-2 { display: none; } /* legacy decoration off in v2 */
+
+/* Logo-cradle arc — implemented as a curved top on the next section
+   instead of a pseudo-element on the hero. The section gets a small
+   negative top margin so it slides up under the hero's bottom edge,
+   and a wide top-corner border-radius so its top edge curves up.
+   The section's actual background (with its plum-300 + coral washes)
+   fills the curve naturally — no duplication.
+   z-index: 5 puts the curve above the breathing arch silhouette
+   (z-index: 2) so the dome reads cleanly. */
+body[data-page="home"] section.alt#welcome {
+  position: relative;
+  z-index: 5;
+  margin-top: -48px;
+  border-top-left-radius: 50% 48px;
+  border-top-right-radius: 50% 48px;
+  padding-top: 152px;             /* base 112px + 40px breathing room below the curve */
+}
+@media (max-width: 600px) {
+  body[data-page="home"] section.alt#welcome {
+    margin-top: -32px;
+    border-top-left-radius: 50% 32px;
+    border-top-right-radius: 50% 32px;
+    padding-top: 104px;
+  }
+}
+
+/* Single static photo background. Layered: dark plum gradient overlay
+   on top of the photo so text stays legible regardless of image
+   content. If the photo file is missing, the gradient still renders —
+   graceful fallback to deep plum. */
+.hero-v2 .hero-photo {
+  position: absolute; inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(180deg,
+      rgba(31, 3, 44, 0.62) 0%,
+      rgba(74, 25, 66, 0.55) 45%,
+      rgba(42, 14, 39, 0.78) 100%),
+    url('assets/photos/hero_background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-v2 .aurora {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: screen;
+}
+.hero-v2 .aurora-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform, opacity;
+}
+.hero-v2 .aurora-blob--plum {
+  width: 70vw; height: 70vw; max-width: 1100px; max-height: 1100px;
+  background: radial-gradient(circle, rgba(180, 138, 169, 0.32), transparent 65%);
+  top: -25%; left: -18%;
+  animation: hero-drift-1 28s ease-in-out infinite alternate;
+}
+.hero-v2 .aurora-blob--coral {
+  width: 55vw; height: 55vw; max-width: 900px; max-height: 900px;
+  background: radial-gradient(circle, rgba(241, 166, 142, 0.28), transparent 65%);
+  bottom: -22%; right: -10%;
+  animation: hero-drift-2 34s ease-in-out infinite alternate;
+}
+.hero-v2 .aurora-blob--soft {
+  width: 40vw; height: 40vw; max-width: 700px; max-height: 700px;
+  background: radial-gradient(circle, rgba(239, 227, 236, 0.22), transparent 65%);
+  top: 15%; right: 5%;
+  animation: hero-drift-3 22s ease-in-out infinite alternate;
+}
+
+/* Breathing arch silhouette anchoring the bottom — the brand motif as
+   atmosphere, not a hard frame. Now traced in parchment so it reads
+   over the dark photo. */
+.hero-v2 .hero-archlight {
+  position: absolute;
+  bottom: -12%;
+  left: 50%;
+  width: clamp(420px, 65vh, 880px);
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(180deg,
+    rgba(250, 246, 240, 0.08) 0%,
+    rgba(250, 246, 240, 0.02) 60%,
+    transparent 100%);
+  border: 1px solid rgba(250, 246, 240, 0.20);
+  border-bottom: none;
+  border-radius: var(--arch-full);
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+  animation: hero-breathe 9s ease-in-out infinite;
+}
+
+.hero-v2 .hero-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  max-width: 940px;
+  /* hero uses align-items: flex-end — bottom padding controls how far
+     above the hero's bottom the text sits. 180px lifts the headline
+     a touch higher than the breathing arch's shoulders. */
+  padding: 32px 32px 180px;
+  color: var(--text-inverse);
+}
+.hero-v2 .hero-content .eyebrow { color: var(--coral-300); }
+.hero-v2 .hero-content h1.display {
+  margin: 16px auto 18px;
+  max-width: 14ch;
+  color: var(--text-inverse);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+.hero-v2 .hero-content .lede {
+  margin: 0 auto 26px;
+  max-width: 52ch;
+  font-size: 17px;                    /* smaller than the global 19px */
+  color: rgba(250, 246, 240, 0.88);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
+}
+.hero-v2 .hero-content .btn-row { margin-bottom: 14px; }
+.hero-v2 .hero-content .meta {
+  color: rgba(250, 246, 240, 0.65);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+/* Address as a Google-Maps link with a small location-pin glyph. */
+.hero-v2 .hero-content .meta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: color 0.25s var(--ease-out);
+}
+.hero-v2 .hero-content .meta-link svg {
+  flex-shrink: 0;
+  opacity: 0.8;
+  transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+.hero-v2 .hero-content .meta-link:hover {
+  color: var(--text-inverse);
+}
+.hero-v2 .hero-content .meta-link:hover svg {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+/* Outline-on-photo button — like .btn-outline but inverted for the
+   dark photo backdrop. Used for the secondary "Watch this Sunday" CTA. */
+.btn-outline-on-photo {
+  background: transparent;
+  color: var(--text-inverse);
+  border-color: rgba(250, 246, 240, 0.55);
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 999px;
+  text-decoration: none;
+  border: 1.5px solid rgba(250, 246, 240, 0.55);
+  transition: all 0.25s var(--ease-out);
+  min-height: 48px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.btn-outline-on-photo:hover {
+  background: rgba(250, 246, 240, 0.15);
+  border-color: var(--text-inverse);
+  color: var(--text-inverse);
+  transform: translateY(-1px);
+}
+
+/* Functional scroll-down cue — minimal: a single thin pulsing line.
+   Bottom: 70px keeps the entire 24px line + its drifting dash
+   comfortably above the next-section dome (which peaks 48px up
+   into the hero). z-index: 6 keeps it above the dome and the
+   breathing arch. */
+.hero-v2 .scroll-cue {
+  position: absolute;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(250, 246, 240, 0.70);
+  text-decoration: none;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+.hero-v2 .scroll-cue:hover { color: var(--text-inverse); transform: translateX(-50%) translateY(2px); }
+.hero-v2 .scroll-cue-line {
+  position: relative;
+  width: 1px;
+  height: 18px;
+  background: rgba(250, 246, 240, 0.25);
+  display: block;
+  overflow: hidden;
+}
+.hero-v2 .scroll-cue-line::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 1px; height: 9px;
+  background: var(--text-inverse);
+  animation: hero-scroll-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes hero-drift-1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(14vw, 10vh) scale(1.18); }
+}
+@keyframes hero-drift-2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-12vw, -8vh) scale(1.12); }
+}
+@keyframes hero-drift-3 {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(-10vw, 6vh) scale(0.85); opacity: 0.55; }
+}
+@keyframes hero-breathe {
+  0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.85; }
+  50%      { transform: translateX(-50%) scale(1.04); opacity: 1; }
+}
+@keyframes hero-scroll-pulse {
+  0%   { transform: translateY(-9px); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(18px); opacity: 0; }
+}
+
+@media (max-width: 600px) {
+  /* hero stays 100vh on all devices */
+  .hero-v2 .hero-content { padding: 56px 20px; }
+  .hero-v2 .scroll-cue { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-v2 .aurora-blob,
+  .hero-v2 .hero-archlight,
+  .hero-v2 .hero-photo,
+  .hero-v2 .scroll-cue-line::after { animation: none !important; }
+}
+
 /* ----------------------- Cards ----------------------- */
 .card {
   background: var(--bg-card);
@@ -545,6 +866,48 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   margin-bottom: 14px;
   position: relative; z-index: 2;
 }
+
+/* Strategic icon for spot-cards (used on Giving "Other ways"). Plum
+   tinted, sits above the title. Sized to feel intentional, not loud. */
+.spot-card .card-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: var(--plum-100);
+  color: var(--plum-700);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  position: relative; z-index: 2;
+  transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+.spot-card .card-icon svg { width: 22px; height: 22px; display: block; }
+.spot-card:hover .card-icon { background: var(--plum-600); color: var(--text-inverse); }
+
+/* Contact "Reach us" list — small leading icons aligned with each row. */
+.contact-list {
+  list-style: none;
+  display: flex; flex-direction: column;
+  gap: 14px;
+  margin: 0; padding: 0;
+}
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15.5px;
+}
+.contact-icon {
+  flex-shrink: 0;
+  width: 30px; height: 30px;
+  border-radius: 999px;
+  background: var(--plum-100);
+  color: var(--plum-700);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.contact-icon svg { width: 14px; height: 14px; display: block; }
 .spot-card .num {
   font-family: var(--display);
   font-size: 36px;
@@ -704,16 +1067,11 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
   border-color: var(--plum-300);
 }
 .church-card .card-image {
-  height: 168px;
-  margin: 20px 24px 0;
+  height: 88px;
   background: linear-gradient(135deg, var(--plum-500), var(--plum-700));
-  border-radius: var(--arch-full);
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .church-card .card-image.coral {
   background: linear-gradient(135deg, var(--coral-300), var(--coral-600));
@@ -721,23 +1079,7 @@ section.dark .lede { color: rgba(250,246,240,0.78); }
 .church-card .card-image::after {
   content: '';
   position: absolute; inset: 0;
-  background: radial-gradient(circle at 50% 28%, rgba(255,255,255,0.18), transparent 62%);
-  border-radius: var(--arch-full);
-  pointer-events: none;
-}
-.church-card .card-icon {
-  width: 64px;
-  height: 64px;
-  color: var(--parchment);
-  position: relative;
-  z-index: 1;
-  filter: drop-shadow(0 2px 4px rgba(28, 10, 26, 0.3));
-  transition: transform 0.4s var(--ease-out);
-}
-.church-card:hover .card-icon { transform: scale(1.06); }
-@media (max-width: 600px) {
-  .church-card .card-image { height: 148px; margin: 16px 18px 0; }
-  .church-card .card-icon { width: 56px; height: 56px; }
+  background: linear-gradient(180deg, transparent 40%, rgba(28, 10, 26, 0.35));
 }
 .church-card .card-body {
   padding: 24px 28px 28px;
