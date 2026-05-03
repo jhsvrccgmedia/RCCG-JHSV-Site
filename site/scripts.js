@@ -179,6 +179,38 @@
       });
     });
 
+    // ---- Add-to-calendar popovers (Live page schedule cards) ----
+    var calToggles = document.querySelectorAll('[data-cal-toggle]');
+    if (calToggles.length) {
+      var closeAllCal = function () {
+        document.querySelectorAll('[data-cal-menu]').forEach(function (m) {
+          m.hidden = true;
+        });
+        document.querySelectorAll('[data-cal-toggle]').forEach(function (b) {
+          b.setAttribute('aria-expanded', 'false');
+        });
+      };
+      calToggles.forEach(function (btn) {
+        var menu = btn.parentElement.querySelector('[data-cal-menu]');
+        if (!menu) return;
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var willOpen = menu.hidden;
+          closeAllCal();
+          if (willOpen) {
+            menu.hidden = false;
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('.cal-add')) closeAllCal();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeAllCal();
+      });
+    }
+
     // ---- Measure topbar height so the home hero can extend up under it ----
     var topbarEl = document.querySelector('.topbar');
     if (topbarEl) {

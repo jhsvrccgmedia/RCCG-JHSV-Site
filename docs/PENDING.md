@@ -87,6 +87,54 @@ The 4 highlighted upcoming events on `/events` are currently hand-curated placeh
 
 **Cost:** Calendar API is free up to 1M queries/day. Cache the response in localStorage for ~10 min to be polite.
 
+## Live YouTube wiring (Live page)
+
+The redesigned Live page (`/live`) ships with three hookups that need real
+data once we have a public API key and the channel ID:
+
+1. **The Stage player** &mdash; currently a static thumbnail
+   (`service_sunday.jpg`) that opens the channel's `/streams` page. To swap
+   to a true embed:
+   - Replace the `<a class="live-player">` markup with an `<iframe>` pointing
+     at `https://www.youtube.com/embed/live_stream?channel=UC_CHANNEL_ID`.
+     This URL auto-shows whatever's live, and falls back to the most recent
+     livestream when nothing is live.
+   - Keep the `.live-player` shell so the styling (rounded corners, shadow,
+     play-button overlay) stays. The iframe sits inside it.
+
+2. **Live status pill toggle** &mdash; the section is
+   `<section class="live-stage" data-live="false">` with a
+   `<span data-live-label>Most recent service</span>`. To flip to "Live now"
+   with the coral pulse:
+
+   ```js
+   document.querySelector('.live-stage').dataset.live = 'true';
+   document.querySelector('[data-live-label]').textContent = 'Live now';
+   ```
+
+   The CSS on `.live-stage[data-live="true"] .live-status` already handles
+   the coral background and pulsing animation.
+
+3. **Recent Broadcasts** &mdash; three hand-built `.broadcast-card`s. To
+   auto-populate from YouTube:
+   - **No API key:** the channel's RSS feed at
+     `https://www.youtube.com/feeds/videos.xml?channel_id=UC_CHANNEL_ID`
+     returns the 15 latest videos. CORS may be tight, so it might need a
+     same-origin proxy.
+   - **Cleanest:** YouTube Data API v3 `search.list` with
+     `eventType=completed&type=video&order=date&maxResults=3`, restricted by
+     HTTP referrer (same pattern as the Calendar API key documented above).
+     Free up to 10K units/day; each search costs 100 units.
+
+**To find the channel ID** for `@jesushousesiliconvalleysan6808`:
+
+- Visit the channel page in a logged-out browser, view source, search for
+  `"channelId":"UC` &mdash; the value that follows is the ID.
+- Or paste the handle URL into https://commentpicker.com/youtube-channel-id.php.
+
+Drop the channel ID into `scripts.js` as `window.JHSV_YT_CHANNEL_ID = "UC..."`
+and the rest of the wiring slots in cleanly.
+
 ## Multi-app map picker (Get Directions)
 
 When the "Get Directions" button is tapped on iPhone, we'd like a small picker offering Google Maps, Apple Maps, and Waze.
