@@ -179,6 +179,291 @@
       });
     });
 
+    // ---- Ministries grid + morphing modal (About page) ----
+    var ministryOverlay = document.getElementById('ministryOverlay');
+    if (ministryOverlay) {
+      var ministries = {
+        ops: {
+          name: 'Church Operations & Administration',
+          blurb: 'Day-to-day coordination so every Sunday runs without a hitch.',
+          depts: [
+            { name: 'Service Coordination', lead: 'Bunmi O.' },
+            { name: 'Church Project & Building', lead: 'Dami B.' },
+            { name: 'Finance Department', lead: null },
+            { name: 'Digital Operations', lead: null }
+          ]
+        },
+        hospitality: {
+          name: 'Hospitality',
+          blurb: 'From the parking lot to the foyer, a welcome that lands.',
+          depts: [
+            { name: 'Guest Experience', lead: 'Titilope, Chinonso F. & Dayo O.' },
+            { name: 'Security & Safety', lead: 'Dayo O.' },
+            { name: 'Transportation & Logistics', lead: 'Dishon' },
+            { name: 'Sanctuary Keepers', lead: 'Dr. Claire O.' },
+            { name: 'Welfare', lead: 'Dupe F.' }
+          ]
+        },
+        events: {
+          name: 'Events & Outreaches',
+          blurb: 'Conferences, picnics, and the work that takes the gospel beyond our walls.',
+          depts: [
+            { name: 'Special Events Planning', lead: 'Dami B.' },
+            { name: 'Community Outreach & Evangelism', lead: 'Dupe F.' },
+            { name: 'Community Development & Engagement', lead: 'Chioma A.' }
+          ]
+        },
+        worship: {
+          name: 'Music & Worship',
+          blurb: 'The sound of Sunday: choir, band, and worship arts.',
+          depts: [
+            { name: 'Choir', lead: 'Dr. Nina B.' },
+            { name: 'Instrumentalists', lead: null }
+          ]
+        },
+        community: {
+          name: 'Community Life & Connections',
+          blurb: 'Men, women, youth, teens, kids — the spaces where the family grows.',
+          depts: [
+            { name: "Men's Ministry", lead: 'Tunde O.' },
+            { name: "Women's Ministry", lead: 'Pst. Yemisi A.' },
+            { name: 'Youth & Young Adult Ministry', lead: 'Boris T.' },
+            { name: 'Youth Training & Mentorship', lead: 'Dami & Kathleen B.' },
+            { name: 'Teen Ministry', lead: 'Toun O.' },
+            { name: 'Children Ministry', lead: 'Chioma A.' },
+            { name: 'New Members Engagement & Integration', lead: null }
+          ]
+        },
+        growth: {
+          name: 'Ministry & Spiritual Growth',
+          blurb: 'Discipleship, training, and the long obedience of growing in faith.',
+          depts: [
+            { name: 'Ministers Welfare', lead: 'Paul A.' },
+            { name: 'Workers Training', lead: 'Paul A.' },
+            { name: 'Discipleship & Bible Study', lead: 'Paul A.' },
+            { name: 'Baptism Coordination', lead: null },
+            { name: 'Prayer Ministry & Sunday School', lead: 'Tobi A.' }
+          ]
+        },
+        media: {
+          name: 'Media & Communications',
+          blurb: 'Livestream, photography, social — extending Sunday into the week.',
+          depts: [
+            { name: 'Media Technical', lead: 'Dr. Obi A.' },
+            { name: 'Photography & Videography', lead: null },
+            { name: 'Media Outreach', lead: 'Ruth O.' }
+          ]
+        }
+      };
+
+      var detailName = document.getElementById('ministryName');
+      var detailBlurb = document.getElementById('ministryBlurb');
+      var detailDepts = document.getElementById('ministryDepts');
+      var detailContact = document.getElementById('ministryContact');
+      var lastFocused = null;
+
+      function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      function openMinistry(key) {
+        var m = ministries[key];
+        if (!m) return;
+        lastFocused = document.activeElement;
+        detailName.textContent = m.name;
+        detailBlurb.textContent = m.blurb;
+        detailDepts.innerHTML = m.depts.map(function (d) {
+          var leadHtml = d.lead
+            ? '<span class="dept-lead">' + escapeHtml(d.lead) + '</span>'
+            : '';
+          return '<li><span class="dept-name">' + escapeHtml(d.name) + '</span>' + leadHtml + '</li>';
+        }).join('');
+        if (detailContact) {
+          detailContact.href = 'mailto:rccgjhsv2013@gmail.com'
+            + '?subject=' + encodeURIComponent('Ministry inquiry: ' + m.name);
+        }
+        ministryOverlay.hidden = false;
+        ministryOverlay.classList.add('open');
+        // force reflow before adding visible so the transition runs
+        void ministryOverlay.offsetHeight;
+        ministryOverlay.classList.add('visible');
+        document.body.style.overflow = 'hidden';
+        var closeBtn = ministryOverlay.querySelector('.ministry-close');
+        if (closeBtn) closeBtn.focus();
+      }
+
+      function closeMinistry() {
+        ministryOverlay.classList.remove('visible');
+        document.body.style.overflow = '';
+        setTimeout(function () {
+          ministryOverlay.classList.remove('open');
+          ministryOverlay.hidden = true;
+          if (lastFocused && typeof lastFocused.focus === 'function') {
+            lastFocused.focus();
+          }
+        }, 350);
+      }
+
+      document.querySelectorAll('[data-ministry]').forEach(function (card) {
+        card.addEventListener('click', function () {
+          openMinistry(card.dataset.ministry);
+        });
+      });
+      document.querySelectorAll('[data-close-ministry]').forEach(function (btn) {
+        btn.addEventListener('click', closeMinistry);
+      });
+      ministryOverlay.addEventListener('click', function (e) {
+        if (e.target === ministryOverlay) closeMinistry();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && ministryOverlay.classList.contains('open')) {
+          closeMinistry();
+        }
+      });
+    }
+
+    // ---- YouTube live embed swap (Live page) ----
+    // If the .live-player has a valid UC... channel ID, replace the
+    // static thumbnail link with the YouTube /embed/live_stream iframe
+    // pointed at that channel. The iframe auto-shows the current live
+    // stream (and YouTube renders an offline placeholder when nothing
+    // is live). Same trick rccgworld.org/rccg uses.
+    var livePlayer = document.querySelector('.live-player[data-yt-channel]');
+    if (livePlayer) {
+      var ytChannel = livePlayer.dataset.ytChannel || '';
+      if (/^UC[A-Za-z0-9_-]{22}$/.test(ytChannel)) {
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://www.youtube.com/embed/live_stream?channel='
+          + encodeURIComponent(ytChannel)
+          + '&autoplay=0&rel=0&modestbranding=1';
+        iframe.title = 'Latest broadcast from Jesus House Silicon Valley';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+        iframe.setAttribute('allowfullscreen', '');
+        livePlayer.innerHTML = '';
+        livePlayer.appendChild(iframe);
+      }
+    }
+
+    // ---- Recent broadcasts auto-pull (Live page) ----
+    // Pulls the channel's latest 3 uploads from YouTube's public RSS
+    // (https://www.youtube.com/feeds/videos.xml?channel_id=UC...) via
+    // a free CORS proxy so the static cards in HTML get replaced with
+    // the real thing. Result is cached in localStorage for an hour to
+    // keep the proxy load polite. Any failure leaves the static
+    // placeholder cards in place.
+    var broadcastGrid = document.getElementById('broadcastGrid');
+    if (broadcastGrid && broadcastGrid.dataset.ytChannel
+        && /^UC[A-Za-z0-9_-]{22}$/.test(broadcastGrid.dataset.ytChannel)) {
+      loadRecentBroadcasts(broadcastGrid);
+    }
+
+    function loadRecentBroadcasts(grid) {
+      var channelId = grid.dataset.ytChannel;
+      var cacheKey = 'jhsv_broadcasts_v1_' + channelId;
+      var cacheTtl = 60 * 60 * 1000; // 1 hour
+      var rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + channelId;
+      var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(rssUrl);
+
+      // Try fresh cache first.
+      try {
+        var cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+        if (cached && cached.videos && cached.videos.length
+            && Date.now() - cached.fetchedAt < cacheTtl) {
+          renderBroadcasts(grid, cached.videos);
+          return;
+        }
+      } catch (e) { /* ignore */ }
+
+      fetch(proxyUrl, { cache: 'no-cache' })
+        .then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.text();
+        })
+        .then(function (xml) {
+          var videos = parseYouTubeFeed(xml).slice(0, 3);
+          if (!videos.length) return;
+          try {
+            localStorage.setItem(cacheKey, JSON.stringify({
+              fetchedAt: Date.now(),
+              videos: videos
+            }));
+          } catch (e) { /* ignore quota errors */ }
+          renderBroadcasts(grid, videos);
+        })
+        .catch(function () {
+          // On failure, try a stale cache before giving up. If that's
+          // empty too, the static fallback cards in HTML stay visible.
+          try {
+            var stale = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+            if (stale && stale.videos && stale.videos.length) {
+              renderBroadcasts(grid, stale.videos);
+            }
+          } catch (e) { /* ignore */ }
+        });
+    }
+
+    function parseYouTubeFeed(xml) {
+      var doc = new DOMParser().parseFromString(xml, 'text/xml');
+      var entries = doc.getElementsByTagName('entry');
+      var ytNs = 'http://www.youtube.com/xml/schemas/2015';
+      var out = [];
+      for (var i = 0; i < entries.length; i++) {
+        var entry = entries[i];
+        var idEls = entry.getElementsByTagNameNS(ytNs, 'videoId');
+        var videoId = idEls.length ? (idEls[0].textContent || '').trim() : '';
+        if (!videoId) continue;
+        var titleEl = entry.getElementsByTagName('title')[0];
+        var publishedEl = entry.getElementsByTagName('published')[0];
+        out.push({
+          id: videoId,
+          title: titleEl ? (titleEl.textContent || '').trim() : 'Untitled',
+          published: publishedEl ? (publishedEl.textContent || '').trim() : '',
+          thumbnail: 'https://i.ytimg.com/vi/' + videoId + '/hqdefault.jpg',
+          url: 'https://www.youtube.com/watch?v=' + videoId
+        });
+      }
+      return out;
+    }
+
+    function formatBroadcastDate(iso) {
+      if (!iso) return '';
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return '';
+      var months = ['Jan','Feb','Mar','Apr','May','Jun',
+                    'Jul','Aug','Sep','Oct','Nov','Dec'];
+      return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+    }
+
+    function renderBroadcasts(grid, videos) {
+      function esc(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;',
+                   '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+      grid.innerHTML = videos.map(function (v) {
+        return ''
+          + '<a class="broadcast-card" href="' + esc(v.url) + '"'
+          + ' target="_blank" rel="noopener">'
+          +   '<div class="broadcast-thumb">'
+          +     '<img src="' + esc(v.thumbnail) + '"'
+          +     ' alt="' + esc(v.title) + '" loading="lazy" />'
+          +     '<span class="broadcast-play" aria-hidden="true">'
+          +       '<svg viewBox="0 0 24 24" fill="currentColor">'
+          +       '<path d="M8 5v14l11-7z"/></svg>'
+          +     '</span>'
+          +   '</div>'
+          +   '<div class="broadcast-meta">'
+          +     '<h3>' + esc(v.title) + '</h3>'
+          +     '<p>' + esc(formatBroadcastDate(v.published)) + '</p>'
+          +   '</div>'
+          + '</a>';
+      }).join('');
+    }
+
     // ---- Add-to-calendar popovers (Live page schedule cards) ----
     var calToggles = document.querySelectorAll('[data-cal-toggle]');
     if (calToggles.length) {

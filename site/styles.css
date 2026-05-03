@@ -1760,7 +1760,10 @@ footer.site-footer .nl-form button {
   50% { box-shadow: 0 0 0 10px rgba(232,93,60,0); }
 }
 
-/* Player frame — 16:9 thumbnail with a big coral play button. */
+/* Player frame — 16:9 container. Inner <a class="live-player-link">
+   shows the static thumbnail + play button by default. When a valid
+   YouTube channel ID is set on .live-player[data-yt-channel],
+   scripts.js replaces the inner link with an <iframe> sized to fill. */
 .live-player {
   display: block;
   position: relative;
@@ -1772,6 +1775,16 @@ footer.site-footer .nl-form button {
   box-shadow: 0 30px 60px -20px rgba(0,0,0,0.55),
               0 12px 24px -8px rgba(31,3,44,0.4);
   isolation: isolate;
+}
+.live-player iframe {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: 0;
+  display: block;
+}
+.live-player-link {
+  position: absolute; inset: 0;
+  display: block;
   cursor: pointer;
 }
 .live-player-thumb {
@@ -1805,12 +1818,12 @@ footer.site-footer .nl-form button {
               box-shadow 0.3s var(--ease-out);
 }
 .live-play svg { width: 38px; height: 38px; margin-left: 4px; }
-.live-player:hover .live-play {
+.live-player-link:hover .live-play {
   transform: translate(-50%, -50%) scale(1.06);
   box-shadow: 0 22px 50px -8px rgba(232,93,60,0.75),
               0 0 0 14px rgba(232,93,60,0.18);
 }
-.live-player:hover .live-player-thumb { transform: scale(1.04); }
+.live-player-link:hover .live-player-thumb { transform: scale(1.04); }
 
 @media (max-width: 700px) {
   .live-stage { padding: 64px 0 88px; }
@@ -2132,4 +2145,227 @@ footer.site-footer .nl-form button {
     text-align: center;
   }
   .ss-static-text { max-width: 100%; margin: 0 auto; }
+}
+
+/* ============================================================
+   About page — Ministries grid + morphing modal
+   Adapted from cinematic-site-components/view-transitions.html.
+   Seven ministry cards in an auto-fit grid; click any one to
+   open the detail modal with department leaders. JS in scripts.js
+   drives the open/close + dataset.
+   ============================================================ */
+.ministry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+/* With 7 cards, the last row has a single orphan. Push it into the
+   middle column so it sits centered instead of left-aligned. */
+@media (min-width: 880px) {
+  .ministry-grid > .ministry-card:nth-child(7):last-child {
+    grid-column: 2;
+  }
+}
+@media (min-width: 580px) and (max-width: 879px) {
+  /* 2-column layout: span the orphan across both columns then cap
+     the width to a single cell so it visually centers in the row. */
+  .ministry-grid > .ministry-card:nth-child(7):last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 10px);
+  }
+}
+.ministry-card {
+  appearance: none;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px;
+  padding: 32px 28px 26px;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s var(--ease-out),
+              box-shadow 0.3s var(--ease-out),
+              border-color 0.3s var(--ease-out);
+}
+.ministry-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--plum-300);
+}
+.ministry-card:focus-visible {
+  outline: 2px solid var(--plum-600);
+  outline-offset: 3px;
+}
+.ministry-card .ministry-icon {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  background: var(--plum-100);
+  color: var(--plum-700);
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  margin-bottom: 22px;
+  transition: background 0.3s var(--ease-out),
+              color 0.3s var(--ease-out);
+}
+.ministry-card .ministry-icon svg { width: 24px; height: 24px; display: block; }
+.ministry-card:hover .ministry-icon {
+  background: var(--plum-600);
+  color: var(--text-inverse);
+}
+.ministry-card h3 {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+.ministry-card p {
+  font-size: 14.5px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin: 0 0 18px;
+  flex: 1;
+}
+.ministry-card .ministry-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--coral-600);
+  letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ministry-card .ministry-link .arrow {
+  display: inline-block;
+  transition: transform 0.25s var(--ease-out);
+}
+.ministry-card:hover .ministry-link .arrow { transform: translateX(4px); }
+
+/* Modal overlay */
+.ministry-overlay {
+  position: fixed; inset: 0;
+  z-index: 200;
+  background: rgba(31, 3, 44, 0.5);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-out);
+}
+.ministry-overlay.open { display: flex; }
+.ministry-overlay.visible { opacity: 1; }
+
+.ministry-detail {
+  background: var(--bg-card);
+  border-radius: 24px;
+  max-width: 540px;
+  width: 100%;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 40px 36px 32px;
+  box-shadow: 0 40px 80px -10px rgba(0, 0, 0, 0.3),
+              0 12px 32px -8px rgba(31, 3, 44, 0.25);
+  transform: scale(0.92) translateY(16px);
+  transition: transform 0.4s var(--ease-out);
+  position: relative;
+}
+.ministry-overlay.visible .ministry-detail {
+  transform: scale(1) translateY(0);
+}
+
+.ministry-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 36px; height: 36px;
+  border-radius: 999px;
+  border: none;
+  background: var(--bg-alt);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s var(--ease-out),
+              color 0.2s var(--ease-out);
+}
+.ministry-close:hover {
+  background: var(--plum-100);
+  color: var(--plum-700);
+}
+
+.ministry-detail-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--coral-600);
+  margin-bottom: 12px;
+}
+.ministry-detail h2 {
+  font-family: var(--display);
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.ministry-blurb {
+  font-size: 15.5px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: 28px;
+}
+.ministry-depts {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.ministry-depts li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ministry-depts .dept-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
+.ministry-depts .dept-lead {
+  font-size: 14px;
+  color: var(--plum-600);
+}
+
+.ministry-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.ministry-actions .btn { padding: 10px 22px; font-size: 14px; min-height: 40px; }
+
+@media (max-width: 600px) {
+  .ministry-detail { padding: 32px 22px 24px; border-radius: 20px; }
+  .ministry-detail h2 { font-size: 26px; }
+  .ministry-close { top: 12px; right: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ministry-overlay,
+  .ministry-detail,
+  .ministry-card,
+  .ministry-icon { transition: none; }
 }
