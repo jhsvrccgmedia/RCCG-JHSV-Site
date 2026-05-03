@@ -324,85 +324,113 @@
       });
     }
 
-    // ---- YouTube live embed swap (Live page) ----
-    // If the .live-player has a valid UC... channel ID, replace the
-    // static thumbnail link with the YouTube /embed/live_stream iframe
-    // pointed at that channel. The iframe auto-shows the current live
-    // stream (and YouTube renders an offline placeholder when nothing
-    // is live). Same trick rccgworld.org/rccg uses.
+    // ---- YouTube channel hydrate (Live page) ----
+    // One fetch of the channel's public RSS feeds the player AND the
+    // Recent Broadcasts grid. The first entry powers the player iframe
+    // (when the channel goes live, that entry IS the live stream, so
+    // it shows the live broadcast natively; when offline, it shows the
+    // most recent stream as a fallback rather than YouTube's "stream
+    // offline" error page). The top 3 entries fill the broadcasts grid.
+    //
+    // The RSS endpoint ships no CORS headers, so we tunnel through a
+    // public proxy. Two are tried in order so a single proxy outage
+    // doesn't leave the page stuck on placeholders. Result is cached
+    // in localStorage for 1 hour.
     var livePlayer = document.querySelector('.live-player[data-yt-channel]');
-    if (livePlayer) {
-      var ytChannel = livePlayer.dataset.ytChannel || '';
-      if (/^UC[A-Za-z0-9_-]{22}$/.test(ytChannel)) {
-        var iframe = document.createElement('iframe');
-        iframe.src = 'https://www.youtube.com/embed/live_stream?channel='
-          + encodeURIComponent(ytChannel)
-          + '&autoplay=0&rel=0&modestbranding=1';
-        iframe.title = 'Latest broadcast from Jesus House Silicon Valley';
-        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-        iframe.setAttribute('allowfullscreen', '');
-        livePlayer.innerHTML = '';
-        livePlayer.appendChild(iframe);
-      }
-    }
-
-    // ---- Recent broadcasts auto-pull (Live page) ----
-    // Pulls the channel's latest 3 uploads from YouTube's public RSS
-    // (https://www.youtube.com/feeds/videos.xml?channel_id=UC...) via
-    // a free CORS proxy so the static cards in HTML get replaced with
-    // the real thing. Result is cached in localStorage for an hour to
-    // keep the proxy load polite. Any failure leaves the static
-    // placeholder cards in place.
     var broadcastGrid = document.getElementById('broadcastGrid');
-    if (broadcastGrid && broadcastGrid.dataset.ytChannel
-        && /^UC[A-Za-z0-9_-]{22}$/.test(broadcastGrid.dataset.ytChannel)) {
-      loadRecentBroadcasts(broadcastGrid);
+    var ytChannelId =
+        (livePlayer && livePlayer.dataset.ytChannel) ||
+        (broadcastGrid && broadcastGrid.dataset.ytChannel) || '';
+
+    if (ytChannelId && /^UC[A-Za-z0-9_-]{22}$/.test(ytChannelId)) {
+      hydrateChannel(ytChannelId, livePlayer, broadcastGrid);
     }
 
-    function loadRecentBroadcasts(grid) {
-      var channelId = grid.dataset.ytChannel;
-      var cacheKey = 'jhsv_broadcasts_v1_' + channelId;
+    function hydrateChannel(channelId, player, grid) {
+      var cacheKey = 'jhsv_yt_v2_' + channelId;
       var cacheTtl = 60 * 60 * 1000; // 1 hour
       var rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + channelId;
-      var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(rssUrl);
+      var proxies = [
+        function (u) { return 'https://corsproxy.io/?' + encodeURIComponent(u); },
+        function (u) { return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); }
+      ];
 
       // Try fresh cache first.
+      var fresh = readChannelCache(cacheKey, cacheTtl);
+      if (fresh) {
+        applyChannelData(player, grid, fresh);
+        return;
+      }
+
+      tryProxies(proxies, rssUrl, 0)
+        .then(function (xml) {
+          var videos = parseYouTubeFeed(xml);
+          if (!videos.length) throw new Error('Empty feed');
+          var keep = videos.slice(0, 5);
+          try {
+            localStorage.setItem(cacheKey, JSON.stringify({
+              fetchedAt: Date.now(),
+              videos: keep
+            }));
+          } catch (e) { /* quota / private mode */ }
+          applyChannelData(player, grid, keep);
+        })
+        .catch(function (err) {
+          if (window.console && console.warn) {
+            console.warn('JHSV: YouTube hydrate failed, keeping static fallback.', err);
+          }
+          var stale = readChannelCache(cacheKey, Infinity);
+          if (stale) applyChannelData(player, grid, stale);
+        });
+    }
+
+    function readChannelCache(key, ttl) {
       try {
-        var cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-        if (cached && cached.videos && cached.videos.length
-            && Date.now() - cached.fetchedAt < cacheTtl) {
-          renderBroadcasts(grid, cached.videos);
-          return;
+        var raw = JSON.parse(localStorage.getItem(key) || 'null');
+        if (raw && raw.videos && raw.videos.length
+            && Date.now() - (raw.fetchedAt || 0) < ttl) {
+          return raw.videos;
         }
       } catch (e) { /* ignore */ }
+      return null;
+    }
 
-      fetch(proxyUrl, { cache: 'no-cache' })
+    function tryProxies(proxies, url, idx) {
+      if (idx >= proxies.length) return Promise.reject(new Error('All proxies failed'));
+      return fetch(proxies[idx](url), { cache: 'no-cache' })
         .then(function (res) {
           if (!res.ok) throw new Error('HTTP ' + res.status);
           return res.text();
         })
-        .then(function (xml) {
-          var videos = parseYouTubeFeed(xml).slice(0, 3);
-          if (!videos.length) return;
-          try {
-            localStorage.setItem(cacheKey, JSON.stringify({
-              fetchedAt: Date.now(),
-              videos: videos
-            }));
-          } catch (e) { /* ignore quota errors */ }
-          renderBroadcasts(grid, videos);
+        .then(function (text) {
+          if (!text || text.indexOf('<entry') === -1) {
+            throw new Error('Invalid RSS payload');
+          }
+          return text;
         })
-        .catch(function () {
-          // On failure, try a stale cache before giving up. If that's
-          // empty too, the static fallback cards in HTML stay visible.
-          try {
-            var stale = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-            if (stale && stale.videos && stale.videos.length) {
-              renderBroadcasts(grid, stale.videos);
-            }
-          } catch (e) { /* ignore */ }
-        });
+        .catch(function () { return tryProxies(proxies, url, idx + 1); });
+    }
+
+    function applyChannelData(player, grid, videos) {
+      if (player && videos[0]) renderLivePlayer(player, videos[0]);
+      if (grid) renderBroadcasts(grid, videos.slice(0, 3));
+    }
+
+    function renderLivePlayer(player, latest) {
+      var iframe = document.createElement('iframe');
+      // Embed the latest video by ID. When the channel is currently
+      // live, that ID is the live stream and YouTube shows the LIVE
+      // badge in the player. When offline, the most recent past stream
+      // plays in its place — no error state.
+      iframe.src = 'https://www.youtube.com/embed/'
+        + encodeURIComponent(latest.id)
+        + '?rel=0&modestbranding=1';
+      iframe.title = latest.title || 'Latest broadcast from Jesus House SV';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.setAttribute('allowfullscreen', '');
+      player.innerHTML = '';
+      player.appendChild(iframe);
     }
 
     function parseYouTubeFeed(xml) {
