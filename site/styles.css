@@ -625,11 +625,9 @@ body[data-page="home"] section.alt#welcome {
   text-align: center;
   max-width: 940px;
   /* hero uses align-items: flex-end — bottom padding controls how far
-     above the hero's bottom the text sits. 140px lifts the headline up
-     to roughly the height of the breathing arch's corners (where the
-     curved top meets the straight side), and leaves room below for the
-     scroll cue + the next-section dome curve. */
-  padding: 32px 32px 140px;
+     above the hero's bottom the text sits. 180px lifts the headline
+     a touch higher than the breathing arch's shoulders. */
+  padding: 32px 32px 180px;
   color: var(--text-inverse);
 }
 .hero-v2 .hero-content .eyebrow { color: var(--coral-300); }
@@ -646,7 +644,7 @@ body[data-page="home"] section.alt#welcome {
   color: rgba(250, 246, 240, 0.88);
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
 }
-.hero-v2 .hero-content .btn-row { margin-bottom: 22px; }
+.hero-v2 .hero-content .btn-row { margin-bottom: 14px; }
 .hero-v2 .hero-content .meta {
   color: rgba(250, 246, 240, 0.65);
   font-size: 13px;
@@ -731,7 +729,7 @@ body[data-page="home"] section.alt#welcome {
 .hero-v2 .scroll-cue-line {
   position: relative;
   width: 1px;
-  height: 24px;
+  height: 18px;
   background: rgba(250, 246, 240, 0.25);
   display: block;
   overflow: hidden;
@@ -740,7 +738,7 @@ body[data-page="home"] section.alt#welcome {
   content: '';
   position: absolute;
   top: 0; left: 0;
-  width: 1px; height: 12px;
+  width: 1px; height: 9px;
   background: var(--text-inverse);
   animation: hero-scroll-pulse 2.4s ease-in-out infinite;
 }
@@ -762,10 +760,10 @@ body[data-page="home"] section.alt#welcome {
   50%      { transform: translateX(-50%) scale(1.04); opacity: 1; }
 }
 @keyframes hero-scroll-pulse {
-  0%   { transform: translateY(-12px); opacity: 0; }
+  0%   { transform: translateY(-9px); opacity: 0; }
   20%  { opacity: 1; }
   80%  { opacity: 1; }
-  100% { transform: translateY(24px); opacity: 0; }
+  100% { transform: translateY(18px); opacity: 0; }
 }
 
 @media (max-width: 600px) {
