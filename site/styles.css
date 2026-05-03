@@ -2115,6 +2115,22 @@ footer.site-footer .nl-form button {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
+/* With 7 cards, the last row has a single orphan. Push it into the
+   middle column so it sits centered instead of left-aligned. */
+@media (min-width: 880px) {
+  .ministry-grid > .ministry-card:nth-child(7):last-child {
+    grid-column: 2;
+  }
+}
+@media (min-width: 580px) and (max-width: 879px) {
+  /* 2-column layout: span the orphan across both columns then cap
+     the width to a single cell so it visually centers in the row. */
+  .ministry-grid > .ministry-card:nth-child(7):last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 10px);
+  }
+}
 .ministry-card {
   appearance: none;
   background: var(--bg-card);
