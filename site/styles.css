@@ -624,10 +624,12 @@ body[data-page="home"] section.alt#welcome {
   z-index: 3;
   text-align: center;
   max-width: 940px;
-  /* hero uses align-items: flex-end now — bottom padding controls how
-     far above the hero's bottom the text sits. 100px keeps the text
-     clear of the next-section curve (which peaks 48px up). */
-  padding: 32px 32px 100px;
+  /* hero uses align-items: flex-end — bottom padding controls how far
+     above the hero's bottom the text sits. 140px lifts the headline up
+     to roughly the height of the breathing arch's corners (where the
+     curved top meets the straight side), and leaves room below for the
+     scroll cue + the next-section dome curve. */
+  padding: 32px 32px 140px;
   color: var(--text-inverse);
 }
 .hero-v2 .hero-content .eyebrow { color: var(--coral-300); }
@@ -701,10 +703,13 @@ body[data-page="home"] section.alt#welcome {
 }
 
 /* Functional scroll-down cue — minimal: a single thin pulsing line.
-   Sits clear of the bottom dome arc and the pushed-down hero text. */
+   Bottom: 70px keeps the entire 24px line + its drifting dash
+   comfortably above the next-section dome (which peaks 48px up
+   into the hero). z-index: 6 keeps it above the dome and the
+   breathing arch. */
 .hero-v2 .scroll-cue {
   position: absolute;
-  bottom: 28px;
+  bottom: 70px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 6;
