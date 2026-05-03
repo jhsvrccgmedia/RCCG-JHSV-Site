@@ -1026,14 +1026,18 @@ body[data-page="home"] section.alt#welcome {
 .stack-state.has-image .placeholder { display: none; }
 .stack-features {
   display: flex; flex-direction: column;
-  gap: 48px;
+  gap: 64px;
   padding: 8px 0;
 }
 .stack-card {
   background: var(--bg-card);
   border: 1px solid var(--border-soft);
   border-radius: 20px;
-  padding: 32px 28px;
+  padding: 64px 40px;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   opacity: 0.45;
   transform: translateY(8px);
   transition: opacity 0.4s var(--ease-out),
@@ -1068,6 +1072,8 @@ body[data-page="home"] section.alt#welcome {
   .stack { grid-template-columns: 1fr; gap: 32px; }
   .stack-visual { position: relative; top: 0; }
   .stack-arch { aspect-ratio: 5 / 4; }
+  .stack-features { gap: 28px; }
+  .stack-card { padding: 36px 28px; min-height: 0; }
 }
 
 /* ----------------------- Church card -----------------------
