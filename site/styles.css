@@ -1760,7 +1760,10 @@ footer.site-footer .nl-form button {
   50% { box-shadow: 0 0 0 10px rgba(232,93,60,0); }
 }
 
-/* Player frame — 16:9 thumbnail with a big coral play button. */
+/* Player frame — 16:9 container. Inner <a class="live-player-link">
+   shows the static thumbnail + play button by default. When a valid
+   YouTube channel ID is set on .live-player[data-yt-channel],
+   scripts.js replaces the inner link with an <iframe> sized to fill. */
 .live-player {
   display: block;
   position: relative;
@@ -1772,6 +1775,16 @@ footer.site-footer .nl-form button {
   box-shadow: 0 30px 60px -20px rgba(0,0,0,0.55),
               0 12px 24px -8px rgba(31,3,44,0.4);
   isolation: isolate;
+}
+.live-player iframe {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: 0;
+  display: block;
+}
+.live-player-link {
+  position: absolute; inset: 0;
+  display: block;
   cursor: pointer;
 }
 .live-player-thumb {
@@ -1805,12 +1818,12 @@ footer.site-footer .nl-form button {
               box-shadow 0.3s var(--ease-out);
 }
 .live-play svg { width: 38px; height: 38px; margin-left: 4px; }
-.live-player:hover .live-play {
+.live-player-link:hover .live-play {
   transform: translate(-50%, -50%) scale(1.06);
   box-shadow: 0 22px 50px -8px rgba(232,93,60,0.75),
               0 0 0 14px rgba(232,93,60,0.18);
 }
-.live-player:hover .live-player-thumb { transform: scale(1.04); }
+.live-player-link:hover .live-player-thumb { transform: scale(1.04); }
 
 @media (max-width: 700px) {
   .live-stage { padding: 64px 0 88px; }

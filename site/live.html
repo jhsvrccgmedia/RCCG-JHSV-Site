@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=41" />
+<link rel="stylesheet" href="styles.css?v=42" />
 </head>
 <body data-page="live">
 
@@ -26,19 +26,26 @@
       <p class="lede">Join us as we worship and hear the Word together.</p>
     </div>
 
-    <a
-      class="live-player reveal"
-      href="https://www.youtube.com/@jesushousesiliconvalleysan6808/streams"
-      target="_blank"
-      rel="noopener"
-      aria-label="Open the latest broadcast on YouTube"
-    >
-      <img class="live-player-thumb" src="assets/photos/service_sunday.jpg" alt="Latest Sunday service" loading="lazy" />
-      <span class="live-player-shade" aria-hidden="true"></span>
-      <span class="live-play" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      </span>
-    </a>
+    <!-- When data-yt-channel is a real UC... channel ID, scripts.js
+         swaps the inner <a> for a YouTube /embed/live_stream iframe so
+         the player auto-shows the current live stream (or YouTube's
+         fallback when offline). Until then, the static thumbnail and
+         /streams link below render as the visible state. -->
+    <div class="live-player reveal" data-yt-channel="UC_REPLACE_WITH_CHANNEL_ID">
+      <a
+        class="live-player-link"
+        href="https://www.youtube.com/@jesushousesiliconvalleysan6808/streams"
+        target="_blank"
+        rel="noopener"
+        aria-label="Open the latest broadcast on YouTube"
+      >
+        <img class="live-player-thumb" src="assets/photos/service_sunday.jpg" alt="Latest Sunday service" loading="lazy" />
+        <span class="live-player-shade" aria-hidden="true"></span>
+        <span class="live-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -224,6 +231,6 @@
 
 <div data-include="partials/footer.html"></div>
 
-<script src="scripts.js?v=10"></script>
+<script src="scripts.js?v=11"></script>
 </body>
 </html>

@@ -324,6 +324,29 @@
       });
     }
 
+    // ---- YouTube live embed swap (Live page) ----
+    // If the .live-player has a valid UC... channel ID, replace the
+    // static thumbnail link with the YouTube /embed/live_stream iframe
+    // pointed at that channel. The iframe auto-shows the current live
+    // stream (and YouTube renders an offline placeholder when nothing
+    // is live). Same trick rccgworld.org/rccg uses.
+    var livePlayer = document.querySelector('.live-player[data-yt-channel]');
+    if (livePlayer) {
+      var ytChannel = livePlayer.dataset.ytChannel || '';
+      if (/^UC[A-Za-z0-9_-]{22}$/.test(ytChannel)) {
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://www.youtube.com/embed/live_stream?channel='
+          + encodeURIComponent(ytChannel)
+          + '&autoplay=0&rel=0&modestbranding=1';
+        iframe.title = 'Latest broadcast from Jesus House Silicon Valley';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+        iframe.setAttribute('allowfullscreen', '');
+        livePlayer.innerHTML = '';
+        livePlayer.appendChild(iframe);
+      }
+    }
+
     // ---- Add-to-calendar popovers (Live page schedule cards) ----
     var calToggles = document.querySelectorAll('[data-cal-toggle]');
     if (calToggles.length) {
