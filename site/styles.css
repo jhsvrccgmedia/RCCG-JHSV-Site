@@ -1026,7 +1026,7 @@ body[data-page="home"] section.alt#welcome {
 .stack-state.has-image .placeholder { display: none; }
 .stack-features {
   display: flex; flex-direction: column;
-  gap: 28px;
+  gap: 48px;
   padding: 8px 0;
 }
 .stack-card {
