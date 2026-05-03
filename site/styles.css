@@ -848,9 +848,59 @@ body[data-page="home"] section.alt#welcome {
   font-weight: 600;
   letter-spacing: -0.005em;
 }
-.card.schedule-card .btn-sm {
+.card.schedule-card .cal-add {
   align-self: flex-start;
   margin-top: 4px;
+}
+
+/* Add-to-calendar popover. The pill toggles a small menu beneath it
+   with three deep links: Google (web prefill), Outlook (web prefill),
+   and Apple/iCal (downloads the .ics so iOS/macOS auto-prompts to
+   add to Calendar). JS in scripts.js wires the open/close. */
+.cal-add { position: relative; display: inline-block; }
+.cal-add .cal-chev {
+  margin-left: 2px;
+  transition: transform 0.25s var(--ease-out);
+}
+.cal-add [aria-expanded="true"] .cal-chev { transform: rotate(180deg); }
+.cal-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 20;
+  min-width: 200px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 14px 32px -8px rgba(31,3,44,0.18),
+              0 4px 12px -4px rgba(31,3,44,0.10);
+  animation: cal-menu-in 0.18s var(--ease-out);
+}
+.cal-menu[hidden] { display: none; }
+.cal-menu a {
+  display: block;
+  padding: 9px 14px;
+  border-radius: 9px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: background 0.2s var(--ease-out),
+              color 0.2s var(--ease-out);
+}
+.cal-menu a:hover,
+.cal-menu a:focus-visible {
+  background: var(--plum-50);
+  color: var(--plum-700);
+  outline: none;
+}
+@keyframes cal-menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Card grids */
