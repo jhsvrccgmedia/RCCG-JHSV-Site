@@ -2675,3 +2675,197 @@ footer.site-footer .nl-form button {
   .give-card { padding: 36px 24px 30px; border-radius: 20px; }
   .give-card h3 { font-size: 24px; }
 }
+
+/* ============================================================
+   Section background image with overlay
+   Inline-style background-image on the <section>, overlay rendered
+   by the ::before pseudo-element. Default is the parchment + plum
+   + coral gradient stack (.alt-style, just over a photo).
+   The .solid-overlay variant is mostly opaque parchment so the
+   image becomes a faint texture rather than a visible scene.
+   ============================================================ */
+section.has-bg-image {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--bg-alt);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+section.has-bg-image::before {
+  content: '';
+  position: absolute; inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 80% at 0% 0%, rgba(180, 138, 169, 0.65), transparent 60%),
+    radial-gradient(50% 70% at 100% 100%, rgba(232, 93, 60, 0.50), transparent 60%),
+    rgba(243, 238, 229, 0.78);
+}
+section.has-bg-image.solid-overlay::before {
+  background:
+    radial-gradient(60% 80% at 0% 0%, rgba(180, 138, 169, 0.18), transparent 60%),
+    radial-gradient(50% 70% at 100% 100%, rgba(232, 93, 60, 0.10), transparent 60%),
+    rgba(250, 246, 240, 0.94);
+}
+
+/* Bare arch portrait — no plum mat, no border, no pinstripe ring.
+   Just the photo cropped to the arch silhouette. Used alongside
+   forms and FAQ blocks where the visual brief is "soft accompanying
+   image", not "framed editorial portrait". */
+.photo-arch.bare,
+.photo-arch.bare.has-image {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.photo-arch.bare img {
+  inset: 0;
+  width: 100%; height: 100%;
+  border-radius: var(--arch-full);
+}
+.photo-arch.bare::before,
+.photo-arch.bare::after { display: none; }
+
+/* Two-column "form/content + side image" pattern (I'm New
+   Connection card, FAQ, Contact prayer). Image hides on mobile so
+   the form doesn't feel cramped. */
+.with-side {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+.with-side.image-left { grid-template-columns: 1fr 1fr; }
+.with-side > .with-side-image { max-width: 420px; width: 100%; justify-self: center; }
+@media (max-width: 900px) {
+  .with-side { grid-template-columns: 1fr; gap: 40px; }
+  .with-side > .with-side-image { display: none; }
+}
+
+/* Pastor bio modal (About page). Reuses the visual treatment of
+   the ministries modal but kept as its own class so the two
+   features can evolve independently. */
+.bio-overlay {
+  position: fixed; inset: 0;
+  z-index: 200;
+  background: rgba(31, 3, 44, 0.5);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-out);
+}
+.bio-overlay.open { display: flex; }
+.bio-overlay.visible { opacity: 1; }
+.bio-detail {
+  background: var(--bg-card);
+  border-radius: 24px;
+  max-width: 560px; width: 100%;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 40px 36px 32px;
+  box-shadow: 0 40px 80px -10px rgba(0,0,0,0.3),
+              0 12px 32px -8px rgba(31,3,44,0.25);
+  transform: scale(0.92) translateY(16px);
+  transition: transform 0.4s var(--ease-out);
+  position: relative;
+}
+.bio-overlay.visible .bio-detail { transform: scale(1) translateY(0); }
+.bio-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 36px; height: 36px;
+  border-radius: 999px;
+  border: none;
+  background: var(--bg-alt);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s var(--ease-out),
+              color 0.2s var(--ease-out);
+}
+.bio-close:hover {
+  background: var(--plum-100);
+  color: var(--plum-700);
+}
+.bio-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--coral-600);
+  margin-bottom: 12px;
+}
+.bio-detail h2 {
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.bio-role {
+  color: var(--plum-600);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.bio-body {
+  font-size: 15.5px;
+  color: var(--text-primary);
+  line-height: 1.65;
+  margin-bottom: 28px;
+}
+.bio-body p + p { margin-top: 12px; }
+.bio-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.bio-actions .btn { padding: 10px 22px; font-size: 14px; min-height: 40px; }
+@media (max-width: 600px) {
+  .bio-detail { padding: 32px 22px 24px; border-radius: 20px; }
+  .bio-detail h2 { font-size: 24px; }
+  .bio-close { top: 12px; right: 12px; }
+}
+
+/* Bio CTA — a small pill above the social row on each pastor card. */
+.btn-bio {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px;
+  font-size: 13px; font-weight: 600;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  background: transparent;
+  color: var(--plum-700);
+  border: 1.5px solid var(--plum-300);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s var(--ease-out),
+              color 0.2s var(--ease-out),
+              border-color 0.2s var(--ease-out);
+}
+.btn-bio:hover {
+  background: var(--plum-600);
+  color: var(--text-inverse);
+  border-color: var(--plum-600);
+}
+
+/* Footer office-hours block + mobile Explore-column hide. */
+footer.site-footer .col-services-hours strong { color: var(--text-inverse); }
+footer.site-footer .col-services-hours small {
+  font-size: 11.5px;
+  font-style: italic;
+  color: rgba(250,246,240,0.55);
+}
+@media (max-width: 600px) {
+  footer.site-footer .col-explore { display: none; }
+}

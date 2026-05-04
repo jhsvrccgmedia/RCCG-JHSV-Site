@@ -324,6 +324,84 @@
       });
     }
 
+    // ---- Pastor bio modal (About page) ----
+    var bioOverlay = document.getElementById('bioOverlay');
+    if (bioOverlay) {
+      var pastors = {
+        bayo: {
+          name: 'Pastor Bayo Asogba',
+          role: 'Lead Pastor',
+          instagram: 'https://www.instagram.com/shepherdscarefound/',
+          bio: [
+            "Pastor Bayo Asogba is the Lead Pastor of RCCG Jesus House Silicon Valley. Together with his wife, Pastor Yemisi Asogba, he leads the church with a deep love for Scripture, a heart for discipleship, and a commitment to seeing every person grow into the fullness of who God has called them to be.",
+            "His teaching is rooted in the Word, practical for everyday life, and aimed at lifting believers into a deeper walk with Christ. Beyond Sunday, he serves the wider Body through Shepherds Care Foundation, supporting Pastors and Church Leaders in seasons of crisis."
+          ]
+        },
+        yemisi: {
+          name: 'Pastor Yemisi Asogba',
+          role: 'Director of Women & Ministry',
+          instagram: 'https://www.instagram.com/yemisi_essential/',
+          bio: [
+            "Pastor Yemisi Asogba serves as Director of Women & Ministry at Jesus House Silicon Valley. Alongside her husband, Pastor Bayo, she shepherds the church family with warmth, prayer, and a steady focus on raising women who walk in their God-given identity.",
+            "She leads the Women's Ministry, mentors leaders across the church, and pours into the next generation through teaching, intercession, and personal discipleship. Her ministry centers on helping people encounter God's presence in a way that transforms their everyday lives."
+          ]
+        }
+      };
+
+      var bioName = document.getElementById('bioName');
+      var bioRole = document.getElementById('bioRole');
+      var bioBody = document.getElementById('bioBody');
+      var bioInstagram = document.getElementById('bioInstagram');
+      var lastBioFocus = null;
+
+      function openBio(key) {
+        var p = pastors[key];
+        if (!p) return;
+        lastBioFocus = document.activeElement;
+        bioName.textContent = p.name;
+        bioRole.textContent = p.role;
+        bioBody.innerHTML = p.bio.map(function (para) {
+          return '<p>' + para
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;') + '</p>';
+        }).join('');
+        bioInstagram.href = p.instagram;
+        bioOverlay.hidden = false;
+        bioOverlay.classList.add('open');
+        void bioOverlay.offsetHeight;
+        bioOverlay.classList.add('visible');
+        document.body.style.overflow = 'hidden';
+        var closeBtn = bioOverlay.querySelector('.bio-close');
+        if (closeBtn) closeBtn.focus();
+      }
+
+      function closeBio() {
+        bioOverlay.classList.remove('visible');
+        document.body.style.overflow = '';
+        setTimeout(function () {
+          bioOverlay.classList.remove('open');
+          bioOverlay.hidden = true;
+          if (lastBioFocus && typeof lastBioFocus.focus === 'function') {
+            lastBioFocus.focus();
+          }
+        }, 350);
+      }
+
+      document.querySelectorAll('[data-pastor-bio]').forEach(function (btn) {
+        btn.addEventListener('click', function () { openBio(btn.dataset.pastorBio); });
+      });
+      document.querySelectorAll('[data-close-bio]').forEach(function (btn) {
+        btn.addEventListener('click', closeBio);
+      });
+      bioOverlay.addEventListener('click', function (e) {
+        if (e.target === bioOverlay) closeBio();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && bioOverlay.classList.contains('open')) closeBio();
+      });
+    }
+
     // ---- YouTube channel hydrate (Live page) ----
     // One fetch of the channel's public RSS feeds the player AND the
     // Recent Broadcasts grid. The first entry powers the player iframe

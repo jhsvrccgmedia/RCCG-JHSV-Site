@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=53" />
+<link rel="stylesheet" href="styles.css?v=54" />
 </head>
 <body data-page="about">
 
@@ -25,7 +25,7 @@
 </section>
 
 <!-- ============ VISION & MISSION ============ -->
-<section class="alt">
+<section class="alt has-bg-image" style="background-image: url('assets/photos/congregation_candid.jpg');">
   <div class="wrap">
     <div class="grid c2 reveal" style="align-items: stretch;">
       <div class="card" style="padding: 36px; height: 100%; display: flex; flex-direction: column;">
@@ -70,7 +70,10 @@
         </div>
         <div class="card" style="text-align: center;">
           <h3 style="font-family: var(--display); font-size: 26px; line-height: 1.2; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 6px;">Pastor Bayo Asogba</h3>
-          <p style="color: var(--plum-600); font-weight: 600; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 18px;">Lead Pastor</p>
+          <p style="color: var(--plum-600); font-weight: 600; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 16px;">Lead Pastor</p>
+          <div style="margin-bottom: 16px;">
+            <button class="btn-bio" type="button" data-pastor-bio="bayo" aria-haspopup="dialog">Bio</button>
+          </div>
           <div class="btn-row" style="justify-content: center; gap: 16px;">
             <a class="btn-social" href="https://www.instagram.com/shepherdscarefound/" target="_blank" rel="noopener" aria-label="Instagram">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -94,7 +97,10 @@
         </div>
         <div class="card" style="text-align: center;">
           <h3 style="font-family: var(--display); font-size: 26px; line-height: 1.2; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 6px;">Pastor Yemisi Asogba</h3>
-          <p style="color: var(--plum-600); font-weight: 600; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 18px;">Director of Women &amp; Ministry</p>
+          <p style="color: var(--plum-600); font-weight: 600; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 16px;">Director of Women &amp; Ministry</p>
+          <div style="margin-bottom: 16px;">
+            <button class="btn-bio" type="button" data-pastor-bio="yemisi" aria-haspopup="dialog">Bio</button>
+          </div>
           <div class="btn-row" style="justify-content: center; gap: 16px;">
             <a class="btn-social" href="https://www.instagram.com/yemisi_essential/" target="_blank" rel="noopener" aria-label="Instagram">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -103,9 +109,9 @@
                 <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
               </svg>
             </a>
-            <a class="btn-social" href="https://www.tiktok.com/@okikiolalove" target="_blank" rel="noopener" aria-label="TikTok">
+            <a class="btn-social" href="https://www.threads.com/@yemisi_essential" target="_blank" rel="noopener" aria-label="Threads">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M19.6 6.7a5.3 5.3 0 0 1-3.1-1A5.3 5.3 0 0 1 14.5 2h-3v13.2a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.6a5.6 5.6 0 1 0 4.8 5.6V8.7a8.4 8.4 0 0 0 5.1 1.7v-3z"/>
+                <path d="M17.6 11.05c-.07-.03-.13-.06-.2-.09-.13-2.4-1.43-3.77-3.62-3.78h-.03c-1.31 0-2.4.56-3.07 1.58l1.21.83c.5-.76 1.28-.92 1.86-.92h.02c.72 0 1.27.21 1.6.62.24.3.4.71.48 1.23-.6-.1-1.24-.13-1.92-.09-1.93.11-3.18 1.24-3.1 2.81.05.8.45 1.49 1.12 1.93.57.37 1.3.55 2.06.51 1.01-.05 1.8-.44 2.36-1.16.42-.55.69-1.27.81-2.17.5.3.87.7 1.07 1.18.35.81.37 2.13-.71 3.2-.95.93-2.08 1.34-3.79 1.35-1.9-.01-3.34-.62-4.27-1.81-.87-1.1-1.32-2.7-1.34-4.74.02-2.04.47-3.64 1.34-4.74.93-1.19 2.37-1.8 4.27-1.81 1.91.01 3.38.62 4.36 1.83.48.59.84 1.34 1.07 2.21l1.39-.37c-.28-1.07-.74-2-1.36-2.77-1.27-1.55-3.12-2.35-5.46-2.35h-.01c-2.34 0-4.16.8-5.4 2.36-1.11 1.39-1.68 3.32-1.7 5.74v.01c.02 2.42.59 4.35 1.7 5.74 1.24 1.56 3.06 2.36 5.4 2.36h.01c2.08-.01 3.55-.55 4.76-1.74 1.59-1.55 1.54-3.5.99-4.7-.4-.86-1.16-1.56-2.21-2.04zm-3.1 3.1c-.84.05-1.71-.33-1.76-1.13-.04-.6.41-1.27 1.81-1.35h.21c.51 0 .98.05 1.42.14-.16 2.04-1.12 2.3-1.68 2.34z"/>
               </svg>
             </a>
           </div>
@@ -268,8 +274,27 @@
   </div>
 </section>
 
+<!-- Pastor bio modal (single shared instance, populated by JS) -->
+<div class="bio-overlay" id="bioOverlay" role="dialog" aria-modal="true" aria-labelledby="bioName" hidden>
+  <div class="bio-detail">
+    <button class="bio-close" type="button" data-close-bio aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="bio-eyebrow">About</div>
+    <h2 id="bioName">&nbsp;</h2>
+    <div class="bio-role" id="bioRole">&nbsp;</div>
+    <div class="bio-body" id="bioBody"></div>
+    <div class="bio-actions">
+      <a class="btn btn-primary" id="bioInstagram" href="#" target="_blank" rel="noopener">Instagram <span class="arrow">&#x2197;</span></a>
+      <button class="btn btn-outline" type="button" data-close-bio>Close</button>
+    </div>
+  </div>
+</div>
+
 <div data-include="partials/footer.html"></div>
 
-<script src="scripts.js?v=19"></script>
+<script src="scripts.js?v=20"></script>
 </body>
 </html>
