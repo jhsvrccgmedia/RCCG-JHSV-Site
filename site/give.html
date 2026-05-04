@@ -3,12 +3,20 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Give — RCCG Jesus House Silicon Valley</title>
-<meta name="description" content="Give generously. Online, by mail, or in person. Your giving supports the work of Jesus House Silicon Valley." />
+<title>Give &mdash; RCCG Jesus House Silicon Valley</title>
+<meta name="description" content="Give generously. Online via Planning Center, by mail, Zelle, or partnership pledge. Your giving supports the work of Jesus House Silicon Valley." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css?v=49" />
+
+<!--
+  Church Center modal embed. Loading this script makes any link with
+  data-open-in-church-center-modal="true" open the giving form in an
+  on-page modal instead of a new tab. https only; falls back to
+  opening churchcenter.com in a new tab on insecure origins / mobile.
+-->
+<script src="https://js.churchcenter.com/modal/v1"></script>
 </head>
 <body data-page="give">
 
@@ -18,8 +26,8 @@
   <div class="hero-arch" aria-hidden="true"></div>
   <div class="hero-arch-2" aria-hidden="true"></div>
   <div class="wrap">
-    <div class="eyebrow reveal">Generosity</div>
-    <h1 class="display reveal">Give generously.</h1>
+    <div class="eyebrow reveal">Giving</div>
+    <h1 class="display reveal">Thank you for giving.</h1>
     <p class="lede reveal">Every gift, no matter the size, fuels the work of Jesus House: Sunday gatherings, the Children&rsquo;s Ministry, outreach, and care for our church family and our city.</p>
   </div>
 </section>
@@ -29,7 +37,7 @@
   <div class="wrap" style="max-width: 640px;">
     <div class="section-head reveal" style="text-align: center; margin: 0 auto 32px;">
       <div class="eyebrow">Online giving</div>
-      <h2 class="display">Give in one minute.</h2>
+      <h2 class="display">Purposeful giving made easy.</h2>
       <p class="lede" style="margin: 16px auto 0;">Secure giving, one-time or recurring, by card or bank.</p>
     </div>
     <div class="give-card reveal">
@@ -46,13 +54,15 @@
         <li><span class="check" aria-hidden="true">&#x2713;</span> Choose your fund: tithe, missions, building, more</li>
         <li><span class="check" aria-hidden="true">&#x2713;</span> Bank-grade encryption end to end</li>
       </ul>
-      <a class="btn btn-primary give-card-cta" href="https://rccgjhsv.churchcenter.com/giving" target="_blank" rel="noopener" data-magnetic>
-        Give online <span class="arrow">&#x2197;</span>
+      <a class="btn btn-primary give-card-cta"
+         href="https://rccgjhsv.churchcenter.com/giving"
+         data-open-in-church-center-modal="true"
+         data-magnetic>
+        Give online <span class="arrow">&rarr;</span>
       </a>
       <p class="give-card-fineprint">
         Secured by
         <a href="https://www.planningcenter.com/giving" target="_blank" rel="noopener">Planning Center</a>.
-        Opens in a new tab. Your card details never touch our servers.
       </p>
     </div>
   </div>
@@ -63,9 +73,10 @@
   <div class="wrap">
     <div class="section-head reveal">
       <div class="eyebrow">Other ways to give</div>
-      <h2 class="display">Whichever fits.</h2>
+      <h2 class="display">More ways to support the Ministry.</h2>
+      <p class="lede">God bless you for your generosity!</p>
     </div>
-    <div class="spot-grid reveal">
+    <div class="spot-grid reveal" style="grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));">
       <div class="spot-card">
         <div class="card-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -74,18 +85,19 @@
           </svg>
         </div>
         <h3>By mail</h3>
-        <p>Make checks payable to <strong>RCCG JHSV</strong>. Mail to 474 Piercy Road, San Jose, CA 95138.</p>
+        <p>Make checks payable to <em>REDEEMED CHRISTIAN CHURCH OF GOD &mdash; JESUS HOUSE SILICON VALLEY</em>. Mail to 474 Piercy Road, San Jose, CA 95138.</p>
       </div>
       <div class="spot-card">
         <div class="card-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2l1.6 4.4L18 8l-4.4 1.6L12 14l-1.6-4.4L6 8l4.4-1.6L12 2z"/>
-            <path d="M5 16l1 2 2 1-2 1-1 2-1-2-2-1 2-1 1-2z"/>
-            <path d="M19 14l1 2 2 1-2 1-1 2-1-2-2-1 2-1 1-2z"/>
+            <path d="M17 1l4 4-4 4"/>
+            <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+            <path d="M7 23l-4-4 4-4"/>
+            <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
           </svg>
         </div>
-        <h3>In person</h3>
-        <p>Drop your gift in the offering basket during any Sunday service.</p>
+        <h3>Zelle</h3>
+        <p>We accept Zelle donations to <em>rccgjhsv2013@gmail.com</em>.</p>
       </div>
       <div class="spot-card">
         <div class="card-icon" aria-hidden="true">
@@ -98,8 +110,19 @@
           </svg>
         </div>
         <h3>Partnership pledge</h3>
-        <p>Sustained partnership lets us plan further ahead. Contact the office to talk through cadre options.</p>
+        <p>Sustained partnership lets us plan further ahead. Contact the office to talk through recurring options.</p>
         <a class="card-cta" href="contact.html">Get in touch</a>
+      </div>
+      <div class="spot-card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s7-4 7-10V5l-7-3-7 3v7c0 6 7 10 7 10z"/>
+            <path d="M12 8v6"/>
+            <path d="M9 11h6"/>
+          </svg>
+        </div>
+        <h3>Shepherds Care Foundation</h3>
+        <p>Join our mission to support other Pastors and Church Leaders currently in crisis. Donations for this can be made through CashApp to <em>$shepherdscare</em>.</p>
       </div>
     </div>
   </div>
@@ -110,24 +133,23 @@
   <div class="wrap" style="max-width: 760px;">
     <div class="section-head reveal">
       <div class="eyebrow">Giving FAQ</div>
-      <h2 class="display">A few common questions.</h2>
+      <h2 class="display">Most Asked Questions about Giving</h2>
     </div>
     <div class="faq reveal">
       <details><summary>Is my gift tax-deductible?</summary><p>Yes. RCCG Jesus House Silicon Valley is a 501(c)(3) non-profit. We provide annual giving statements for your records.</p></details>
-      <details><summary>How do I get a giving statement?</summary><p>Statements are issued in January for the prior year. Email <a href="mailto:info@rccgjhsv.org">info@rccgjhsv.org</a> if you need yours sooner.</p></details>
-      <details><summary>Is online giving secure?</summary><p>Yes. Online gifts are processed through an industry-standard secure payment platform. Your card details never touch our servers.</p></details>
-      <details><summary>Can I change or pause a recurring gift?</summary><p>Anytime. You can manage your recurring gift directly from the giving portal, or email us and we'll help.</p></details>
-      <details><summary>Who can I contact about my giving?</summary><p>Reach the office at <a href="tel:+19257598930">(925) 759-8930</a> or <a href="mailto:info@rccgjhsv.org">info@rccgjhsv.org</a>.</p></details>
+      <details><summary>How do I get a giving statement?</summary><p>Statements are automatically issued and available through our partner app &mdash; Planning Center in January. Email <a href="mailto:finance@rccgjhsv.org">finance@rccgjhsv.org</a> for other giving methods statements if not received by the end of January.</p></details>
+      <details><summary>Can I change or pause a recurring gift?</summary><p>Yes. Sign in at <a href="https://rccgjhsv.churchcenter.com/me" target="_blank" rel="noopener">rccgjhsv.churchcenter.com</a> and open <strong>Giving</strong> from your profile. From there you can edit the amount, change the fund, switch the payment method, or pause and cancel any recurring gift. If you&rsquo;d rather we handle it, email <a href="mailto:finance@rccgjhsv.org">finance@rccgjhsv.org</a> and we&rsquo;ll take care of it.</p></details>
+      <details><summary>Who can I contact about my giving?</summary><p>Reach the office at <a href="tel:+19257598930">(925) 759-8930</a> or <a href="mailto:finance@rccgjhsv.org">finance@rccgjhsv.org</a>.</p></details>
     </div>
   </div>
 </section>
 
 <section class="cta-band">
-  <div class="wrap" style="text-align: center; max-width: 620px;">
+  <div class="wrap" style="text-align: center; max-width: 720px;">
     <div class="reveal">
-      <div class="eyebrow">Thank you</div>
-      <h2 class="display">Generosity changes things.</h2>
-      <p class="lede" style="margin: 0 auto 28px;">Including the giver. Thank you for your part in this work.</p>
+      <div class="eyebrow">Thank you for giving</div>
+      <h2 class="display">Your generosity helps make ministry possible.</h2>
+      <p class="lede" style="margin: 0 auto 28px;">&ldquo;Give, and it will be given to you. A good measure, pressed down, shaken together and running over, will be poured into your lap&rdquo; (Luke 6:38). Thank you for giving faithfully and helping support the ministry, outreach, and care of Jesus House Silicon Valley.</p>
     </div>
   </div>
 </section>
