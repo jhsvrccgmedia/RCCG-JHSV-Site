@@ -378,7 +378,7 @@
       }
 
       // Independently check whether the channel is currently live and
-      // flip the "Last service" pill to "Live now" with the coral pulse.
+      // flip the "Last service" pill to "Live" with the coral pulse.
       // Cached for 60s in localStorage so we don't hammer the proxy.
       if (document.querySelector('.live-stage')) {
         checkChannelLive(channelId).then(applyLiveStatus);
@@ -391,7 +391,7 @@
       if (!stage || !label) return;
       if (isLive) {
         stage.dataset.live = 'true';
-        label.textContent = 'Live now';
+        label.textContent = 'Live';
       } else {
         stage.dataset.live = 'false';
         // Keep whatever default the HTML shipped with — usually
