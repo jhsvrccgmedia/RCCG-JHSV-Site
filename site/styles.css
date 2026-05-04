@@ -1585,21 +1585,39 @@ footer.site-footer .legal {
   border-top: 1px solid rgba(250,246,240,0.14);
   margin-top: 40px;
   padding-top: 18px;
-  display: flex; flex-wrap: wrap; gap: 16px;
+  display: flex; flex-wrap: nowrap; gap: 24px;
   justify-content: space-between;
   align-items: center;
   font-size: 12.5px;
   color: rgba(250,246,240,0.55);
 }
-/* Copyright on the left can wrap on tight viewports; the
-   "Powered by InterServer" credit on the right should never split
-   between words. The non-breaking spaces inside .legal-credit are
-   the primary guarantee — this rule + word-break: keep-all are
-   belt-and-suspenders for any browser quirk. */
+/* The copyright string is the long one. Let it consume the row's
+   available width and wrap its OWN text if the viewport gets narrow.
+   The min-width: 0 is the key — without it, flex items default to
+   min-width: auto (= min-content) and refuse to shrink, which would
+   push the credit off-screen or force the whole row to wrap. */
+footer.site-footer .legal > :first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+/* The InterServer credit holds its content width, never shrinks,
+   never wraps. NBSPs inside are still belt-and-suspenders. */
 footer.site-footer .legal .legal-credit {
+  flex: 0 0 auto;
   white-space: nowrap;
   word-break: keep-all;
   overflow-wrap: normal;
+}
+/* Phones get to stack — copyright above, credit below, both centered.
+   At sub-560px the row gets too tight for any reasonable balance. */
+@media (max-width: 560px) {
+  footer.site-footer .legal {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+  }
+  footer.site-footer .legal > :first-child { flex: 0 1 auto; }
 }
 footer.site-footer .socials {
   display: flex; gap: 10px; margin-top: 4px;
