@@ -378,7 +378,7 @@
       }
 
       // Independently check whether the channel is currently live and
-      // flip the "Last service" pill to "Live" with the coral pulse.
+      // flip the "Recent service" pill to "Live" with the coral pulse.
       // Cached for 60s in localStorage so we don't hammer the proxy.
       if (document.querySelector('.live-stage')) {
         checkChannelLive(channelId).then(applyLiveStatus);
@@ -395,7 +395,7 @@
       } else {
         stage.dataset.live = 'false';
         // Keep whatever default the HTML shipped with — usually
-        // "Last service" — so we don't churn the label when the proxy
+        // "Recent service" — so we don't churn the label when the proxy
         // call fails or returns false.
       }
     }
@@ -406,7 +406,7 @@
     // embedded JSON includes "isLive":true / "liveBroadcastContent":
     // "live" — we look for either marker after pulling through a CORS
     // proxy. Best-effort: a missing/changed marker just means we stay
-    // on the default "Last service" pill.
+    // on the default "Recent service" pill.
     function checkChannelLive(channelId) {
       var cacheKey = 'jhsv_yt_live_v1_' + channelId;
       var cacheTtl = 60 * 1000; // 1 minute
