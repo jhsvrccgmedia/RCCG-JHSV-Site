@@ -1915,6 +1915,14 @@ footer.site-footer .nl-form button {
               box-shadow 0.3s var(--ease-out),
               border-color 0.3s var(--ease-out);
 }
+/* When the Add-to-calendar menu is open, lift the whole event card
+   above its siblings so the dropdown can't be painted under the
+   next-row card (which spawns its own stacking context the moment
+   the cursor crosses into it on hover). */
+.upcoming-event:has([data-cal-toggle][aria-expanded="true"]) {
+  position: relative;
+  z-index: 50;
+}
 .upcoming-event:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
