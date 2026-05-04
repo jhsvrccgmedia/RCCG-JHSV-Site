@@ -27,7 +27,7 @@ DTSTART;TZID=America/Los_Angeles:20260513T190000
 DTEND;TZID=America/Los_Angeles:20260513T210000
 RRULE:FREQ=WEEKLY;BYDAY=WE
 SUMMARY:Masterclass Bible Study · Jesus House SV
-DESCRIPTION:A weekly deep dive into Scripture. In person at 474 Piercy Road\, San Jose\, or live online at youtube.com/@jesushousesiliconvalleysan6808.
+DESCRIPTION:A weekly deep dive into Scripture. In person at 474 Piercy Road\, San Jose\, or live online at youtube.com/@rccgjhsv.
 LOCATION:474 Piercy Road\, San Jose\, CA 95138
 URL:https://www.rccgjhsv.org/live.html
 END:VEVENT

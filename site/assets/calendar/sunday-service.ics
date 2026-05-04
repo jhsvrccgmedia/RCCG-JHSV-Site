@@ -27,7 +27,7 @@ DTSTART;TZID=America/Los_Angeles:20260510T100000
 DTEND;TZID=America/Los_Angeles:20260510T123000
 RRULE:FREQ=WEEKLY;BYDAY=SU
 SUMMARY:Sunday Service · Jesus House SV
-DESCRIPTION:Sunday School at 10:00 AM followed by the Hours of Transformation main service. In person at 474 Piercy Road\, San Jose\, or live online at youtube.com/@jesushousesiliconvalleysan6808.
+DESCRIPTION:Sunday School at 10:00 AM followed by the Hours of Transformation main service. In person at 474 Piercy Road\, San Jose\, or live online at youtube.com/@rccgjhsv.
 LOCATION:474 Piercy Road\, San Jose\, CA 95138
 URL:https://www.rccgjhsv.org/live.html
 END:VEVENT
