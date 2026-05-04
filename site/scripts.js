@@ -355,28 +355,97 @@
       var fresh = readChannelCache(cacheKey, cacheTtl);
       if (fresh) {
         applyChannelData(player, grid, fresh);
-        return;
+      } else {
+        fetchChannelVideos(rssUrl)
+          .then(function (videos) {
+            if (!videos.length) throw new Error('Empty feed');
+            var keep = videos.slice(0, 5);
+            try {
+              localStorage.setItem(cacheKey, JSON.stringify({
+                fetchedAt: Date.now(),
+                videos: keep
+              }));
+            } catch (e) { /* quota / private mode */ }
+            applyChannelData(player, grid, keep);
+          })
+          .catch(function (err) {
+            if (window.console && console.warn) {
+              console.warn('JHSV: YouTube hydrate failed, keeping static fallback.', err);
+            }
+            var stale = readChannelCache(cacheKey, Infinity);
+            if (stale) applyChannelData(player, grid, stale);
+          });
       }
 
-      fetchChannelVideos(rssUrl)
-        .then(function (videos) {
-          if (!videos.length) throw new Error('Empty feed');
-          var keep = videos.slice(0, 5);
-          try {
-            localStorage.setItem(cacheKey, JSON.stringify({
-              fetchedAt: Date.now(),
-              videos: keep
-            }));
-          } catch (e) { /* quota / private mode */ }
-          applyChannelData(player, grid, keep);
-        })
-        .catch(function (err) {
-          if (window.console && console.warn) {
-            console.warn('JHSV: YouTube hydrate failed, keeping static fallback.', err);
-          }
-          var stale = readChannelCache(cacheKey, Infinity);
-          if (stale) applyChannelData(player, grid, stale);
-        });
+      // Independently check whether the channel is currently live and
+      // flip the "Last service" pill to "Live now" with the coral pulse.
+      // Cached for 60s in localStorage so we don't hammer the proxy.
+      if (document.querySelector('.live-stage')) {
+        checkChannelLive(channelId).then(applyLiveStatus);
+      }
+    }
+
+    function applyLiveStatus(isLive) {
+      var stage = document.querySelector('.live-stage');
+      var label = document.querySelector('[data-live-label]');
+      if (!stage || !label) return;
+      if (isLive) {
+        stage.dataset.live = 'true';
+        label.textContent = 'Live now';
+      } else {
+        stage.dataset.live = 'false';
+        // Keep whatever default the HTML shipped with — usually
+        // "Last service" — so we don't churn the label when the proxy
+        // call fails or returns false.
+      }
+    }
+
+    // Heuristic live detection. youtube.com/channel/<id>/live serves
+    // the live broadcast watch page when the channel is currently live
+    // and a redirected channel-home page otherwise. The watch page's
+    // embedded JSON includes "isLive":true / "liveBroadcastContent":
+    // "live" — we look for either marker after pulling through a CORS
+    // proxy. Best-effort: a missing/changed marker just means we stay
+    // on the default "Last service" pill.
+    function checkChannelLive(channelId) {
+      var cacheKey = 'jhsv_yt_live_v1_' + channelId;
+      var cacheTtl = 60 * 1000; // 1 minute
+
+      try {
+        var cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+        if (cached && Date.now() - (cached.t || 0) < cacheTtl) {
+          return Promise.resolve(!!cached.live);
+        }
+      } catch (e) { /* ignore */ }
+
+      var liveUrl = 'https://www.youtube.com/channel/'
+        + encodeURIComponent(channelId) + '/live';
+      var proxies = [
+        function (u) { return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); },
+        function (u) { return 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u); }
+      ];
+      var liveMarker = /"isLive"\s*:\s*true|"liveBroadcastContent"\s*:\s*"live"|"isLiveNow"\s*:\s*true/;
+
+      function tryAt(idx) {
+        if (idx >= proxies.length) return Promise.resolve(false);
+        return fetch(proxies[idx](liveUrl), { cache: 'no-cache' })
+          .then(function (res) {
+            if (!res.ok) throw new Error('proxy HTTP ' + res.status);
+            return res.text();
+          })
+          .then(function (html) { return liveMarker.test(html); })
+          .catch(function () { return tryAt(idx + 1); });
+      }
+
+      return tryAt(0).then(function (live) {
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify({
+            t: Date.now(),
+            live: live
+          }));
+        } catch (e) { /* ignore */ }
+        return live;
+      });
     }
 
     function readChannelCache(key, ttl) {
@@ -460,7 +529,10 @@
 
     function applyChannelData(player, grid, videos) {
       if (player && videos[0]) renderLivePlayer(player, videos[0]);
-      if (grid) renderBroadcasts(grid, videos.slice(0, 3));
+      // Broadcasts grid skips videos[0] — that one's already in the
+      // player above. Take the next 3 (videos[1..3]) so the section
+      // truly is "previous" broadcasts, not a duplicate of the player.
+      if (grid) renderBroadcasts(grid, videos.slice(1, 4));
     }
 
     function renderLivePlayer(player, latest) {

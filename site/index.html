@@ -12,13 +12,14 @@
 
 <!--
   Live Google Calendar feed for the "Upcoming" section.
-  Same config + key as /events. Maxed at 3 here (vs. 4 on /events).
+  Same config + key as /events; both pages now pull 4 events so the
+  2x2 grid balances on each.
 -->
 <script>
   window.JHSV_CALENDAR = {
     id:     "rccgjhsv2013@gmail.com",                  // public calendar id
     apiKey: "AIzaSyAbqbFGmW3VbrykD4TjV-qVtMEbhso0o0U", // referrer-restricted: rccgjhsv.org, *.vercel.app, localhost
-    maxResults: 3
+    maxResults: 4
   };
 </script>
 </head>
@@ -214,6 +215,24 @@
           <p>A day full of Bible-centered fun for kids, with songs, lessons, and friendships.</p>
         </div>
       </article>
+
+      <article class="upcoming-event"
+        data-event
+        data-event-title="Church Anniversary"
+        data-event-start="2026-08-16T10:30:00-07:00"
+        data-event-end="2026-08-16T14:00:00-07:00"
+        data-event-location="474 Piercy Road, San Jose, CA 95138"
+        data-event-desc="Marking another year of God's faithfulness to Jesus House Silicon Valley.">
+        <div class="event-date" aria-hidden="true">
+          <div class="month">Aug</div>
+          <div class="day">16</div>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">Sunday &middot; 10:30 AM to 2:00 PM</div>
+          <h3>Church Anniversary</h3>
+          <p>Marking another year of God&rsquo;s faithfulness to Jesus House Silicon Valley.</p>
+        </div>
+      </article>
     </div>
 
     <p class="reveal" data-cal-status hidden style="text-align: center; margin-top: 28px; font-size: 13px; color: var(--text-muted);"></p>
@@ -283,6 +302,6 @@
 <!-- ============ FOOTER ============ -->
 <div data-include="partials/footer.html"></div>
 
-<script src="scripts.js?v=15"></script>
+<script src="scripts.js?v=16"></script>
 </body>
 </html>
