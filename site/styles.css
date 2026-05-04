@@ -1934,6 +1934,14 @@ footer.site-footer .nl-form button {
               box-shadow 0.3s var(--ease-out),
               border-color 0.3s var(--ease-out);
 }
+/* When the Add-to-calendar menu is open, lift the whole event card
+   above its siblings so the dropdown can't be painted under the
+   next-row card (which spawns its own stacking context the moment
+   the cursor crosses into it on hover). */
+.upcoming-event:has([data-cal-toggle][aria-expanded="true"]) {
+  position: relative;
+  z-index: 50;
+}
 .upcoming-event:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
@@ -2387,4 +2395,156 @@ footer.site-footer .nl-form button {
   .ministry-detail,
   .ministry-card,
   .ministry-icon { transition: none; }
+}
+
+/* ============================================================
+   Card link styled as a button (for modal triggers inside .church-card).
+   Visually identical to the existing .card-link <a> so the Prayer Line
+   trigger reads the same as "Get directions" / "Watch online" but is
+   semantically a <button> opening a dialog.
+   ============================================================ */
+.card-link.card-link-button {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--plum-600);
+  cursor: pointer;
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.card-link.card-link-button:hover { color: var(--coral-600); }
+.card-link.card-link-button:focus-visible {
+  outline: 2px solid var(--plum-600);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   Prayer Line modal — inherits the look of .ministry-overlay
+   (parchment surface, plum-tinted backdrop, soft scale-in) so the
+   Monday dial-in dialog feels like part of the same family.
+   ============================================================ */
+.prayer-overlay {
+  position: fixed; inset: 0;
+  z-index: 200;
+  background: rgba(31, 3, 44, 0.5);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.28s var(--ease-out);
+}
+.prayer-overlay.open    { display: flex; }
+.prayer-overlay.visible { opacity: 1; }
+
+.prayer-detail {
+  background: var(--bg-card);
+  border-radius: 24px;
+  max-width: 480px;
+  width: 100%;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 40px 36px 32px;
+  box-shadow: 0 40px 80px -10px rgba(0, 0, 0, 0.3),
+              0 12px 32px -8px rgba(31, 3, 44, 0.25);
+  transform: scale(0.94) translateY(12px);
+  transition: transform 0.32s var(--ease-out);
+  position: relative;
+}
+.prayer-overlay.visible .prayer-detail {
+  transform: scale(1) translateY(0);
+}
+
+.prayer-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--bg-alt);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+.prayer-close:hover {
+  background: var(--plum-100);
+  color: var(--plum-700);
+}
+
+.prayer-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--coral-600);
+  margin-bottom: 12px;
+}
+
+#prayerModalTitle {
+  font-family: var(--display);
+  font-size: clamp(28px, 4vw, 36px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.prayer-blurb {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin-bottom: 22px;
+}
+
+.prayer-dialin {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 10px 16px;
+  margin-bottom: 28px;
+  font-size: 15px;
+}
+.prayer-dialin dt {
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-top: 4px;
+}
+.prayer-dialin dd {
+  margin: 0;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+.prayer-dialin dd a { color: var(--plum-600); font-weight: 600; }
+.prayer-dialin dd a:hover { color: var(--plum-700); text-decoration: underline; }
+
+.prayer-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .prayer-detail { padding: 32px 22px 24px; }
+  .prayer-dialin { grid-template-columns: 1fr; gap: 4px 0; }
+  .prayer-dialin dt { padding-top: 12px; }
+  .prayer-actions .btn { flex: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prayer-overlay,
+  .prayer-detail { transition: none; }
 }

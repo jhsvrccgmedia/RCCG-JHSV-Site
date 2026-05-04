@@ -26,7 +26,7 @@ Making Heaven Rejoice and Transforming the Earth.
 - **Director of Church Welfare**
   - Lead: Sis Dupe
   - Assisted By: Sis Gladys and Sis Lolade
-- **Director Children Ministry**
+- **Director of Children's Ministry**
   - Lead: Sis Toun
   - Assisted by: Sis Bisi'
 - **Director of Sunday School Department and Programs**
@@ -59,7 +59,7 @@ Making Heaven Rejoice and Transforming the Earth.
   - Lead: Sis Bunmi
 - **Director of Church Project and Building**
   - Lead: Bro Dami
-- **Director of Decoration and Sanctuary Cleaning**
+- **Director of Decoration and Sanctuary Keeping**
   - Lead: Sis. Claire
 
 ### Our History
