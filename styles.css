@@ -3061,3 +3061,42 @@ footer.site-footer .col-services-hours small {
   display: inline-block;
   transition: transform 0.25s var(--ease-out);
 }
+
+/* Error pages: fill viewport, vertically center content, kill bottom whitespace. */
+body[data-page="error"] {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+body[data-page="error"] > section.hero {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0 60px;
+}
+body[data-page="error"] > section.hero .wrap {
+  width: 100%;
+}
+body[data-page="error"] .display {
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (max-width: 600px) {
+  body[data-page="error"] > section.hero {
+    padding: 56px 16px;
+  }
+  body[data-page="error"] .display {
+    font-size: clamp(32px, 8vw, 44px);
+    line-height: 1.15;
+  }
+  body[data-page="error"] .lede {
+    font-size: 17px;
+  }
+  body[data-page="error"] .btn-row .btn {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+  }
+}
