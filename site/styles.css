@@ -703,6 +703,44 @@ body[data-page="home"] section.alt#welcome {
      14ch which produces awkward line breaks at narrow widths. */
   .hero-v2 .hero-content h1.display { max-width: 100%; }
 }
+/* Smallest mobile screens — iPhone 5 / SE (320x568), Android Mini, etc.
+   Combined with topbar+content+arch on a 568px-tall canvas, the headline
+   needs to be substantially smaller than the default mobile clamp. */
+@media (max-width: 380px), (max-width: 480px) and (max-height: 700px) {
+  .hero-v2 .hero-content {
+    padding-top: clamp(76px, calc(var(--topbar-height, 72px) + 6px), 96px);
+    padding-bottom: 36px;
+  }
+  .hero-v2 .hero-content .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    margin-bottom: 12px;
+  }
+  .hero-v2 .hero-content h1.display {
+    font-size: clamp(26px, 8.5vw, 34px);
+    margin: 4px auto 10px;
+    line-height: 1.08;
+  }
+  .hero-v2 .hero-content .lede {
+    font-size: 14px;
+    line-height: 1.45;
+    margin-bottom: 16px;
+  }
+  .hero-v2 .hero-content .btn-row {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .hero-v2 .hero-content .btn,
+  .hero-v2 .hero-content .btn-outline-on-photo {
+    padding: 11px 18px;
+    font-size: 14px;
+    min-height: 42px;
+  }
+  .hero-v2 .hero-content .meta-link {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+}
 .hero-v2 .hero-content .meta {
   color: rgba(250, 246, 240, 0.65);
   font-size: 13px;
