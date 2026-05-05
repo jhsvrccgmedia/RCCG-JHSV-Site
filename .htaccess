@@ -1,0 +1,105 @@
+Options -Indexes -MultiViews
+
+DirectoryIndex index.html
+
+AddDefaultCharset UTF-8
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  RewriteCond %{REQUEST_URI} ^/index\.html?$ [NC]
+  RewriteRule ^ / [L,R=301]
+
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} ^/(.+)\.html$ [NC]
+  RewriteRule ^ /%1 [L,R=301]
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]+$
+  RewriteRule ^([^/]+?)/?$ $1.html [L]
+</IfModule>
+
+ErrorDocument 400 /400.html
+ErrorDocument 401 /401.html
+ErrorDocument 403 /403.html
+ErrorDocument 404 /404.html
+ErrorDocument 429 /429.html
+ErrorDocument 500 /500.html
+ErrorDocument 502 /502.html
+ErrorDocument 503 /503.html
+ErrorDocument 504 /504.html
+
+<IfModule mod_headers.c>
+  <FilesMatch "^(400|401|403|404|429|500|502|503|504)\.html$">
+    Header set X-Robots-Tag "noindex"
+    Header set Cache-Control "no-store"
+  </FilesMatch>
+
+  <Files "robots.txt">
+    Header set Cache-Control "public, max-age=3600"
+  </Files>
+
+  <Files "sitemap.xml">
+    Header set Cache-Control "public, max-age=3600"
+  </Files>
+
+  Header unset X-Powered-By
+  Header always unset X-Powered-By
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+  <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif|svg|ico|woff2?|ttf|eot)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType application/xml .xml
+  AddType text/plain .txt
+  AddType image/svg+xml .svg
+  AddType image/x-icon .ico
+  AddType font/woff2 .woff2
+  AddType text/calendar .ics
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json application/xml image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 30 days"
+  ExpiresByType application/javascript "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/avif "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType text/calendar "access plus 1 hour"
+  ExpiresByType application/xml "access plus 1 hour"
+  ExpiresByType text/plain "access plus 1 hour"
+</IfModule>
+
+<Files ".htaccess">
+  Require all denied
+</Files>
+
+<Files ".git*">
+  Require all denied
+</Files>
