@@ -1,12 +1,24 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/400", "destination": "/400.shtml" },
+    { "source": "/401", "destination": "/401.shtml" },
+    { "source": "/403", "destination": "/403.shtml" },
+    { "source": "/404", "destination": "/404.shtml" },
+    { "source": "/429", "destination": "/429.shtml" },
+    { "source": "/500", "destination": "/500.shtml" },
+    { "source": "/502", "destination": "/502.shtml" },
+    { "source": "/503", "destination": "/503.shtml" },
+    { "source": "/504", "destination": "/504.shtml" }
+  ],
   "headers": [
     {
-      "source": "/(400|401|403|404|429|500|502|503|504)",
+      "source": "/(400|401|403|404|429|500|502|503|504)\\.shtml",
       "headers": [
         { "key": "X-Robots-Tag", "value": "noindex" },
-        { "key": "Cache-Control", "value": "no-store" }
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "Content-Type", "value": "text/html; charset=utf-8" }
       ]
     }
   ]
