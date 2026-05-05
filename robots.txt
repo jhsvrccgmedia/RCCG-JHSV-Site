@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /400
+Disallow: /401
+Disallow: /403
+Disallow: /404
+Disallow: /429
+Disallow: /500
+Disallow: /502
+Disallow: /503
+Disallow: /504
+Disallow: /partials/
+
+Sitemap: https://rccgjhsv.org/sitemap.xml
