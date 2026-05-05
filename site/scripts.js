@@ -190,7 +190,7 @@
             { name: 'Service Coordination', lead: 'Bunmi O.' },
             { name: 'Church Project & Building', lead: 'Dami B.' },
             { name: 'Finance Department', lead: null },
-            { name: 'Digital Operations', lead: null }
+            { name: 'Digital Operations', lead: 'Excel A.' }
           ]
         },
         hospitality: {

@@ -639,27 +639,50 @@ body[data-page="home"] section.alt#welcome {
   z-index: 3;
   text-align: center;
   max-width: 940px;
-  /* hero uses align-items: flex-end — bottom padding controls how far
-     above the hero's bottom the text sits. 180px lifts the headline
-     a touch higher than the breathing arch's shoulders. */
-  padding: 32px 32px 180px;
+  /* Top padding keeps content well below the fixed topbar even on
+     short laptop heights. Bottom padding scales with the viewport so
+     the headline sits a comfortable distance above the breathing
+     arch's shoulders without clipping when the page gets short. */
+  padding: clamp(96px, calc(var(--topbar-height, 72px) + 24px), 140px) 32px clamp(80px, 18vh, 180px);
   color: var(--text-inverse);
 }
 .hero-v2 .hero-content .eyebrow { color: var(--coral-300); }
 .hero-v2 .hero-content h1.display {
-  margin: 16px auto 18px;
+  margin: 14px auto 18px;
   max-width: 14ch;
   color: var(--text-inverse);
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+  /* Headline scales by the SMALLER of viewport-width or
+     viewport-height. Short laptop screens (800h) and tall narrow
+     phones both pick the constrained dimension, so the headline
+     never towers past the topbar or past the halfway point of the
+     hero. */
+  font-size: clamp(36px, min(6.5vw, 9vh), 76px);
+  line-height: 1.06;
 }
 .hero-v2 .hero-content .lede {
-  margin: 0 auto 26px;
+  margin: 0 auto clamp(18px, 3vh, 26px);
   max-width: 52ch;
-  font-size: 17px;                    /* smaller than the global 19px */
+  font-size: clamp(15px, 1.7vh, 17px);
   color: rgba(250, 246, 240, 0.88);
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
 }
-.hero-v2 .hero-content .btn-row { margin-bottom: 14px; }
+.hero-v2 .hero-content .btn-row { margin-bottom: clamp(8px, 1.5vh, 14px); }
+@media (max-height: 720px) {
+  /* Surface Duo / short laptops — tighten everything further so the
+     scroll cue + bottom padding stay visible. */
+  .hero-v2 .hero-content { padding-bottom: 56px; }
+  .hero-v2 .hero-content h1.display { margin: 10px auto 12px; }
+  .hero-v2 .hero-content .meta-link {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+}
+@media (max-width: 480px) {
+  /* Phones — let the headline wrap freely instead of being capped at
+     14ch which produces awkward line breaks at narrow widths. */
+  .hero-v2 .hero-content h1.display { max-width: 100%; }
+}
 .hero-v2 .hero-content .meta {
   color: rgba(250, 246, 240, 0.65);
   font-size: 13px;
