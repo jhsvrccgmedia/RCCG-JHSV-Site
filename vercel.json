@@ -1,6 +1,3 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/site/index.html" },
-    { "source": "/:path*", "destination": "/site/:path*" }
-  ]
+  "trailingSlash": false
 }
