@@ -956,6 +956,18 @@
     grid.innerHTML = events.map(renderEventCard).join('');
     bindCalendarToggles(grid);
     grid.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+    setUpcomingGridLayout(grid, events.length);
+  }
+
+  // Grids opted in via [data-grid-cols-auto] flip between c2 and c3
+  // based on event count: 3 x 2 for 5+ items, otherwise 2 columns.
+  // The .grid container always reserves the same outer width (it's a
+  // direct child of the .wrap), so toggling between c2 and c3 only
+  // changes how the columns divide that width — not the width itself.
+  function setUpcomingGridLayout(grid, count) {
+    if (!grid.hasAttribute('data-grid-cols-auto')) return;
+    grid.classList.remove('c2', 'c3');
+    grid.classList.add(count >= 5 ? 'c3' : 'c2');
   }
 
   // Parse a YYYY-MM-DD all-day date as local-noon (avoids the
