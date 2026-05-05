@@ -1161,6 +1161,10 @@ body[data-page="home"] section.alt#welcome {
   object-fit: cover;
   z-index: 0;
 }
+
+/* Per-card arched visual: hidden on widescreen (the sticky .stack-visual
+   handles imagery there), shown on mobile so each card has its own picture. */
+.stack-card-arch { display: none; }
 /* Soft dark gradient at bottom so the italic caption stays legible
    over a photo. Top half of the image stays clean. */
 .stack-state img + .caption-overlay,
@@ -1241,10 +1245,62 @@ body[data-page="home"] section.alt#welcome {
 
 @media (max-width: 900px) {
   .stack { grid-template-columns: 1fr; gap: 32px; }
-  .stack-visual { position: relative; top: 0; }
-  .stack-arch { aspect-ratio: 5 / 4; }
+  /* On mobile we drop the sticky shared visual and give each card its own
+     arched image, so the cards no longer feel "naked" without imagery. */
+  .stack-visual { display: none; }
   .stack-features { gap: 28px; }
-  .stack-card { padding: 36px 28px; min-height: 0; }
+  .stack-card {
+    padding: 28px;
+    min-height: 0;
+    opacity: 1;
+    transform: none;
+    border-color: var(--border-soft);
+    box-shadow: none;
+    gap: 20px;
+  }
+  .stack-card.active {
+    border-color: var(--border-soft);
+    box-shadow: none;
+  }
+  .stack-card-arch {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    background: var(--plum-100);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--arch-full);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+  .stack-card-arch img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    /* Push the focal point higher than dead-center so faces and key
+       subject matter aren't cropped by the arched bottom. */
+    object-position: center 25%;
+    z-index: 0;
+  }
+  .stack-card-arch::after {
+    content: '';
+    position: absolute; left: 0; right: 0; bottom: 0; top: 40%;
+    background: linear-gradient(180deg, transparent, rgba(28, 10, 26, 0.55));
+    z-index: 1;
+    pointer-events: none;
+  }
+  .stack-card-arch .caption {
+    position: absolute;
+    left: 0; right: 0; bottom: 22px;
+    margin: 0 auto;
+    padding: 0 28px;
+    font-family: var(--display); font-style: italic;
+    font-size: 20px; line-height: 1.2;
+    color: var(--text-inverse);
+    text-align: center;
+    max-width: 80%;
+    z-index: 2;
+  }
 }
 
 /* ----------------------- Church card -----------------------
