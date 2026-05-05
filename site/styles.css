@@ -2881,8 +2881,8 @@ section.has-bg-image.solid-overlay::before {
 .photo-arch.bare::after { display: none; }
 
 /* Two-column "form/content + side image" pattern (I'm New
-   Connection card, FAQ, Contact prayer). Image hides on mobile so
-   the form doesn't feel cramped. */
+   Connection card, FAQ, Contact prayer). On mobile the image stacks
+   above the text so the picture leads the section. */
 .with-side {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2901,8 +2901,12 @@ section.has-bg-image.solid-overlay::before {
 }
 .with-side.upcoming-twocol > .with-side-image { max-width: 360px; }
 @media (max-width: 900px) {
-  .with-side { grid-template-columns: 1fr; gap: 40px; }
-  .with-side > .with-side-image { display: none; }
+  .with-side { grid-template-columns: 1fr; gap: 32px; }
+  .with-side > .with-side-image {
+    order: -1;
+    max-width: 100%;
+    justify-self: stretch;
+  }
 }
 
 /* Pastor bio modal (About page). Reuses the visual treatment of
