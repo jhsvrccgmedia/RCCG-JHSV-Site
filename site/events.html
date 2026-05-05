@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=56" />
+<link rel="stylesheet" href="styles.css?v=57" />
 
 <!--
   Live Google Calendar feed for the "Upcoming" section.
@@ -90,10 +90,17 @@
 <!-- ============ UPCOMING ============ -->
 <section>
   <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Upcoming</div>
-      <h2 class="display">On the calendar.</h2>
-      <p class="lede">Highlighted events for the months ahead. Join our Connection List and you&rsquo;ll never miss one.</p>
+    <div class="with-side reveal" style="margin-bottom: 56px;">
+      <div class="section-head" style="margin-bottom: 0;">
+        <div class="eyebrow">Upcoming</div>
+        <h2 class="display">On the calendar.</h2>
+        <p class="lede">Highlighted events for the months ahead. Join our Connection List and you&rsquo;ll never miss one.</p>
+      </div>
+      <div class="with-side-image">
+        <div class="photo-arch bare has-image">
+          <img src="assets/photos/side-upcoming-events.jpg" alt="Gathered for an upcoming event at Jesus House Silicon Valley" loading="lazy" />
+        </div>
+      </div>
     </div>
 
     <div class="grid c3 reveal" id="upcomingGrid">
@@ -207,15 +214,11 @@
     </div>
 
     <p class="reveal" data-cal-status hidden style="text-align: center; margin-top: 28px; font-size: 13px; color: var(--text-muted);"></p>
-
-    <div class="btn-row reveal" style="justify-content: center; margin-top: 32px;">
-      <a class="btn btn-primary" href="#connection-list" data-magnetic>Sign up for updates <span class="arrow">&rarr;</span></a>
-    </div>
   </div>
 </section>
 
 <!-- ============ YEARLY CALENDAR ============ -->
-<section class="alt has-bg-image" style="background-image: url('assets/photos/bg-yearly-calendar.jpg');">
+<section class="alt has-bg-image heavy-overlay parallax" style="background-image: url('assets/photos/bg-yearly-calendar.jpg');">
   <div class="wrap">
     <div class="section-head reveal">
       <div class="eyebrow">Yearly calendar</div>

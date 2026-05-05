@@ -2715,6 +2715,17 @@ section.has-bg-image.heavy-overlay::before {
     radial-gradient(50% 70% at 100% 100%, rgba(232, 93, 60, 0.42), transparent 60%),
     rgba(243, 238, 229, 0.66);
 }
+/* Parallax — image stays put while content scrolls past it. iOS
+   Safari has perf + sizing quirks with background-attachment: fixed,
+   so we fall back to scroll behavior at <=900px (covers most phones
+   and small tablets). The visual loss on phone is minimal because
+   the section is already shorter there. */
+section.has-bg-image.parallax {
+  background-attachment: fixed;
+}
+@media (max-width: 900px) {
+  section.has-bg-image.parallax { background-attachment: scroll; }
+}
 section.has-bg-image.solid-overlay::before {
   /* Still much heavier than the default — photo is a faint texture
      here, not a focal element (used on the Give "Other ways" section). */
