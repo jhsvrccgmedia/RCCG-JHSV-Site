@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=60" />
+<link rel="stylesheet" href="styles.css?v=61" />
 
 <!--
   Live Google Calendar feed for the "Upcoming" section.
@@ -95,99 +95,87 @@
 <!-- ============ UPCOMING ============ -->
 <section>
   <div class="wrap">
-    <div class="with-side reveal upcoming-twocol">
-      <!-- Left column: header + 4-event calendar widget -->
-      <div>
-        <div class="section-head" style="margin-bottom: 32px;">
-          <div class="eyebrow">Upcoming</div>
-          <h2 class="display">On the calendar.</h2>
-          <p class="lede">Highlighted events for the months ahead. Join our Connection List and you&rsquo;ll never miss one.</p>
-        </div>
-
-        <div class="grid c2" id="upcomingGrid">
-          <article class="upcoming-event"
-            data-event
-            data-event-title="Family Picnic"
-            data-event-start="2026-05-16T09:00:00-07:00"
-            data-event-end="2026-05-16T16:00:00-07:00"
-            data-event-location="474 Piercy Road, San Jose, CA 95138"
-            data-event-desc="One day in the park. Food, games, and friendships that last beyond Sunday.">
-            <div class="event-date" aria-hidden="true">
-              <div class="month">May</div>
-              <div class="day">16</div>
-            </div>
-            <div class="event-body">
-              <div class="event-meta">Saturday &middot; 9:00 AM to 4:00 PM</div>
-              <h3>Family Picnic</h3>
-              <p>One day in the park. Food, games, and friendships that last beyond Sunday.</p>
-            </div>
-          </article>
-
-          <article class="upcoming-event"
-            data-event
-            data-event-title="Triumphant Women Annual Conference"
-            data-event-start="2026-06-13T09:00:00-07:00"
-            data-event-end="2026-06-13T13:00:00-07:00"
-            data-event-location="474 Piercy Road, San Jose, CA 95138"
-            data-event-desc="A flagship gathering for the Women's Ministry. Worship, teaching, intercession, and breakthrough.">
-            <div class="event-date" aria-hidden="true">
-              <div class="month">Jun</div>
-              <div class="day">13</div>
-            </div>
-            <div class="event-body">
-              <div class="event-meta">Saturday &middot; 9:00 AM to 1:00 PM</div>
-              <h3>Triumphant Women Annual Conference</h3>
-              <p>A flagship gathering for the Women&rsquo;s Ministry. Worship, teaching, intercession, and breakthrough.</p>
-            </div>
-          </article>
-
-          <article class="upcoming-event"
-            data-event
-            data-event-title="Summer Bible Camp for Children"
-            data-event-start="2026-07-06T09:00:00-07:00"
-            data-event-end="2026-07-06T12:00:00-07:00"
-            data-event-location="474 Piercy Road, San Jose, CA 95138"
-            data-event-desc="A week of Bible-centered fun for kids: songs, lessons, friendships. Registration opens late spring. Runs Monday through Friday.">
-            <div class="event-date" aria-hidden="true">
-              <div class="month">Jul</div>
-              <div class="day">06</div>
-            </div>
-            <div class="event-body">
-              <div class="event-meta">Mon to Fri &middot; 9:00 AM to 12:00 PM</div>
-              <h3>Summer Bible Camp for Children</h3>
-              <p>A week of Bible-centered fun for kids: songs, lessons, friendships. Registration opens late spring.</p>
-            </div>
-          </article>
-
-          <article class="upcoming-event"
-            data-event
-            data-event-title="Church Anniversary"
-            data-event-start="2026-08-16T10:30:00-07:00"
-            data-event-end="2026-08-16T14:00:00-07:00"
-            data-event-location="474 Piercy Road, San Jose, CA 95138"
-            data-event-desc="Marking another year of God's faithfulness to Jesus House Silicon Valley.">
-            <div class="event-date" aria-hidden="true">
-              <div class="month">Aug</div>
-              <div class="day">16</div>
-            </div>
-            <div class="event-body">
-              <div class="event-meta">Sunday &middot; 10:30 AM to 2:00 PM</div>
-              <h3>Church Anniversary</h3>
-              <p>Marking another year of God&rsquo;s faithfulness to Jesus House Silicon Valley.</p>
-            </div>
-          </article>
-        </div>
-
-        <p class="reveal" data-cal-status hidden style="text-align: center; margin-top: 28px; font-size: 13px; color: var(--text-muted);"></p>
-      </div>
-
-      <!-- Right column: side image -->
-      <div class="with-side-image">
-        <div class="photo-arch bare has-image">
-          <img src="assets/photos/side-upcoming-events.jpg" alt="Gathered for an upcoming event at Jesus House Silicon Valley" loading="lazy" />
-        </div>
-      </div>
+    <div class="section-head reveal" style="margin-bottom: 32px;">
+      <div class="eyebrow">Upcoming</div>
+      <h2 class="display">On the calendar.</h2>
+      <p class="lede">Highlighted events for the months ahead. Join our Connection List and you&rsquo;ll never miss one.</p>
     </div>
+
+    <div class="grid c2 reveal" id="upcomingGrid">
+      <article class="upcoming-event"
+        data-event
+        data-event-title="Family Picnic"
+        data-event-start="2026-05-16T09:00:00-07:00"
+        data-event-end="2026-05-16T16:00:00-07:00"
+        data-event-location="474 Piercy Road, San Jose, CA 95138"
+        data-event-desc="One day in the park. Food, games, and friendships that last beyond Sunday.">
+        <div class="event-date" aria-hidden="true">
+          <div class="month">May</div>
+          <div class="day">16</div>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">Saturday &middot; 9:00 AM to 4:00 PM</div>
+          <h3>Family Picnic</h3>
+          <p>One day in the park. Food, games, and friendships that last beyond Sunday.</p>
+        </div>
+      </article>
+
+      <article class="upcoming-event"
+        data-event
+        data-event-title="Triumphant Women Annual Conference"
+        data-event-start="2026-06-13T09:00:00-07:00"
+        data-event-end="2026-06-13T13:00:00-07:00"
+        data-event-location="474 Piercy Road, San Jose, CA 95138"
+        data-event-desc="A flagship gathering for the Women's Ministry. Worship, teaching, intercession, and breakthrough.">
+        <div class="event-date" aria-hidden="true">
+          <div class="month">Jun</div>
+          <div class="day">13</div>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">Saturday &middot; 9:00 AM to 1:00 PM</div>
+          <h3>Triumphant Women Annual Conference</h3>
+          <p>A flagship gathering for the Women&rsquo;s Ministry. Worship, teaching, intercession, and breakthrough.</p>
+        </div>
+      </article>
+
+      <article class="upcoming-event"
+        data-event
+        data-event-title="Summer Bible Camp for Children"
+        data-event-start="2026-07-06T09:00:00-07:00"
+        data-event-end="2026-07-06T12:00:00-07:00"
+        data-event-location="474 Piercy Road, San Jose, CA 95138"
+        data-event-desc="A week of Bible-centered fun for kids: songs, lessons, friendships. Registration opens late spring. Runs Monday through Friday.">
+        <div class="event-date" aria-hidden="true">
+          <div class="month">Jul</div>
+          <div class="day">06</div>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">Mon to Fri &middot; 9:00 AM to 12:00 PM</div>
+          <h3>Summer Bible Camp for Children</h3>
+          <p>A week of Bible-centered fun for kids: songs, lessons, friendships. Registration opens late spring.</p>
+        </div>
+      </article>
+
+      <article class="upcoming-event"
+        data-event
+        data-event-title="Church Anniversary"
+        data-event-start="2026-08-16T10:30:00-07:00"
+        data-event-end="2026-08-16T14:00:00-07:00"
+        data-event-location="474 Piercy Road, San Jose, CA 95138"
+        data-event-desc="Marking another year of God's faithfulness to Jesus House Silicon Valley.">
+        <div class="event-date" aria-hidden="true">
+          <div class="month">Aug</div>
+          <div class="day">16</div>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">Sunday &middot; 10:30 AM to 2:00 PM</div>
+          <h3>Church Anniversary</h3>
+          <p>Marking another year of God&rsquo;s faithfulness to Jesus House Silicon Valley.</p>
+        </div>
+      </article>
+    </div>
+
+    <p class="reveal" data-cal-status hidden style="text-align: center; margin-top: 28px; font-size: 13px; color: var(--text-muted);"></p>
   </div>
 </section>
 
