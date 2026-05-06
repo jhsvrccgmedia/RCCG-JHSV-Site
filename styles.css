@@ -2888,3 +2888,79 @@ body[data-page="error"] .display {
     justify-content: center;
   }
 }
+
+/* Church Center modal trigger card. Used on /new (Connection Card)
+   and /contact (Send us a message) where the form is hosted at
+   rccgjhsv.churchcenter.com and opened via the Church Center modal
+   SDK. The card is sized to sit at roughly the same height as the
+   adjacent .photo-arch / contact card so the row reads symmetrically. */
+.cc-modal-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  position: relative;
+  padding: 44px 36px;
+  min-height: 480px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 22px;
+  overflow: hidden;
+}
+.cc-modal-card::before {
+  content: '';
+  position: absolute;
+  top: -56px; right: -56px;
+  width: 200px; height: 240px;
+  border-radius: var(--arch-full);
+  background: var(--plum-100);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 0;
+}
+.cc-modal-card > * { position: relative; z-index: 1; }
+.cc-modal-card h3 {
+  font-family: var(--display);
+  font-size: clamp(22px, 2.5vw, 28px);
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0;
+}
+.cc-modal-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.cc-modal-card .btn {
+  align-self: flex-start;
+  max-width: 100%;
+}
+.cc-modal-card .fineprint {
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.cc-modal-card .btn:focus-visible {
+  outline: 3px solid var(--coral-500);
+  outline-offset: 3px;
+}
+@media (max-width: 900px) {
+  .cc-modal-card {
+    min-height: auto;
+    padding: 32px 24px;
+    gap: 16px;
+  }
+  .cc-modal-card::before {
+    width: 140px; height: 170px;
+    top: -36px; right: -36px;
+  }
+  .cc-modal-card .btn {
+    align-self: stretch;
+    text-align: center;
+    justify-content: center;
+  }
+}

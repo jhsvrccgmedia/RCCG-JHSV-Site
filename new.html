@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=69" />
+<link rel="stylesheet" href="styles.css?v=70" />
 <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="assets/logo/favicon-16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="assets/logo/apple-touch-icon.png" />
@@ -91,6 +91,7 @@
 }
 </script>
 <script src="analytics.js?v=2" defer></script>
+<script src="https://js.churchcenter.com/modal/v1"></script>
 </head>
 <body data-page="new">
 
@@ -272,18 +273,20 @@
           <h2 class="display">Let us know you're coming.</h2>
           <p class="lede" style="margin-top: 16px;">We'll send a short note so you know what to expect. No spam, promise.</p>
         </div>
-        <div class="cc-embed">
-          <iframe
-            src="https://rccgjhsv.churchcenter.com/people/forms/1221507"
-            title="Connection card"
-            loading="lazy"
-            width="100%"
-            height="900"
-            style="border: 0; display: block; width: 100%; min-height: 900px; border-radius: 12px; background: var(--bg-card);"
-          ></iframe>
-          <p style="margin-top: 10px; font-size: 13px; color: var(--text-muted);">
-            Trouble loading the form? <a href="https://rccgjhsv.churchcenter.com/people/forms/1221507" target="_blank" rel="noopener">Open it in a new tab</a>.
-          </p>
+        <div class="cc-modal-card">
+          <div>
+            <h3>Tell us you&rsquo;re coming.</h3>
+            <p style="margin-top: 10px;">First name, last name, email, the Sunday you plan to visit, and anything we can pray about. Takes under a minute.</p>
+          </div>
+          <a class="btn btn-primary"
+             href="https://rccgjhsv.churchcenter.com/people/forms/1221507"
+             data-open-in-church-center-modal="true"
+             data-magnetic
+             aria-haspopup="dialog"
+             aria-label="Open the Connection Card form in a popup">
+            Fill out the Connection Card <span class="arrow">&rarr;</span>
+          </a>
+          <p class="fineprint">Opens in a secure popup powered by Planning Center. Prefer a separate tab? <a href="https://rccgjhsv.churchcenter.com/people/forms/1221507" target="_blank" rel="noopener">Open it here</a>.</p>
         </div>
       </div>
       <div class="with-side-image">
