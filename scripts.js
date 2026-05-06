@@ -175,6 +175,54 @@
       });
     });
 
+    // ---- Web3Forms-backed forms ----
+    document.querySelectorAll('form[data-web3forms]').forEach(function (form) {
+      var endpoint = form.getAttribute('action') || 'https://api.web3forms.com/submit';
+      var note = form.querySelector('[data-stub-msg]');
+      var btn = form.querySelector('button[type="submit"]');
+      var originalLabel = btn ? btn.innerHTML : '';
+      var successMsg = form.dataset.successMsg ||
+        'Thank you. We received your message and will follow up personally.';
+
+      function setNote(text, isError) {
+        if (!note) return;
+        note.textContent = text;
+        note.style.display = 'block';
+        note.style.color = isError ? 'var(--coral-700)' : 'var(--text-secondary)';
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (btn) { btn.disabled = true; btn.innerHTML = 'Sending&hellip;'; }
+        if (note) { note.style.display = 'none'; note.textContent = ''; }
+
+        fetch(endpoint, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        })
+          .then(function (res) { return res.json().catch(function () { return { success: false }; }); })
+          .then(function (json) {
+            if (json && json.success) {
+              setNote(successMsg, false);
+              form.reset();
+            } else {
+              setNote(
+                (json && json.message) ||
+                  'Something went wrong sending your message. Please email info@rccgjhsv.org instead.',
+                true
+              );
+            }
+          })
+          .catch(function () {
+            setNote('Network error. Please email info@rccgjhsv.org instead.', true);
+          })
+          .then(function () {
+            if (btn) { btn.disabled = false; btn.innerHTML = originalLabel; }
+          });
+      });
+    });
+
     // ---- Ministries grid + morphing modal (About page) ----
     var ministryOverlay = document.getElementById('ministryOverlay');
     if (ministryOverlay) {
