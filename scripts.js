@@ -610,21 +610,27 @@
     }
 
     function renderBroadcasts(grid, videos) {
+      function esc(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;',
+                   '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
       grid.innerHTML = videos.map(function (v) {
         return ''
-          + '<a class="broadcast-card" href="' + escHtml(v.url) + '"'
+          + '<a class="broadcast-card" href="' + esc(v.url) + '"'
           + ' target="_blank" rel="noopener">'
           +   '<div class="broadcast-thumb">'
-          +     '<img src="' + escHtml(v.thumbnail) + '"'
-          +     ' alt="' + escHtml(v.title) + '" loading="lazy" />'
+          +     '<img src="' + esc(v.thumbnail) + '"'
+          +     ' alt="' + esc(v.title) + '" loading="lazy" />'
           +     '<span class="broadcast-play" aria-hidden="true">'
           +       '<svg viewBox="0 0 24 24" fill="currentColor">'
           +       '<path d="M8 5v14l11-7z"/></svg>'
           +     '</span>'
           +   '</div>'
           +   '<div class="broadcast-meta">'
-          +     '<h3>' + escHtml(v.title) + '</h3>'
-          +     '<p>' + escHtml(formatBroadcastDate(v.published)) + '</p>'
+          +     '<h3>' + esc(v.title) + '</h3>'
+          +     '<p>' + esc(formatBroadcastDate(v.published)) + '</p>'
           +   '</div>'
           + '</a>';
       }).join('');
