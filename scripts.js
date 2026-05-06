@@ -459,7 +459,7 @@
 
       function tryAt(idx) {
         if (idx >= proxies.length) return Promise.resolve(false);
-        return fetch(proxies[idx](liveUrl))
+        return fetch(proxies[idx](liveUrl), { cache: 'no-cache' })
           .then(function (res) {
             if (!res.ok) throw new Error('proxy HTTP ' + res.status);
             return res.text();
@@ -513,7 +513,7 @@
     function tryRss2Json(rssUrl) {
       var url = 'https://api.rss2json.com/v1/api.json?rss_url='
         + encodeURIComponent(rssUrl);
-      return fetch(url)
+      return fetch(url, { cache: 'no-cache' })
         .then(function (res) {
           if (!res.ok) throw new Error('rss2json HTTP ' + res.status);
           return res.json();
@@ -546,7 +546,7 @@
     }
 
     function tryRawProxy(proxyUrl) {
-      return fetch(proxyUrl)
+      return fetch(proxyUrl, { cache: 'no-cache' })
         .then(function (res) {
           if (!res.ok) throw new Error('proxy HTTP ' + res.status);
           return res.text();
