@@ -1,6 +1,37 @@
-(function () {
+
+(async function () {
+
+  // ---- 1. Include partials referenced via <div data-include="..."> ----
+  await includeAll();
+
+  // ---- 2. Mark active nav link from <body data-page="..."> ----
   setActiveNav();
+
+  // ---- 3. Wire up everything else (mobile nav, magnetic, reveal, etc.) ----
   initUI();
+
+  // ============================================================
+  //                         FUNCTIONS
+  // ============================================================
+
+  async function includeAll() {
+    var nodes = document.querySelectorAll('[data-include]');
+    if (!nodes.length) return;
+    await Promise.all(Array.prototype.map.call(nodes, async function (el) {
+      var url = el.getAttribute('data-include');
+      try {
+        var res = await fetch(url, { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var html = await res.text();
+        var tmp = document.createElement('div');
+        tmp.innerHTML = html.trim();
+        var inserted = tmp.firstElementChild;
+        if (inserted) el.replaceWith(inserted);
+      } catch (e) {
+        console.error('Failed to load partial:', url, e);
+      }
+    }));
+  }
 
   function setActiveNav() {
     var page = document.body.dataset.page;
@@ -13,29 +44,13 @@
   function initUI() {
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // ---- Dynamic copyright year ----
     var year = new Date().getFullYear();
     document.querySelectorAll('[data-current-year]').forEach(function (el) {
       el.textContent = year;
     });
 
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Tab') return;
-      var open = document.querySelector(
-        '.prayer-overlay.open, .ministry-overlay.open, .bio-overlay.open'
-      );
-      if (!open) return;
-      var f = open.querySelectorAll(
-        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      );
-      if (!f.length) return;
-      var first = f[0], last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault(); last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault(); first.focus();
-      }
-    });
-
+    // ---- Mobile nav toggle ----
     var topbar = document.querySelector('.topbar');
     var menuBtn = document.querySelector('.topbar .menu-btn');
     if (menuBtn && topbar) {
@@ -53,27 +68,18 @@
       });
     }
 
+    // ---- Spotlight border cards ----
     document.querySelectorAll('.spot-grid').forEach(function (grid) {
-      var cards = grid.querySelectorAll('.spot-card');
-      if (!cards.length) return;
-      var rafQueued = false;
-      var lastX = 0, lastY = 0;
       grid.addEventListener('mousemove', function (e) {
-        lastX = e.clientX;
-        lastY = e.clientY;
-        if (rafQueued) return;
-        rafQueued = true;
-        window.requestAnimationFrame(function () {
-          rafQueued = false;
-          for (var i = 0; i < cards.length; i++) {
-            var r = cards[i].getBoundingClientRect();
-            cards[i].style.setProperty('--mx', (lastX - r.left) + 'px');
-            cards[i].style.setProperty('--my', (lastY - r.top) + 'px');
-          }
+        grid.querySelectorAll('.spot-card').forEach(function (card) {
+          var r = card.getBoundingClientRect();
+          card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+          card.style.setProperty('--my', (e.clientY - r.top) + 'px');
         });
       });
     });
 
+    // ---- Magnetic buttons ----
     if (!reduceMotion) {
       document.querySelectorAll('[data-magnetic]').forEach(function (btn) {
         var strength = 0.25;
@@ -91,6 +97,7 @@
       });
     }
 
+    // ---- Scroll reveal ----
     var revealEls = document.querySelectorAll('.reveal');
     if (revealEls.length && 'IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
@@ -106,15 +113,20 @@
       revealEls.forEach(function (el) { el.classList.add('in'); });
     }
 
+    // ---- Sticky stack ----
+    // Picks the card whose vertical center is closest to a tracking line
+    // 42% down the viewport. Recomputed on scroll/resize. This avoids the
+    // intersection-threshold flakiness where multiple cards could be
+    // partially visible and the "winner" depended on entry order.
     var stack = document.querySelector('[data-stack]');
     if (stack) {
-      var stackCards = Array.prototype.slice.call(stack.querySelectorAll('.stack-card'));
+      var cards = Array.prototype.slice.call(stack.querySelectorAll('.stack-card'));
       var states = stack.querySelectorAll('.stack-state');
       var activeFeature = null;
       function activate(num) {
         if (num === activeFeature) return;
         activeFeature = num;
-        stackCards.forEach(function (c) {
+        cards.forEach(function (c) {
           c.classList.toggle('active', c.dataset.feature === num);
         });
         states.forEach(function (s) {
@@ -124,8 +136,9 @@
       function pickActive() {
         var trackY = window.innerHeight * 0.42;
         var best = null, bestDist = Infinity;
-        stackCards.forEach(function (c) {
+        cards.forEach(function (c) {
           var rect = c.getBoundingClientRect();
+          // Skip cards completely off-screen
           if (rect.bottom < 0 || rect.top > window.innerHeight) return;
           var cardCenter = rect.top + rect.height / 2;
           var dist = Math.abs(cardCenter - trackY);
@@ -150,17 +163,19 @@
       pickActive();
     }
 
+    // ---- Connection List + contact form stubs ----
     document.querySelectorAll('form[data-stub]').forEach(function (form) {
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         var note = form.querySelector('[data-stub-msg]');
         if (note) {
-          note.textContent = 'Thanks! Our online forms are being set up — please email info@rccgjhsv.org and we\'ll respond personally.';
+          note.textContent = 'Thanks — this form is a draft. We\'ll wire it up next.';
           note.style.display = 'block';
         }
       });
     });
 
+    // ---- Ministries grid + morphing modal (About page) ----
     var ministryOverlay = document.getElementById('ministryOverlay');
     if (ministryOverlay) {
       var ministries = {
@@ -267,6 +282,7 @@
         }
         ministryOverlay.hidden = false;
         ministryOverlay.classList.add('open');
+        // force reflow before adding visible so the transition runs
         void ministryOverlay.offsetHeight;
         ministryOverlay.classList.add('visible');
         document.body.style.overflow = 'hidden';
@@ -304,6 +320,7 @@
       });
     }
 
+    // ---- Pastor bio modal (About page) ----
     var bioOverlay = document.getElementById('bioOverlay');
     if (bioOverlay) {
       var pastors = {
@@ -333,12 +350,6 @@
       var bioInstagram = document.getElementById('bioInstagram');
       var lastBioFocus = null;
 
-      function escapeBio(str) {
-        return String(str).replace(/[&<>"']/g, function (c) {
-          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-        });
-      }
-
       function openBio(key) {
         var p = pastors[key];
         if (!p) return;
@@ -346,7 +357,10 @@
         bioName.textContent = p.name;
         bioRole.textContent = p.role;
         bioBody.innerHTML = p.bio.map(function (para) {
-          return '<p>' + escapeBio(para) + '</p>';
+          return '<p>' + para
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;') + '</p>';
         }).join('');
         bioInstagram.href = p.instagram;
         bioOverlay.hidden = false;
@@ -384,7 +398,18 @@
       });
     }
 
-    // YouTube channel hydrate (Live page)
+    // ---- YouTube channel hydrate (Live page) ----
+    // One fetch of the channel's public RSS feeds the player AND the
+    // Recent Broadcasts grid. The first entry powers the player iframe
+    // (when the channel goes live, that entry IS the live stream, so
+    // it shows the live broadcast natively; when offline, it shows the
+    // most recent stream as a fallback rather than YouTube's "stream
+    // offline" error page). The top 3 entries fill the broadcasts grid.
+    //
+    // The RSS endpoint ships no CORS headers, so we tunnel through a
+    // public proxy. Two are tried in order so a single proxy outage
+    // doesn't leave the page stuck on placeholders. Result is cached
+    // in localStorage for 1 hour.
     var livePlayer = document.querySelector('.live-player[data-yt-channel]');
     var broadcastGrid = document.getElementById('broadcastGrid');
     var ytChannelId =
@@ -397,30 +422,38 @@
 
     function hydrateChannel(channelId, player, grid) {
       var cacheKey = 'jhsv_yt_v3_' + channelId;
+      var cacheTtl = 60 * 60 * 1000; // 1 hour
       var rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + channelId;
 
-      var cached = readChannelCache(cacheKey, Infinity);
-      if (cached) applyChannelData(player, grid, cached);
-
-      fetchChannelVideos(rssUrl)
-        .then(function (videos) {
-          if (!videos.length) throw new Error('Empty feed');
-          var keep = videos.slice(0, 5);
-          try {
-            localStorage.setItem(cacheKey, JSON.stringify({
-              fetchedAt: Date.now(),
-              videos: keep
-            }));
-          } catch (e) {}
-          applyChannelData(player, grid, keep);
-        })
-        .catch(function () {
-          if (!cached) {
+      // Try fresh cache first.
+      var fresh = readChannelCache(cacheKey, cacheTtl);
+      if (fresh) {
+        applyChannelData(player, grid, fresh);
+      } else {
+        fetchChannelVideos(rssUrl)
+          .then(function (videos) {
+            if (!videos.length) throw new Error('Empty feed');
+            var keep = videos.slice(0, 5);
+            try {
+              localStorage.setItem(cacheKey, JSON.stringify({
+                fetchedAt: Date.now(),
+                videos: keep
+              }));
+            } catch (e) { /* quota / private mode */ }
+            applyChannelData(player, grid, keep);
+          })
+          .catch(function (err) {
+            if (window.console && console.warn) {
+              console.warn('JHSV: YouTube hydrate failed, keeping static fallback.', err);
+            }
             var stale = readChannelCache(cacheKey, Infinity);
             if (stale) applyChannelData(player, grid, stale);
-          }
-        });
+          });
+      }
 
+      // Independently check whether the channel is currently live and
+      // flip the "Recent service" pill to "Live" with the coral pulse.
+      // Cached for 60s in localStorage so we don't hammer the proxy.
       if (document.querySelector('.live-stage')) {
         checkChannelLive(channelId).then(applyLiveStatus);
       }
@@ -435,19 +468,29 @@
         label.textContent = 'Live';
       } else {
         stage.dataset.live = 'false';
+        // Keep whatever default the HTML shipped with — usually
+        // "Recent service" — so we don't churn the label when the proxy
+        // call fails or returns false.
       }
     }
 
+    // Heuristic live detection. youtube.com/channel/<id>/live serves
+    // the live broadcast watch page when the channel is currently live
+    // and a redirected channel-home page otherwise. The watch page's
+    // embedded JSON includes "isLive":true / "liveBroadcastContent":
+    // "live" — we look for either marker after pulling through a CORS
+    // proxy. Best-effort: a missing/changed marker just means we stay
+    // on the default "Recent service" pill.
     function checkChannelLive(channelId) {
       var cacheKey = 'jhsv_yt_live_v1_' + channelId;
-      var cacheTtl = 60 * 1000;
+      var cacheTtl = 60 * 1000; // 1 minute
 
       try {
         var cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
         if (cached && Date.now() - (cached.t || 0) < cacheTtl) {
           return Promise.resolve(!!cached.live);
         }
-      } catch (e) {}
+      } catch (e) { /* ignore */ }
 
       var liveUrl = 'https://www.youtube.com/channel/'
         + encodeURIComponent(channelId) + '/live';
@@ -474,7 +517,7 @@
             t: Date.now(),
             live: live
           }));
-        } catch (e) {}
+        } catch (e) { /* ignore */ }
         return live;
       });
     }
@@ -486,18 +529,17 @@
             && Date.now() - (raw.fetchedAt || 0) < ttl) {
           return raw.videos;
         }
-      } catch (e) {}
+      } catch (e) { /* ignore */ }
       return null;
     }
 
+    // Multi-strategy fetch:
+    //   1. api.rss2json.com -> purpose-built, ships JSON with CORS
+    //   2. api.allorigins.win/raw -> raw XML, longer-running proxy
+    //   3. api.codetabs.com/v1/proxy -> raw XML, second backup
+    // Returns a Promise<Array<Video>>. First successful strategy wins.
     function fetchChannelVideos(rssUrl) {
-      var m = rssUrl.match(/channel_id=([^&]+)/);
-      var channelId = m ? m[1] : '';
-      var localProxy = channelId
-        ? tryRawProxy('/api/youtube-feed?channel=' + encodeURIComponent(channelId))
-        : Promise.reject(new Error('No channel id'));
-      return localProxy
-        .catch(function () { return tryRss2Json(rssUrl); })
+      return tryRss2Json(rssUrl)
         .catch(function () {
           return tryRawProxy(
             'https://api.allorigins.win/raw?url=' + encodeURIComponent(rssUrl)
@@ -561,11 +603,18 @@
 
     function applyChannelData(player, grid, videos) {
       if (player && videos[0]) renderLivePlayer(player, videos[0]);
+      // Broadcasts grid skips videos[0] — that one's already in the
+      // player above. Take the next 3 (videos[1..3]) so the section
+      // truly is "previous" broadcasts, not a duplicate of the player.
       if (grid) renderBroadcasts(grid, videos.slice(1, 4));
     }
 
     function renderLivePlayer(player, latest) {
       var iframe = document.createElement('iframe');
+      // Embed the latest video by ID. When the channel is currently
+      // live, that ID is the live stream and YouTube shows the LIVE
+      // badge in the player. When offline, the most recent past stream
+      // plays in its place — no error state.
       iframe.src = 'https://www.youtube.com/embed/'
         + encodeURIComponent(latest.id)
         + '?rel=0&modestbranding=1';
@@ -600,12 +649,13 @@
       return out;
     }
 
-    var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     function formatBroadcastDate(iso) {
       if (!iso) return '';
       var d = new Date(iso);
       if (isNaN(d.getTime())) return '';
-      return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+      var months = ['Jan','Feb','Mar','Apr','May','Jun',
+                    'Jul','Aug','Sep','Oct','Nov','Dec'];
+      return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
     }
 
     function renderBroadcasts(grid, videos) {
@@ -635,6 +685,7 @@
       }).join('');
     }
 
+    // ---- Add-to-calendar popovers (Live page schedule cards) ----
     var calToggles = document.querySelectorAll('[data-cal-toggle]');
     if (calToggles.length) {
       var closeAllCal = function () {
@@ -666,6 +717,7 @@
       });
     }
 
+    // ---- Measure topbar height so the home hero can extend up under it ----
     var topbarEl = document.querySelector('.topbar');
     if (topbarEl) {
       var setTopbarHeight = function () {
@@ -674,23 +726,25 @@
       };
       setTopbarHeight();
       window.addEventListener('resize', setTopbarHeight);
+      // Re-measure once images / fonts settle
       window.addEventListener('load', setTopbarHeight);
     }
 
-    var topbarHero = document.querySelector('.topbar');
+    // ---- Transparent topbar over the home hero ----
+    var topbar = document.querySelector('.topbar');
     var heroV2 = document.querySelector('.hero.hero-v2');
-    if (topbarHero && heroV2 && document.body.dataset.page === 'home') {
+    if (topbar && heroV2 && document.body.dataset.page === 'home') {
       var updateTopbar = function () {
         if (window.innerWidth <= 920) {
-          topbarHero.classList.remove('over-hero');
+          topbar.classList.remove('over-hero');
           return;
         }
         var heroBottom = heroV2.offsetTop + heroV2.offsetHeight;
-        var threshold = heroBottom - topbarHero.offsetHeight - 40;
+        var threshold = heroBottom - topbar.offsetHeight - 40;
         if (window.scrollY < threshold) {
-          topbarHero.classList.add('over-hero');
+          topbar.classList.add('over-hero');
         } else {
-          topbarHero.classList.remove('over-hero');
+          topbar.classList.remove('over-hero');
         }
       };
       updateTopbar();
@@ -698,11 +752,22 @@
       window.addEventListener('resize', updateTopbar);
     }
 
+    // ---- Family ministries tabs (used on /new for Kids / Teens) ----
     initFamilyTabs();
+
+    // ---- Live Google Calendar feed (used on /events and home Upcoming) ----
     initEventsPage();
+
+    // ---- Prayer Line modal (Monday Prayer dial-in info) ----
     initPrayerModal();
   }
 
+  // ---------------------------------------------------------------------
+  // Prayer Line modal — opens a shared dial-in info dialog from any
+  // [data-prayer-modal] trigger on the page. Mirrors the ministry
+  // overlay pattern from the About page, so styling, focus-trap, and
+  // ESC-to-close behavior stay consistent across both modals.
+  // ---------------------------------------------------------------------
   function initPrayerModal() {
     var overlay = document.getElementById('prayerOverlay');
     if (!overlay) return;
@@ -755,6 +820,10 @@
     });
   }
 
+  // ---------------------------------------------------------------------
+  // Tab switcher for the static Kids / Teens modules on /new.
+  // Click a .ss-tab to swap which .ss-panel is visible.
+  // ---------------------------------------------------------------------
   function initFamilyTabs() {
     var tabs = document.querySelectorAll('.ss-tab');
     var panels = document.querySelectorAll('.ss-panel');
@@ -779,7 +848,22 @@
     });
   }
 
+  // ---------------------------------------------------------------------
+  // /events — Upcoming section
+  //
+  // 1. Static fallback cards (data-event-* attrs in HTML) get an
+  //    "Add to calendar" dropdown immediately so visitors can save any
+  //    of them to Google / Outlook / Apple Calendar even if the live
+  //    feed is missing or fails.
+  // 2. If window.JHSV_CALENDAR.{id, apiKey} are both filled in, we hit
+  //    the Google Calendar Data API v3, cache the result for 10 minutes
+  //    in localStorage, and replace the grid with the live cards.
+  //
+  // Failures (no config / network error / quota) are silent — the
+  // static fallback stays on screen. See docs/PENDING.md for setup.
+  // ---------------------------------------------------------------------
   function initEventsPage() {
+    // Runs on any page that has #upcomingGrid (events page, home page, etc.).
     var grid = document.getElementById('upcomingGrid');
     if (!grid) return;
 
@@ -792,7 +876,10 @@
       .then(function (events) {
         if (events && events.length) renderLiveEvents(grid, events);
       })
-      .catch(function () {});
+      .catch(function (err) {
+        // Static fallback already on screen — log and move on.
+        if (window.console) console.warn('[events] calendar fetch failed; keeping static fallback:', err);
+      });
   }
 
   function enhanceStaticEvents(grid) {
@@ -817,11 +904,17 @@
   }
 
   function fetchLiveEvents(cfg) {
+    // The cache holds a wide pool of events (independent of any one
+    // page's maxResults) so the home page can request 3 and the events
+    // page 6 from the same cache without one stepping on the other.
     var cacheKey = 'jhsv_cal_v2_' + cfg.id;
     var max = cfg.maxResults || 4;
     var cached = readCache(cacheKey, 10 * 60 * 1000);
     if (cached) return Promise.resolve(cached.slice(0, max));
 
+    // Pull a wider window from the API so we have headroom after filtering
+    // out recurring weekly services (Sunday Service, Wednesday Bible Study,
+    // etc.). Special one-off events float to the top by date order.
     var serverMax = Math.max(25, max * 6);
 
     var url = 'https://www.googleapis.com/calendar/v3/calendars/' +
@@ -837,6 +930,9 @@
         return res.json();
       })
       .then(function (data) {
+        // Drop instances of recurring events. Each instance carries a
+        // recurringEventId pointing back to its parent series; one-off
+        // events don't.
         var pool = (data.items || [])
           .filter(function (ev) { return !ev.recurringEventId; })
           .map(normalizeApiEvent);
@@ -863,12 +959,19 @@
     setUpcomingGridLayout(grid, events.length);
   }
 
+  // Grids opted in via [data-grid-cols-auto] flip between c2 and c3
+  // based on event count: 3 x 2 for 5+ items, otherwise 2 columns.
+  // The .grid container always reserves the same outer width (it's a
+  // direct child of the .wrap), so toggling between c2 and c3 only
+  // changes how the columns divide that width — not the width itself.
   function setUpcomingGridLayout(grid, count) {
     if (!grid.hasAttribute('data-grid-cols-auto')) return;
     grid.classList.remove('c2', 'c3');
     grid.classList.add(count >= 5 ? 'c3' : 'c2');
   }
 
+  // Parse a YYYY-MM-DD all-day date as local-noon (avoids the
+  // common UTC-midnight-then-shift-back-a-day display bug).
   function parseLocalDate(dateStr) {
     var p = String(dateStr).split('-');
     return new Date(+p[0], +p[1] - 1, +p[2], 12, 0, 0, 0);
@@ -917,6 +1020,8 @@
 
     var gDates, oStart, oEnd;
     if (ev.isAllDay) {
+      // Google Calendar accepts YYYYMMDD/YYYYMMDD for all-day. Outlook
+      // accepts plain YYYY-MM-DD for startdt/enddt with allday=true.
       gDates = String(ev.start).replace(/-/g, '') + '/' + String(ev.end).replace(/-/g, '');
       oStart = ev.start;
       oEnd   = ev.end;
@@ -983,6 +1088,7 @@
       'DTSTAMP:' + fmtUtc(new Date())
     ];
     if (ev.isAllDay) {
+      // RFC 5545 all-day form: VALUE=DATE with no time component.
       lines.push('DTSTART;VALUE=DATE:' + String(ev.start).replace(/-/g, ''));
       lines.push('DTEND;VALUE=DATE:'   + String(ev.end).replace(/-/g, ''));
     } else {
@@ -1016,9 +1122,11 @@
     });
   }
 
-  var ESC_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+  // ---- Tiny helpers (scoped to this IIFE) ----
   function escHtml(s) {
-    return String(s).replace(/[&<>"']/g, function (c) { return ESC_MAP[c]; });
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
   }
   function stripHtml(s) {
     var div = document.createElement('div');
@@ -1037,9 +1145,9 @@
       var entry = JSON.parse(raw);
       if (Date.now() - entry.t > ttlMs) return null;
       return entry.v;
-    } catch (e) { return null; }
+    } catch (_) { return null; }
   }
   function writeCache(key, value) {
-    try { localStorage.setItem(key, JSON.stringify({ t: Date.now(), v: value })); } catch (e) {}
+    try { localStorage.setItem(key, JSON.stringify({ t: Date.now(), v: value })); } catch (_) {}
   }
 })();
