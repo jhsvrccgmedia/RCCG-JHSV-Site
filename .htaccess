@@ -54,8 +54,16 @@ ErrorDocument 504 /504.shtml
 
   Header unset X-Powered-By
   Header always unset X-Powered-By
-  Header set X-Content-Type-Options "nosniff"
-  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header unset Server
+  Header always unset Server
+
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" env=HTTPS
+  Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
+  Header always set Permissions-Policy "accelerometer=(), autoplay=(self \"https://www.youtube.com\"), camera=(), clipboard-read=(), clipboard-write=(self), display-capture=(), encrypted-media=(self \"https://www.youtube.com\"), fullscreen=(self \"https://www.youtube.com\"), geolocation=(), gyroscope=(self \"https://www.youtube.com\"), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(self \"https://www.youtube.com\"), publickey-credentials-get=(), sync-xhr=(self), usb=(), interest-cohort=(), browsing-topics=()"
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self' https://rccgjhsv.churchcenter.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://js.churchcenter.com https://*.churchcenter.com; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://i.ytimg.com https://*.ytimg.com https://*.googleusercontent.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; media-src 'self' https://*.youtube.com; connect-src 'self' https://www.googleapis.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://stats.g.doubleclick.net https://api.rss2json.com https://api.allorigins.win https://api.codetabs.com https://*.churchcenter.com; frame-src https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com https://*.churchcenter.com; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests"
 
   <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif|svg|ico|woff2?|ttf|eot)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
