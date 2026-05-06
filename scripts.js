@@ -137,7 +137,7 @@
         e.preventDefault();
         var note = form.querySelector('[data-stub-msg]');
         if (note) {
-          note.textContent = 'Thanks — this form is a draft. We\'ll wire it up next.';
+          note.textContent = 'Thanks! Our online forms are being set up — please email info@rccgjhsv.org and we\'ll respond personally.';
           note.style.display = 'block';
         }
       });
