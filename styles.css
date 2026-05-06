@@ -2890,28 +2890,36 @@ body[data-page="error"] .display {
 }
 
 /* Church Center modal trigger card. Used on /new (Connection Card)
-   and /contact (Send us a message) where the form is hosted at
-   rccgjhsv.churchcenter.com and opened via the Church Center modal
-   SDK. Solid card surface, content-sized by default; on /contact
-   the parent .two-col stretches it to match the sibling info card. */
+   and /contact (Send us a message). Now the card hosts the section
+   header (eyebrow + h2 + lede) directly, so it stands as the full
+   section content rather than sitting under a separate section-head.
+   On both pages the card stretches to align with the adjacent column
+   (the photo-arch on /new, the contact info card on /contact). */
 .cc-modal-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 18px;
-  padding: 36px 32px;
+  gap: 20px;
+  padding: 48px 44px;
+  min-height: 500px;
   background: var(--bg-card);
   border: 1px solid var(--border-soft);
   border-radius: 22px;
 }
-.cc-modal-card h3 {
-  font-family: var(--display);
-  font-size: clamp(22px, 2.5vw, 28px);
-  line-height: 1.2;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
+.cc-modal-card .eyebrow {
+  margin-bottom: 14px;
+}
+.cc-modal-card .cc-modal-heading {
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.1;
+  margin: 0 0 16px;
+}
+.cc-modal-card .lede {
   margin: 0;
+  color: var(--text-secondary);
+  font-size: clamp(16px, 1.5vw, 18px);
+  line-height: 1.6;
+  max-width: 540px;
 }
 .cc-modal-card p {
   margin: 0;
@@ -2933,20 +2941,33 @@ body[data-page="error"] .display {
   outline: 3px solid var(--coral-500);
   outline-offset: 3px;
 }
-/* Stretch the modal card to fill the column when paired with a
-   sibling info card in a .two-col grid (Contact "Ways to reach our
-   team"). The default .two-col is align-items: center, which we
-   override here so the two columns share the same height. */
-.two-col:has(.cc-modal-card) { align-items: stretch; }
-.two-col:has(.cc-modal-card) > .reveal {
+/* Stretch the modal card to fill its column on /contact (.two-col
+   default is align-items: center) and /new (.with-side default is
+   align-items: center). The :has() guard scopes the override to
+   sections that actually contain a .cc-modal-card. */
+.two-col:has(.cc-modal-card),
+.with-side:has(.cc-modal-card) { align-items: stretch; }
+.two-col:has(.cc-modal-card) > .reveal,
+.with-side:has(.cc-modal-card) > * {
   display: flex;
   flex-direction: column;
 }
-.two-col:has(.cc-modal-card) > .reveal > .cc-modal-card { flex: 1; }
+.two-col:has(.cc-modal-card) > .reveal > .cc-modal-card,
+.with-side:has(.cc-modal-card) > * > .cc-modal-card { flex: 1; }
+/* Keep the photo-arch in the side column vertically centered when
+   its column is stretched by :has() (so it doesn't drift to the top). */
+.with-side:has(.cc-modal-card) > .with-side-image { justify-content: center; }
 @media (max-width: 900px) {
   .cc-modal-card {
-    padding: 28px 22px;
+    padding: 32px 24px;
     gap: 16px;
+    min-height: auto;
+  }
+  .cc-modal-card .cc-modal-heading {
+    font-size: clamp(26px, 7vw, 34px);
+  }
+  .cc-modal-card .lede {
+    font-size: 16px;
   }
   .cc-modal-card .btn {
     align-self: stretch;
