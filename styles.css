@@ -2975,3 +2975,87 @@ body[data-page="error"] .display {
     justify-content: center;
   }
 }
+
+/* ----------------------- Form result card -----------------------
+   Replaces a submitted form on success/error so the user gets a
+   clear acknowledgement instead of the same fields re-rendered with
+   an inline note. Reload restores the original empty form. */
+.form-result-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 28px 28px 30px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  outline: none;
+  animation: form-result-in 0.32s var(--ease-out, cubic-bezier(.2,.7,.3,1));
+}
+.form-result-card .form-result-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(74, 25, 66, 0.08);
+  color: var(--plum-600);
+}
+.form-result-card .form-result-icon svg {
+  width: 22px;
+  height: 22px;
+}
+.form-result-card.is-error .form-result-icon {
+  background: rgba(232, 93, 60, 0.12);
+  color: var(--coral-700);
+}
+.form-result-card .form-result-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+.form-result-card .form-result-msg {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.form-result-card.on-dark {
+  background: rgba(250, 246, 240, 0.08);
+  border-color: rgba(250, 246, 240, 0.18);
+  padding: 22px 22px 24px;
+}
+.form-result-card.on-dark .form-result-icon {
+  background: rgba(250, 246, 240, 0.12);
+  color: var(--text-inverse);
+}
+.form-result-card.on-dark.is-error .form-result-icon {
+  background: rgba(255, 175, 160, 0.18);
+  color: rgba(255, 200, 190, 1);
+}
+.form-result-card.on-dark .form-result-title {
+  color: var(--text-inverse);
+  font-size: 19px;
+}
+.form-result-card.on-dark .form-result-msg {
+  color: rgba(250, 246, 240, 0.78);
+  font-size: 14.5px;
+}
+@keyframes form-result-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 600px) {
+  .form-result-card {
+    padding: 22px 20px 24px;
+  }
+  .form-result-card .form-result-title { font-size: 19px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .form-result-card { animation: none; }
+}

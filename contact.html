@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=72" />
+<link rel="stylesheet" href="styles.css?v=73" />
 <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="assets/logo/favicon-16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="assets/logo/apple-touch-icon.png" />
@@ -96,22 +96,18 @@
   <div class="wrap">
     <div class="two-col">
       <div class="reveal">
-        <div class="cc-modal-card">
-          <div>
-            <div class="eyebrow">Send us a message</div>
-            <h2 class="display cc-modal-heading">Reach a real person.</h2>
-            <p class="lede">Share your name, email, the reason you&rsquo;re reaching out, and your message. We read every note and respond personally &mdash; usually within a day or two.</p>
-          </div>
-          <a class="btn btn-primary"
-             href="https://rccgjhsv.churchcenter.com/people/forms/1221511"
-             data-open-in-church-center-modal="true"
-             data-magnetic
-             aria-haspopup="dialog"
-             aria-label="Open the contact form in a popup">
-            Send us a message <span class="arrow">&rarr;</span>
-          </a>
-          <p class="fineprint">Opens in a secure popup powered by Planning Center. Prefer a separate tab? <a href="https://rccgjhsv.churchcenter.com/people/forms/1221511" target="_blank" rel="noopener">Open it here</a>.</p>
-        </div>
+        <div class="eyebrow">Send us a message</div>
+        <h2 class="display" style="font-size: clamp(28px, 4vw, 40px); margin: 12px 0 16px;">Reach a real person.</h2>
+        <p class="lede" style="margin: 0 0 24px; max-width: 540px;">Share your name, email, the reason you&rsquo;re reaching out, and your message. We read every note and respond personally &mdash; usually within a day or two.</p>
+        <a class="btn btn-primary"
+           href="https://rccgjhsv.churchcenter.com/people/forms/1221511"
+           data-open-in-church-center-modal="true"
+           data-magnetic
+           aria-haspopup="dialog"
+           aria-label="Open the contact form in a popup">
+          Send us a message <span class="arrow">&rarr;</span>
+        </a>
+        <p style="margin: 14px 0 0; font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">Opens in a secure popup powered by Planning Center. Prefer a separate tab? <a href="https://rccgjhsv.churchcenter.com/people/forms/1221511" target="_blank" rel="noopener">Open it here</a>.</p>
       </div>
       <div class="reveal">
         <div class="card" style="padding: 32px;">
@@ -201,7 +197,7 @@
           <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; opacity:0; pointer-events:none;" />
           <div class="field"><label for="pn">Name (optional)</label><input id="pn" name="name" type="text" autocomplete="name" /></div>
           <div class="field"><label for="pe">Email (optional)</label><input id="pe" name="email" type="email" autocomplete="email" /></div>
-          <div class="field"><label for="pr">Prayer request</label><textarea id="pr" name="message" required></textarea></div>
+          <div class="field"><label for="pr">Prayer request</label><textarea id="pr" name="Prayer Request" required></textarea></div>
           <label style="display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--text-secondary);">
             <input type="checkbox" name="reach_out" value="yes" required style="margin-top: 4px; width: auto;" />
             <span>I&rsquo;d like the pastoral team to reach out if appropriate.</span>
@@ -304,6 +300,6 @@
   </div>
 </footer>
 
-<script src="scripts.js?v=32" defer></script>
+<script src="scripts.js?v=33" defer></script>
 </body>
 </html>

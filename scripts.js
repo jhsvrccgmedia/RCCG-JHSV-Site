@@ -175,26 +175,51 @@
       });
     });
 
+    // ---- Form result card (replaces the form on success/error) ----
+    function showFormResultCard(form, opts) {
+      var card = document.createElement('div');
+      card.className = 'form-result-card' + (opts.isError ? ' is-error' : '');
+      if (form.closest('.cta-band, .site-footer')) {
+        card.classList.add('on-dark');
+      }
+      card.setAttribute('role', 'status');
+      card.setAttribute('aria-live', 'polite');
+      card.setAttribute('tabindex', '-1');
+
+      var icon = document.createElement('div');
+      icon.className = 'form-result-icon';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.innerHTML = opts.isError
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+      var title = document.createElement('h4');
+      title.className = 'form-result-title';
+      title.textContent = opts.isError ? (opts.title || 'Something went wrong') : (opts.title || 'Thank you!');
+
+      var msg = document.createElement('p');
+      msg.className = 'form-result-msg';
+      msg.textContent = opts.message || '';
+
+      card.appendChild(icon);
+      card.appendChild(title);
+      card.appendChild(msg);
+
+      form.parentNode.replaceChild(card, form);
+      try { card.focus(); } catch (e) {}
+    }
+
     // ---- Web3Forms-backed forms ----
     document.querySelectorAll('form[data-web3forms]').forEach(function (form) {
       var endpoint = form.getAttribute('action') || 'https://api.web3forms.com/submit';
-      var note = form.querySelector('[data-stub-msg]');
       var btn = form.querySelector('button[type="submit"]');
       var originalLabel = btn ? btn.innerHTML : '';
       var successMsg = form.dataset.successMsg ||
         'Thank you. We received your message and will follow up personally.';
 
-      function setNote(text, isError) {
-        if (!note) return;
-        note.textContent = text;
-        note.style.display = 'block';
-        note.style.color = isError ? 'var(--coral-700)' : 'var(--text-secondary)';
-      }
-
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         if (btn) { btn.disabled = true; btn.innerHTML = 'Sending&hellip;'; }
-        if (note) { note.style.display = 'none'; note.textContent = ''; }
 
         fetch(endpoint, {
           method: 'POST',
@@ -204,21 +229,22 @@
           .then(function (res) { return res.json().catch(function () { return { success: false }; }); })
           .then(function (json) {
             if (json && json.success) {
-              setNote(successMsg, false);
-              form.reset();
+              showFormResultCard(form, { message: successMsg, isError: false });
             } else {
-              setNote(
-                (json && json.message) ||
-                  'Something went wrong sending your message. Please email info@rccgjhsv.org instead.',
-                true
-              );
+              showFormResultCard(form, {
+                isError: true,
+                title: 'We couldn’t send that',
+                message: (json && json.message) ||
+                  'Something went wrong sending your message. Please email info@rccgjhsv.org and we will follow up.'
+              });
             }
           })
           .catch(function () {
-            setNote('Network error. Please email info@rccgjhsv.org instead.', true);
-          })
-          .then(function () {
-            if (btn) { btn.disabled = false; btn.innerHTML = originalLabel; }
+            showFormResultCard(form, {
+              isError: true,
+              title: 'Network error',
+              message: 'Please email info@rccgjhsv.org and we will follow up.'
+            });
           });
       });
     });
@@ -235,18 +261,8 @@
     }
 
     document.querySelectorAll('form[data-newsletter]').forEach(function (form) {
-      var note = form.querySelector('[data-stub-msg]');
       var btn = form.querySelector('button[type="submit"]');
       var originalLabel = btn ? btn.innerHTML : '';
-
-      function setNote(msg, isError) {
-        if (!note) return;
-        note.textContent = msg;
-        note.style.display = 'block';
-        if (note.style.color !== '') {
-          note.style.color = isError ? 'rgba(255, 200, 200, 1)' : 'rgba(250,246,240,0.85)';
-        }
-      }
 
       function send(token) {
         var data = new FormData(form);
@@ -258,24 +274,30 @@
           .then(function (res) { return res.json().catch(function () { return { success: false }; }); })
           .then(function (json) {
             if (json && json.success) {
-              setNote(json.message || 'Thanks! You’re on the Connection List.', false);
-              form.reset();
+              showFormResultCard(form, {
+                title: 'You’re on the list',
+                message: json.message || 'Thanks! Watch for updates from RCCG Jesus House Silicon Valley.'
+              });
             } else {
-              setNote((json && json.message) || 'Something went wrong. Please try again later.', true);
+              showFormResultCard(form, {
+                isError: true,
+                title: 'Sign-up didn’t go through',
+                message: (json && json.message) || 'Please try again in a few moments.'
+              });
             }
           })
           .catch(function () {
-            setNote('Network error. Please try again later.', true);
-          })
-          .then(function () {
-            if (btn) { btn.disabled = false; btn.innerHTML = originalLabel; }
+            showFormResultCard(form, {
+              isError: true,
+              title: 'Network error',
+              message: 'Please try again in a few moments.'
+            });
           });
       }
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        if (btn) { btn.disabled = true; btn.innerHTML = 'Signing up…'; }
-        if (note) { note.style.display = 'none'; note.textContent = ''; }
+        if (btn) { btn.disabled = true; btn.innerHTML = 'Signing up&hellip;'; }
 
         if (recaptchaSiteKey && window.grecaptcha && window.grecaptcha.ready) {
           window.grecaptcha.ready(function () {
