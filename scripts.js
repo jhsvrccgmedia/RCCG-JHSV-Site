@@ -492,7 +492,13 @@
     }
 
     function fetchChannelVideos(rssUrl) {
-      return tryRss2Json(rssUrl)
+      var m = rssUrl.match(/channel_id=([^&]+)/);
+      var channelId = m ? m[1] : '';
+      var localProxy = channelId
+        ? tryRawProxy('/api/youtube-feed?channel=' + encodeURIComponent(channelId))
+        : Promise.reject(new Error('No channel id'));
+      return localProxy
+        .catch(function () { return tryRss2Json(rssUrl); })
         .catch(function () {
           return tryRawProxy(
             'https://api.allorigins.win/raw?url=' + encodeURIComponent(rssUrl)
