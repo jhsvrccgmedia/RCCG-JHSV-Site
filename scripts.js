@@ -223,6 +223,72 @@
       });
     });
 
+    // ---- Connection List newsletter (Google Apps Script + reCAPTCHA v3) ----
+    var NEWSLETTER_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyUan0M6VafRJbT9S0km5CFfdiKE_ih0RzxyW_0ojUk0OAJf5n2agSCU8zdQUQCY5Ew/exec';
+    var recaptchaSiteKey = (document.querySelector('meta[name="recaptcha-site-key"]') || {}).content || '';
+    if (recaptchaSiteKey && !document.querySelector('script[src*="recaptcha/api.js"]')) {
+      var rc = document.createElement('script');
+      rc.src = 'https://www.google.com/recaptcha/api.js?render=' + encodeURIComponent(recaptchaSiteKey);
+      rc.async = true;
+      rc.defer = true;
+      document.head.appendChild(rc);
+    }
+
+    document.querySelectorAll('form[data-newsletter]').forEach(function (form) {
+      var note = form.querySelector('[data-stub-msg]');
+      var btn = form.querySelector('button[type="submit"]');
+      var originalLabel = btn ? btn.innerHTML : '';
+
+      function setNote(msg, isError) {
+        if (!note) return;
+        note.textContent = msg;
+        note.style.display = 'block';
+        if (note.style.color !== '') {
+          note.style.color = isError ? 'rgba(255, 200, 200, 1)' : 'rgba(250,246,240,0.85)';
+        }
+      }
+
+      function send(token) {
+        var data = new FormData(form);
+        if (token) data.append('recaptchaToken', token);
+        data.append('fp', (navigator.userAgent || '').slice(0, 200));
+        data.append('page', document.body && document.body.dataset ? (document.body.dataset.page || '') : '');
+
+        fetch(NEWSLETTER_ENDPOINT, { method: 'POST', body: data })
+          .then(function (res) { return res.json().catch(function () { return { success: false }; }); })
+          .then(function (json) {
+            if (json && json.success) {
+              setNote(json.message || 'Thanks! You’re on the Connection List.', false);
+              form.reset();
+            } else {
+              setNote((json && json.message) || 'Something went wrong. Please try again later.', true);
+            }
+          })
+          .catch(function () {
+            setNote('Network error. Please try again later.', true);
+          })
+          .then(function () {
+            if (btn) { btn.disabled = false; btn.innerHTML = originalLabel; }
+          });
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (btn) { btn.disabled = true; btn.innerHTML = 'Signing up…'; }
+        if (note) { note.style.display = 'none'; note.textContent = ''; }
+
+        if (recaptchaSiteKey && window.grecaptcha && window.grecaptcha.ready) {
+          window.grecaptcha.ready(function () {
+            window.grecaptcha.execute(recaptchaSiteKey, { action: 'newsletter' })
+              .then(send)
+              .catch(function () { send(''); });
+          });
+        } else {
+          send('');
+        }
+      });
+    });
+
     // ---- Ministries grid + morphing modal (About page) ----
     var ministryOverlay = document.getElementById('ministryOverlay');
     if (ministryOverlay) {
