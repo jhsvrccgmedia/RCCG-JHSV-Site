@@ -18,6 +18,24 @@
       el.textContent = year;
     });
 
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+      var open = document.querySelector(
+        '.prayer-overlay.open, .ministry-overlay.open, .bio-overlay.open'
+      );
+      if (!open) return;
+      var f = open.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      }
+    });
+
     var topbar = document.querySelector('.topbar');
     var menuBtn = document.querySelector('.topbar .menu-btn');
     if (menuBtn && topbar) {
