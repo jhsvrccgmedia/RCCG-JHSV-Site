@@ -1,18 +1,11 @@
 
 (async function () {
 
-  // ---- 1. Include partials referenced via <div data-include="..."> ----
   await includeAll();
 
-  // ---- 2. Mark active nav link from <body data-page="..."> ----
   setActiveNav();
 
-  // ---- 3. Wire up everything else (mobile nav, magnetic, reveal, etc.) ----
   initUI();
-
-  // ============================================================
-  //                         FUNCTIONS
-  // ============================================================
 
   async function includeAll() {
     var nodes = document.querySelectorAll('[data-include]');
@@ -163,17 +156,6 @@
       pickActive();
     }
 
-    // ---- Connection List + contact form stubs ----
-    document.querySelectorAll('form[data-stub]').forEach(function (form) {
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var note = form.querySelector('[data-stub-msg]');
-        if (note) {
-          note.textContent = 'Thanks — this form is a draft. We\'ll wire it up next.';
-          note.style.display = 'block';
-        }
-      });
-    });
 
     // ---- Form result card (replaces the form on success/error) ----
     function showFormResultCard(form, opts) {
@@ -536,17 +518,6 @@
     }
 
     // ---- YouTube channel hydrate (Live page) ----
-    // One fetch of the channel's public RSS feeds the player AND the
-    // Recent Broadcasts grid. The first entry powers the player iframe
-    // (when the channel goes live, that entry IS the live stream, so
-    // it shows the live broadcast natively; when offline, it shows the
-    // most recent stream as a fallback rather than YouTube's "stream
-    // offline" error page). The top 3 entries fill the broadcasts grid.
-    //
-    // The RSS endpoint ships no CORS headers, so we tunnel through a
-    // public proxy. Two are tried in order so a single proxy outage
-    // doesn't leave the page stuck on placeholders. Result is cached
-    // in localStorage for 1 hour.
     var livePlayer = document.querySelector('.live-player[data-yt-channel]');
     var broadcastGrid = document.getElementById('broadcastGrid');
     var ytChannelId =
@@ -562,7 +533,6 @@
       var cacheTtl = 60 * 60 * 1000; // 1 hour
       var rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + channelId;
 
-      // Try fresh cache first.
       var fresh = readChannelCache(cacheKey, cacheTtl);
       if (fresh) {
         applyChannelData(player, grid, fresh);
@@ -588,9 +558,6 @@
           });
       }
 
-      // Independently check whether the channel is currently live and
-      // flip the "Recent service" pill to "Live" with the coral pulse.
-      // Cached for 60s in localStorage so we don't hammer the proxy.
       if (document.querySelector('.live-stage')) {
         checkChannelLive(channelId).then(applyLiveStatus);
       }
@@ -605,19 +572,9 @@
         label.textContent = 'Live';
       } else {
         stage.dataset.live = 'false';
-        // Keep whatever default the HTML shipped with — usually
-        // "Recent service" — so we don't churn the label when the proxy
-        // call fails or returns false.
       }
     }
 
-    // Heuristic live detection. youtube.com/channel/<id>/live serves
-    // the live broadcast watch page when the channel is currently live
-    // and a redirected channel-home page otherwise. The watch page's
-    // embedded JSON includes "isLive":true / "liveBroadcastContent":
-    // "live" — we look for either marker after pulling through a CORS
-    // proxy. Best-effort: a missing/changed marker just means we stay
-    // on the default "Recent service" pill.
     function checkChannelLive(channelId) {
       var cacheKey = 'jhsv_yt_live_v1_' + channelId;
       var cacheTtl = 60 * 1000; // 1 minute
@@ -670,11 +627,6 @@
       return null;
     }
 
-    // Multi-strategy fetch:
-    //   1. api.rss2json.com -> purpose-built, ships JSON with CORS
-    //   2. api.allorigins.win/raw -> raw XML, longer-running proxy
-    //   3. api.codetabs.com/v1/proxy -> raw XML, second backup
-    // Returns a Promise<Array<Video>>. First successful strategy wins.
     function fetchChannelVideos(rssUrl) {
       return tryRss2Json(rssUrl)
         .catch(function () {
@@ -740,18 +692,11 @@
 
     function applyChannelData(player, grid, videos) {
       if (player && videos[0]) renderLivePlayer(player, videos[0]);
-      // Broadcasts grid skips videos[0] — that one's already in the
-      // player above. Take the next 3 (videos[1..3]) so the section
-      // truly is "previous" broadcasts, not a duplicate of the player.
       if (grid) renderBroadcasts(grid, videos.slice(1, 4));
     }
 
     function renderLivePlayer(player, latest) {
       var iframe = document.createElement('iframe');
-      // Embed the latest video by ID. When the channel is currently
-      // live, that ID is the live stream and YouTube shows the LIVE
-      // badge in the player. When offline, the most recent past stream
-      // plays in its place — no error state.
       iframe.src = 'https://www.youtube.com/embed/'
         + encodeURIComponent(latest.id)
         + '?rel=0&modestbranding=1';
@@ -1014,7 +959,6 @@
         if (events && events.length) renderLiveEvents(grid, events);
       })
       .catch(function (err) {
-        // Static fallback already on screen — log and move on.
         if (window.console) console.warn('[events] calendar fetch failed; keeping static fallback:', err);
       });
   }
@@ -1041,17 +985,11 @@
   }
 
   function fetchLiveEvents(cfg) {
-    // The cache holds a wide pool of events (independent of any one
-    // page's maxResults) so the home page can request 3 and the events
-    // page 6 from the same cache without one stepping on the other.
     var cacheKey = 'jhsv_cal_v2_' + cfg.id;
     var max = cfg.maxResults || 4;
     var cached = readCache(cacheKey, 10 * 60 * 1000);
     if (cached) return Promise.resolve(cached.slice(0, max));
 
-    // Pull a wider window from the API so we have headroom after filtering
-    // out recurring weekly services (Sunday Service, Wednesday Bible Study,
-    // etc.). Special one-off events float to the top by date order.
     var serverMax = Math.max(25, max * 6);
 
     var url = 'https://www.googleapis.com/calendar/v3/calendars/' +
@@ -1067,9 +1005,6 @@
         return res.json();
       })
       .then(function (data) {
-        // Drop instances of recurring events. Each instance carries a
-        // recurringEventId pointing back to its parent series; one-off
-        // events don't.
         var pool = (data.items || [])
           .filter(function (ev) { return !ev.recurringEventId; })
           .map(normalizeApiEvent);
