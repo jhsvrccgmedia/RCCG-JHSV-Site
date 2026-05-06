@@ -189,7 +189,7 @@
         </div>
         <h3>Tithes and offering</h3>
         <p>Quick-tap giving during the offering moment. Online and recurring options.</p>
-        <a class="card-cta" href="give">Give now</a>
+        <a class="card-cta" href="/give">Give now</a>
       </div>
       <div class="spot-card">
         <div class="card-icon" aria-hidden="true">
@@ -202,7 +202,7 @@
         </div>
         <h3>Prayer request</h3>
         <p>Submit a request and our pastoral team will pray with you this week.</p>
-        <a class="card-cta" href="contact">Submit request</a>
+        <a class="card-cta" href="/contact">Submit request</a>
       </div>
       <div class="spot-card">
         <div class="card-icon" aria-hidden="true">
@@ -215,7 +215,7 @@
         </div>
         <h3>I'm new</h3>
         <p>Watching for the first time? Tell us who you are and we'll say hi.</p>
-        <a class="card-cta" href="new">Connection card</a>
+        <a class="card-cta" href="/new">Connection card</a>
       </div>
     </div>
   </div>
@@ -280,7 +280,7 @@
       <p style="font-family: var(--sans); font-weight: 600; font-size: 18px; color: var(--text-inverse); letter-spacing: 0.01em; margin: 0 auto 18px;">10 AM at 474 Piercy Road</p>
       <p class="lede" style="margin: 0 auto 28px;">We'd love to host you.</p>
       <div class="btn-row" style="justify-content: center;">
-        <a class="btn btn-on-dark" href="new" data-magnetic>Plan your visit</a>
+        <a class="btn btn-on-dark" href="/new" data-magnetic>Plan your visit</a>
       </div>
     </div>
   </div>
@@ -342,11 +342,11 @@
           <a href="https://www.youtube.com/@rccgjhsv/featured" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3L10 15z"/></svg></a>
         </div>
         <h4 style="margin-top: 28px;">Connection List</h4>
-        <form class="nl-form" data-stub>
-          <input type="email" placeholder="your@email.com" required />
+        <form class="nl-form" data-stub aria-label="Connection List signup">
+          <input id="nl-email-live" type="email" name="email" autocomplete="email" placeholder="your@email.com" aria-label="Email address" required />
           <button class="btn btn-accent" type="submit">Sign up</button>
+          <small data-stub-msg role="status" aria-live="polite" style="display:none; margin-top: 8px; color: rgba(250,246,240,0.85);"></small>
         </form>
-        <small data-stub-msg style="display:none; margin-top: 8px; color: rgba(250,246,240,0.65);"></small>
       </div>
     </div>
     <div class="legal">
