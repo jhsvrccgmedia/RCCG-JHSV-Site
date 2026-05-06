@@ -3059,3 +3059,11 @@ body[data-page="error"] .display {
 @media (prefers-reduced-motion: reduce) {
   .form-result-card { animation: none; }
 }
+
+/* Hide the floating reCAPTCHA v3 badge. Google permits this only when
+   the site discloses reCAPTCHA usage with links to Google's Privacy
+   Policy and Terms — that disclosure lives on /privacy under the
+   Cookies and analytics section. */
+.grecaptcha-badge {
+  visibility: hidden !important;
+}

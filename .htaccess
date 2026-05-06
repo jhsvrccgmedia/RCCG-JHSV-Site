@@ -18,7 +18,11 @@ AddDefaultCharset UTF-8
   RewriteCond %{REQUEST_URI} ^/index\.html?$ [NC]
   RewriteRule ^ / [L,R=301]
 
+  # Strip .html on canonical URLs, but skip /partials/ — those .html
+  # files are fetched at runtime by scripts.js (data-include) and must
+  # resolve directly without a redirect-to-extensionless path.
   RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !^/partials/ [NC]
   RewriteCond %{REQUEST_URI} ^/(.+)\.html$ [NC]
   RewriteRule ^ /%1 [L,R=301]
 
