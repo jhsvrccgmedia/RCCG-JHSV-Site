@@ -397,30 +397,29 @@
 
     function hydrateChannel(channelId, player, grid) {
       var cacheKey = 'jhsv_yt_v3_' + channelId;
-      var cacheTtl = 60 * 60 * 1000;
       var rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + channelId;
 
-      var fresh = readChannelCache(cacheKey, cacheTtl);
-      if (fresh) {
-        applyChannelData(player, grid, fresh);
-      } else {
-        fetchChannelVideos(rssUrl)
-          .then(function (videos) {
-            if (!videos.length) throw new Error('Empty feed');
-            var keep = videos.slice(0, 5);
-            try {
-              localStorage.setItem(cacheKey, JSON.stringify({
-                fetchedAt: Date.now(),
-                videos: keep
-              }));
-            } catch (e) {}
-            applyChannelData(player, grid, keep);
-          })
-          .catch(function () {
+      var cached = readChannelCache(cacheKey, Infinity);
+      if (cached) applyChannelData(player, grid, cached);
+
+      fetchChannelVideos(rssUrl)
+        .then(function (videos) {
+          if (!videos.length) throw new Error('Empty feed');
+          var keep = videos.slice(0, 5);
+          try {
+            localStorage.setItem(cacheKey, JSON.stringify({
+              fetchedAt: Date.now(),
+              videos: keep
+            }));
+          } catch (e) {}
+          applyChannelData(player, grid, keep);
+        })
+        .catch(function () {
+          if (!cached) {
             var stale = readChannelCache(cacheKey, Infinity);
             if (stale) applyChannelData(player, grid, stale);
-          });
-      }
+          }
+        });
 
       if (document.querySelector('.live-stage')) {
         checkChannelLive(channelId).then(applyLiveStatus);
