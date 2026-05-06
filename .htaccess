@@ -28,18 +28,18 @@ AddDefaultCharset UTF-8
   RewriteRule ^([^/]+?)/?$ $1.html [L]
 </IfModule>
 
-ErrorDocument 400 /400.html
-ErrorDocument 401 /401.html
-ErrorDocument 403 /403.html
-ErrorDocument 404 /404.html
-ErrorDocument 429 /429.html
-ErrorDocument 500 /500.html
-ErrorDocument 502 /502.html
-ErrorDocument 503 /503.html
-ErrorDocument 504 /504.html
+ErrorDocument 400 /400.shtml
+ErrorDocument 401 /401.shtml
+ErrorDocument 403 /403.shtml
+ErrorDocument 404 /404.shtml
+ErrorDocument 429 /429.shtml
+ErrorDocument 500 /500.shtml
+ErrorDocument 502 /502.shtml
+ErrorDocument 503 /503.shtml
+ErrorDocument 504 /504.shtml
 
 <IfModule mod_headers.c>
-  <FilesMatch "^(400|401|403|404|429|500|502|503|504)\.html$">
+  <FilesMatch "^(400|401|403|404|429|500|502|503|504)\.shtml$">
     Header set X-Robots-Tag "noindex"
     Header set Cache-Control "no-store"
   </FilesMatch>
@@ -73,6 +73,7 @@ ErrorDocument 504 /504.html
   AddType image/x-icon .ico
   AddType font/woff2 .woff2
   AddType text/calendar .ics
+  AddType text/html .shtml
 </IfModule>
 
 <IfModule mod_deflate.c>

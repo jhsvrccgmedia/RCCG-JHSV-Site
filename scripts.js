@@ -904,11 +904,14 @@
   }
 
   function fetchLiveEvents(cfg) {
-    var cacheKey = 'jhsv_cal_v1_' + cfg.id;
-    var cached = readCache(cacheKey, 10 * 60 * 1000);
-    if (cached) return Promise.resolve(cached);
-
+    // The cache holds a wide pool of events (independent of any one
+    // page's maxResults) so the home page can request 3 and the events
+    // page 6 from the same cache without one stepping on the other.
+    var cacheKey = 'jhsv_cal_v2_' + cfg.id;
     var max = cfg.maxResults || 4;
+    var cached = readCache(cacheKey, 10 * 60 * 1000);
+    if (cached) return Promise.resolve(cached.slice(0, max));
+
     // Pull a wider window from the API so we have headroom after filtering
     // out recurring weekly services (Sunday Service, Wednesday Bible Study,
     // etc.). Special one-off events float to the top by date order.
@@ -929,15 +932,12 @@
       .then(function (data) {
         // Drop instances of recurring events. Each instance carries a
         // recurringEventId pointing back to its parent series; one-off
-        // events don't. See docs/PENDING.md "Live Google Calendar feed"
-        // for the long-term plan to use a separate special-events calendar
-        // and remove this filter.
-        var oneOffs = (data.items || []).filter(function (ev) {
-          return !ev.recurringEventId;
-        });
-        var events = oneOffs.slice(0, max).map(normalizeApiEvent);
-        writeCache(cacheKey, events);
-        return events;
+        // events don't.
+        var pool = (data.items || [])
+          .filter(function (ev) { return !ev.recurringEventId; })
+          .map(normalizeApiEvent);
+        writeCache(cacheKey, pool);
+        return pool.slice(0, max);
       });
   }
 

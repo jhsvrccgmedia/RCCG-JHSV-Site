@@ -1733,6 +1733,14 @@ footer.site-footer .legal .legal-credit {
   word-break: keep-all;
   overflow-wrap: normal;
 }
+/* Footer links default to display: block (used in the Explore column),
+   but the credit is an inline phrase — restore inline so the link sits
+   on the same baseline as "Powered by" instead of breaking to a new
+   line and forcing the credit to wrap. */
+footer.site-footer .legal-credit a {
+  display: inline;
+  padding: 0;
+}
 /* Phones get to stack — copyright above, credit below, both centered.
    At sub-560px the row gets too tight for any reasonable balance. */
 @media (max-width: 560px) {
