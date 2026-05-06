@@ -197,13 +197,14 @@
       title.className = 'form-result-title';
       title.textContent = opts.isError ? (opts.title || 'Something went wrong') : (opts.title || 'Thank you!');
 
-      var msg = document.createElement('p');
-      msg.className = 'form-result-msg';
-      msg.textContent = opts.message || '';
-
       card.appendChild(icon);
       card.appendChild(title);
-      card.appendChild(msg);
+      if (opts.message) {
+        var msg = document.createElement('p');
+        msg.className = 'form-result-msg';
+        msg.textContent = opts.message;
+        card.appendChild(msg);
+      }
 
       form.parentNode.replaceChild(card, form);
       try { card.focus(); } catch (e) {}
@@ -275,8 +276,8 @@
           .then(function (json) {
             if (json && json.success) {
               showFormResultCard(form, {
-                title: 'You’re on the list',
-                message: json.message || 'Thanks! Watch for updates from RCCG Jesus House Silicon Valley.'
+                title: 'You’re on the list to receive our announcements.',
+                message: json.message || ''
               });
             } else {
               showFormResultCard(form, {
