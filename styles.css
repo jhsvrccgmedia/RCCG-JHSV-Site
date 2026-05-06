@@ -2892,33 +2892,18 @@ body[data-page="error"] .display {
 /* Church Center modal trigger card. Used on /new (Connection Card)
    and /contact (Send us a message) where the form is hosted at
    rccgjhsv.churchcenter.com and opened via the Church Center modal
-   SDK. The card is sized to sit at roughly the same height as the
-   adjacent .photo-arch / contact card so the row reads symmetrically. */
+   SDK. Solid card surface, content-sized by default; on /contact
+   the parent .two-col stretches it to match the sibling info card. */
 .cc-modal-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 18px;
-  position: relative;
-  padding: 44px 36px;
-  min-height: 480px;
+  padding: 36px 32px;
   background: var(--bg-card);
   border: 1px solid var(--border-soft);
   border-radius: 22px;
-  overflow: hidden;
 }
-.cc-modal-card::before {
-  content: '';
-  position: absolute;
-  top: -56px; right: -56px;
-  width: 200px; height: 240px;
-  border-radius: var(--arch-full);
-  background: var(--plum-100);
-  opacity: 0.55;
-  pointer-events: none;
-  z-index: 0;
-}
-.cc-modal-card > * { position: relative; z-index: 1; }
 .cc-modal-card h3 {
   font-family: var(--display);
   font-size: clamp(22px, 2.5vw, 28px);
@@ -2948,15 +2933,20 @@ body[data-page="error"] .display {
   outline: 3px solid var(--coral-500);
   outline-offset: 3px;
 }
+/* Stretch the modal card to fill the column when paired with a
+   sibling info card in a .two-col grid (Contact "Ways to reach our
+   team"). The default .two-col is align-items: center, which we
+   override here so the two columns share the same height. */
+.two-col:has(.cc-modal-card) { align-items: stretch; }
+.two-col:has(.cc-modal-card) > .reveal {
+  display: flex;
+  flex-direction: column;
+}
+.two-col:has(.cc-modal-card) > .reveal > .cc-modal-card { flex: 1; }
 @media (max-width: 900px) {
   .cc-modal-card {
-    min-height: auto;
-    padding: 32px 24px;
+    padding: 28px 22px;
     gap: 16px;
-  }
-  .cc-modal-card::before {
-    width: 140px; height: 170px;
-    top: -36px; right: -36px;
   }
   .cc-modal-card .btn {
     align-self: stretch;
