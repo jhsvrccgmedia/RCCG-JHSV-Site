@@ -505,9 +505,9 @@ body[data-page="home"] { padding-top: 0; }
 }
 @media (max-width: 600px) {
   .hero.hero-v2 {
-    min-height: 85vh;               /* shorter on phones so the full hero is in view */
-    min-height: 85svh;
-    min-height: 85dvh;
+    min-height: 70vh;               /* shorter on phones so the full hero fits */
+    min-height: 70dvh;
+    min-height: 70svh;              /* svh wins: smallest viewport (address bar visible) */
   }
 }
 .hero.hero-v2 .hero-arch,
@@ -806,8 +806,21 @@ body[data-page="home"] section.alt#welcome {
 }
 
 @media (max-width: 600px) {
-  /* hero stays 100vh on all devices */
-  .hero-v2 .hero-content { padding: 56px 20px; }
+  .hero-v2 .hero-content {
+    padding: calc(var(--topbar-height, 72px) + 8px) 20px 32px;
+  }
+  .hero-v2 .hero-content h1.display {
+    font-size: clamp(28px, 8.5vw, 36px);
+    margin: 6px auto 10px;
+    line-height: 1.08;
+  }
+  .hero-v2 .hero-content .lede {
+    font-size: 14px;
+    line-height: 1.45;
+    margin-bottom: 14px;
+  }
+  .hero-v2 .hero-content .btn-row { margin-bottom: 10px; }
+  .hero-v2 .hero-content .meta-link { margin-top: 18px; font-size: 12px; }
   .hero-v2 .scroll-cue { display: none; }
 }
 
