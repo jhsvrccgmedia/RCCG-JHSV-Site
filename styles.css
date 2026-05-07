@@ -67,7 +67,7 @@
 /* ----------------------- Reset ----------------------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
-html, body { overflow-x: hidden; }
+html, body { overflow-x: clip; }   /* clip avoids breaking position: sticky on descendants */
 body {
   font-family: var(--sans);
   font-weight: 400;
@@ -183,7 +183,9 @@ body[data-page="home"] { padding-top: 0; }
   pointer-events: none;
 }
 @media (max-width: 600px) {
-  .topbar .brand-logo { height: 52px; }
+  :root { --topbar-height: 104px; }
+  .topbar { padding: 22px 20px; }
+  .topbar .brand-logo { height: 60px; }
 }
 .topbar nav {
   display: flex; align-items: center; gap: 24px;
@@ -950,12 +952,15 @@ body[data-page="home"] section.alt#welcome {
 
 .spot-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1px;
   background: var(--border-soft);
   border-radius: 22px;
   overflow: hidden;
   border: 1px solid var(--border-soft);
+}
+@media (max-width: 720px) {
+  .spot-grid { grid-template-columns: 1fr; }
 }
 .spot-card {
   background: var(--bg-card);
