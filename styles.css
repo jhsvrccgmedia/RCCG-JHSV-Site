@@ -2253,6 +2253,10 @@ footer.site-footer .nl-form button {
   outline: 2px solid var(--plum-600);
   outline-offset: 3px;
 }
+.pastor-card { cursor: pointer; transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out); }
+.pastor-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--plum-300); }
+.pastor-card:focus-visible { outline: 2px solid var(--plum-600); outline-offset: 3px; }
+.pastor-card a, .pastor-card button { cursor: pointer; }
 .ministry-card .ministry-icon {
   width: 48px; height: 48px;
   border-radius: 14px;

@@ -504,7 +504,17 @@
       }
 
       document.querySelectorAll('[data-pastor-bio]').forEach(function (btn) {
-        btn.addEventListener('click', function () { openBio(btn.dataset.pastorBio); });
+        btn.addEventListener('click', function (e) {
+          // Don't open the bio when the click originates inside an interactive child (social links).
+          if (e.target.closest('a, button')) return;
+          openBio(btn.dataset.pastorBio);
+        });
+        btn.addEventListener('keydown', function (e) {
+          if ((e.key === 'Enter' || e.key === ' ') && e.target === btn) {
+            e.preventDefault();
+            openBio(btn.dataset.pastorBio);
+          }
+        });
       });
       document.querySelectorAll('[data-close-bio]').forEach(function (btn) {
         btn.addEventListener('click', closeBio);
