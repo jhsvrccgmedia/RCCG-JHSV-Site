@@ -957,8 +957,10 @@ body[data-page="home"] section.alt#welcome {
   border: 1px solid var(--border-soft);
 }
 #spotGridNextSteps { grid-template-columns: repeat(3, 1fr); }
+#spotGridDuringService { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 900px) {
   #spotGridNextSteps { grid-template-columns: 1fr; }
+  #spotGridDuringService { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
   .spot-grid { grid-template-columns: 1fr; }
