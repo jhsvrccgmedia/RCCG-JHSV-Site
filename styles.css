@@ -507,9 +507,9 @@ body[data-page="home"] { padding-top: 0; }
 }
 @media (max-width: 600px) {
   .hero.hero-v2 {
-    min-height: 70vh;               /* shorter on phones so the full hero fits */
-    min-height: 70dvh;
-    min-height: 70svh;              /* svh wins: smallest viewport (address bar visible) */
+    min-height: 88vh;               /* shorter on phones so the full hero fits */
+    min-height: 88dvh;
+    min-height: 88svh;              /* svh wins: smallest viewport (address bar visible) */
   }
 }
 .hero.hero-v2 .hero-arch,
