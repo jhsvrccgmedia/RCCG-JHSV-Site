@@ -454,10 +454,10 @@
         },
         yemisi: {
           name: 'Pastor Yemisi Asogba',
-          role: 'Director of Women & Ministry',
+          role: "Director of Women's Ministries",
           instagram: 'https://www.instagram.com/yemisi_essential/',
           bio: [
-            "Pastor Yemisi Asogba serves as Director of Women & Ministry at Jesus House Silicon Valley. Alongside her husband, Pastor Bayo, she shepherds the church family with warmth, prayer, and a steady focus on raising women who walk in their God-given identity.",
+            "Pastor Yemisi Asogba serves as Director of Women’s Ministries at Jesus House Silicon Valley. Alongside her husband, Pastor Bayo, she shepherds the church family with warmth, prayer, and a steady focus on raising women who walk in their God-given identity.",
             "She leads the Women's Ministry, mentors leaders across the church, and pours into the next generation through teaching, intercession, and personal discipleship. Her ministry centers on helping people encounter God's presence in a way that transforms their everyday lives."
           ]
         }

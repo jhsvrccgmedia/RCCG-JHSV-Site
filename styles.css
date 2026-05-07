@@ -67,6 +67,7 @@
 /* ----------------------- Reset ----------------------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+html, body { overflow-x: hidden; }
 body {
   font-family: var(--sans);
   font-weight: 400;
@@ -492,6 +493,7 @@ body[data-page="home"] { padding-top: 0; }
 
 .hero.hero-v2 {
   min-height: 100vh;
+  min-height: 100svh;
   padding: 0;
   display: flex;
   align-items: flex-end;            /* anchor content near bottom */
@@ -2292,7 +2294,10 @@ footer.site-footer .nl-form button {
   max-width: 540px;
   width: 100%;
   max-height: calc(100vh - 48px);
+  max-height: calc(100svh - 48px);
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   padding: 40px 36px 32px;
   box-shadow: 0 40px 80px -10px rgba(0, 0, 0, 0.3),
               0 12px 32px -8px rgba(31, 3, 44, 0.25);
@@ -2380,9 +2385,20 @@ footer.site-footer .nl-form button {
 .ministry-actions .btn { padding: 10px 22px; font-size: 14px; min-height: 40px; }
 
 @media (max-width: 600px) {
-  .ministry-detail { padding: 32px 22px 24px; border-radius: 20px; }
-  .ministry-detail h2 { font-size: 26px; }
+  .ministry-detail {
+    padding: 28px 20px 22px;
+    border-radius: 20px;
+    max-height: calc(100vh - 24px);
+    max-height: calc(100svh - 24px);
+  }
+  .ministry-detail h2 { font-size: 22px; }
+  .ministry-detail .ministry-blurb { font-size: 14.5px; }
+  .ministry-depts { gap: 14px; margin: 0 0 22px; }
+  .ministry-depts .dept-name { font-size: 14px; }
+  .ministry-depts .dept-lead { font-size: 13px; }
+  .ministry-actions .btn { padding: 9px 18px; font-size: 13.5px; }
   .ministry-close { top: 12px; right: 12px; }
+  .ministry-overlay { padding: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
