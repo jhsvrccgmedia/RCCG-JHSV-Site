@@ -495,8 +495,7 @@ body[data-page="home"] { padding-top: 0; }
 
 .hero.hero-v2 {
   min-height: 100vh;
-  min-height: 100svh;
-  min-height: 100dvh;
+  min-height: 100svh;             /* iOS Safari: small viewport (address bar visible) so hero never overflows */
   padding: 0;
   display: flex;
   align-items: flex-end;            /* anchor content near bottom */
@@ -504,13 +503,6 @@ body[data-page="home"] { padding-top: 0; }
   position: relative;
   overflow: hidden;
   background: var(--plum-900);  /* fallback if photo + gradient layers fail */
-}
-@media (max-width: 600px) {
-  .hero.hero-v2 {
-    min-height: 70vh;               /* shorter on phones so the full hero fits */
-    min-height: 70dvh;
-    min-height: 70svh;              /* svh wins: smallest viewport (address bar visible) */
-  }
 }
 .hero.hero-v2 .hero-arch,
 .hero.hero-v2 .hero-arch-2 { display: none; } /* legacy decoration off in v2 */
@@ -808,21 +800,7 @@ body[data-page="home"] section.alt#welcome {
 }
 
 @media (max-width: 600px) {
-  .hero-v2 .hero-content {
-    padding: calc(var(--topbar-height, 72px) + 8px) 20px 32px;
-  }
-  .hero-v2 .hero-content h1.display {
-    font-size: clamp(28px, 8.5vw, 36px);
-    margin: 6px auto 10px;
-    line-height: 1.08;
-  }
-  .hero-v2 .hero-content .lede {
-    font-size: 14px;
-    line-height: 1.45;
-    margin-bottom: 14px;
-  }
-  .hero-v2 .hero-content .btn-row { margin-bottom: 10px; }
-  .hero-v2 .hero-content .meta-link { margin-top: 18px; font-size: 12px; }
+  .hero-v2 .hero-content { padding: 56px 20px; }
   .hero-v2 .scroll-cue { display: none; }
 }
 
