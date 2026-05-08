@@ -1,5 +1,5 @@
 window.JHSV_ANALYTICS = window.JHSV_ANALYTICS || {
-  gaId: '',
+  gaId: 'G-WT06QGHP9B',
   gscToken: ''
 };
 
