@@ -2112,6 +2112,120 @@ footer.site-footer .nl-form button {
   .upcoming-event .event-date .day { font-size: 30px; }
 }
 
+/* Church Center event cards: flyer on top, date tile + details below.
+   The card itself stays overflow:visible so the "Add to calendar" menu
+   can drop below it; the flyer rounds its own top corners instead. */
+.upcoming-event.has-flyer {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+}
+.upcoming-event .event-flyer {
+  display: block;
+  aspect-ratio: 16 / 9;
+  border-radius: 19px 19px 0 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--plum-500), var(--plum-700));
+}
+.upcoming-event .event-flyer img {
+  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out);
+}
+.upcoming-event.has-flyer:hover .event-flyer img { transform: scale(1.03); }
+.upcoming-event .event-flyer-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 24px 28px;
+  text-align: center;
+  font-family: var(--display);
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--parchment);
+  background:
+    radial-gradient(circle at 85% 15%, rgba(232, 93, 60, 0.35), transparent 55%),
+    linear-gradient(135deg, var(--plum-500), var(--plum-700));
+}
+.upcoming-event .event-main {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 22px 24px 24px;
+  flex: 1;
+}
+.upcoming-event.has-flyer .event-date { width: 64px; padding: 12px 4px 14px; }
+.upcoming-event.has-flyer .event-date .day { font-size: 30px; }
+.upcoming-event.has-flyer h3 { font-size: 20px; }
+.upcoming-event h3 a { color: inherit; text-decoration: none; }
+.upcoming-event h3 a:hover { color: var(--plum-600); }
+.upcoming-event .event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 22px;
+  margin-top: 4px;
+}
+@media (max-width: 600px) {
+  .upcoming-event.has-flyer { padding: 0; }
+  .upcoming-event .event-main { padding: 18px 20px 20px; gap: 16px; }
+}
+
+/* Loading placeholders while /api/events.php responds. */
+.upcoming-event.is-loading { pointer-events: none; }
+.upcoming-event.is-loading:hover { transform: none; box-shadow: none; border-color: var(--border-soft); }
+.upcoming-event.is-loading .event-flyer,
+.upcoming-event.is-loading .event-date,
+.upcoming-event.is-loading .sk-line {
+  background: linear-gradient(90deg, var(--plum-50) 0%, var(--plum-100) 50%, var(--plum-50) 100%);
+  background-size: 200% 100%;
+  animation: events-shimmer 1.4s ease-in-out infinite;
+}
+.upcoming-event.is-loading .event-date { height: 72px; }
+.upcoming-event .sk-line {
+  display: block;
+  height: 12px;
+  border-radius: 6px;
+  margin: 6px 0 14px;
+}
+@keyframes events-shimmer {
+  from { background-position: 100% 0; }
+  to   { background-position: -100% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .upcoming-event.is-loading .event-flyer,
+  .upcoming-event.is-loading .event-date,
+  .upcoming-event.is-loading .sk-line { animation: none; }
+  .upcoming-event.has-flyer:hover .event-flyer img { transform: none; }
+}
+
+/* Shown when the feed is empty or unreachable. */
+.events-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 24px;
+  background: var(--bg-card);
+  border: 1px dashed var(--border-soft);
+  border-radius: 20px;
+}
+.events-empty p {
+  font-size: 15.5px;
+  color: var(--text-secondary);
+  margin: 0 auto 14px;
+  max-width: 520px;
+}
+.events-empty .card-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 600;
+  color: var(--plum-600);
+}
+.events-empty .card-cta::after { content: '\2192'; transition: transform 0.25s var(--ease-out); }
+.events-empty .card-cta:hover::after { transform: translateX(4px); }
+
 /* ----------------------- Notice ----------------------- */
 .notice {
   background: var(--coral-50);

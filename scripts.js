@@ -847,7 +847,7 @@
     // ---- Family ministries tabs (used on /new for Kids / Teens) ----
     initFamilyTabs();
 
-    // ---- Live Google Calendar feed (used on /events and home Upcoming) ----
+    // ---- Church Center events feed (used on /events and home Upcoming) ----
     initEventsPage();
 
     // ---- Prayer Line modal (Monday Prayer dial-in info) ----
@@ -941,116 +941,213 @@
   }
 
   // ---------------------------------------------------------------------
-  // /events — Upcoming section
+  // Upcoming events (home "What's happening" + /events "Upcoming")
   //
-  // 1. Static fallback cards (data-event-* attrs in HTML) get an
-  //    "Add to calendar" dropdown immediately so visitors can save any
-  //    of them to Google / Outlook / Apple Calendar even if the live
-  //    feed is missing or fails.
-  // 2. If window.JHSV_CALENDAR.{id, apiKey} are both filled in, we hit
-  //    the Google Calendar Data API v3, cache the result for 10 minutes
-  //    in localStorage, and replace the grid with the live cards.
+  // Events come from Church Center (the same list as
+  // https://rccgjhsv.churchcenter.com/calendar?view=gallery), served by
+  // our own /api/events.php, which fetches and caches the feed
+  // server-side. Each card shows the event flyer, date, time, and an
+  // "Add to calendar" menu (Google / Outlook / Apple).
   //
-  // Failures (no config / network error / quota) are silent — the
-  // static fallback stays on screen. See docs/PENDING.md for setup.
+  // Config per page: window.JHSV_EVENTS = { endpoint, maxResults }.
+  // Results are cached in localStorage for 10 minutes. If the feed
+  // can't be reached or has nothing upcoming, the loading cards are
+  // replaced with a short note linking to Church Center.
   // ---------------------------------------------------------------------
+  var EVENTS_TZ = 'America/Los_Angeles';
+  var CHURCH_CENTER_CALENDAR = 'https://rccgjhsv.churchcenter.com/calendar?view=gallery';
+
   function initEventsPage() {
-    // Runs on any page that has #upcomingGrid (events page, home page, etc.).
     var grid = document.getElementById('upcomingGrid');
     if (!grid) return;
 
-    enhanceStaticEvents(grid);
+    var cfg = window.JHSV_EVENTS || {};
+    var endpoint = cfg.endpoint || '/api/events.php';
+    var max = cfg.maxResults || 3;
 
-    var cfg = window.JHSV_CALENDAR;
-    if (!cfg || !cfg.id || !cfg.apiKey) return;
+    bindCalendarDismiss();
 
-    fetchLiveEvents(cfg)
+    fetchChurchCenterEvents(endpoint)
       .then(function (events) {
-        if (events && events.length) renderLiveEvents(grid, events);
+        var upcoming = events.filter(function (ev) {
+          return new Date(ev.end).getTime() > Date.now();
+        }).slice(0, max);
+        if (upcoming.length) {
+          renderLiveEvents(grid, upcoming);
+        } else {
+          renderEventsEmpty(grid, 'No events are posted right now. Check back soon, or see the full calendar on Church Center.');
+        }
       })
       .catch(function (err) {
-        if (window.console) console.warn('[events] calendar fetch failed; keeping static fallback:', err);
+        if (window.console) console.warn('[events] Church Center feed unavailable:', err);
+        renderEventsEmpty(grid, 'We couldn’t load events just now. See what’s coming up on Church Center.');
       });
   }
 
-  function enhanceStaticEvents(grid) {
-    var cards = grid.querySelectorAll('article.upcoming-event[data-event]');
-    cards.forEach(function (card) {
-      var ev = readEventFromCard(card);
-      var body = card.querySelector('.event-body');
-      if (body) body.insertAdjacentHTML('beforeend', renderAddToCalendar(ev));
-    });
-    bindCalendarToggles(grid);
-  }
-
-  function readEventFromCard(card) {
-    return {
-      title:       card.dataset.eventTitle || '',
-      description: card.dataset.eventDesc || '',
-      start:       card.dataset.eventStart || '',
-      end:         card.dataset.eventEnd || '',
-      location:    card.dataset.eventLocation || '',
-      isAllDay:    false
-    };
-  }
-
-  function fetchLiveEvents(cfg) {
-    var cacheKey = 'jhsv_cal_v2_' + cfg.id;
-    var max = cfg.maxResults || 4;
+  function fetchChurchCenterEvents(endpoint) {
+    var cacheKey = 'jhsv_cc_events_v1';
     var cached = readCache(cacheKey, 10 * 60 * 1000);
-    if (cached) return Promise.resolve(cached.slice(0, max));
+    if (cached) return Promise.resolve(cached);
 
-    var serverMax = Math.max(25, max * 6);
-
-    var url = 'https://www.googleapis.com/calendar/v3/calendars/' +
-      encodeURIComponent(cfg.id) + '/events' +
-      '?key=' + encodeURIComponent(cfg.apiKey) +
-      '&timeMin=' + encodeURIComponent(new Date().toISOString()) +
-      '&maxResults=' + serverMax +
-      '&singleEvents=true&orderBy=startTime';
-
-    return fetch(url)
+    return fetch(endpoint, { headers: { 'Accept': 'application/json' } })
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
       })
       .then(function (data) {
-        var pool = (data.items || [])
-          .filter(function (ev) { return !ev.recurringEventId; })
-          .map(normalizeApiEvent);
-        writeCache(cacheKey, pool);
-        return pool.slice(0, max);
+        var events = (data && data.events || []).map(normalizeChurchCenterEvent).filter(Boolean);
+        if (!data.stale) writeCache(cacheKey, events);
+        return events;
       });
   }
 
-  function normalizeApiEvent(ev) {
-    return {
-      title:       ev.summary || 'Event',
-      description: stripHtml(ev.description || ''),
-      start:       ev.start.dateTime || ev.start.date,
-      end:         ev.end.dateTime || ev.end.date,
-      location:    ev.location || '',
-      isAllDay:    !ev.start.dateTime
+  // Shape a feed item into what the card + calendar helpers expect.
+  function normalizeChurchCenterEvent(item) {
+    if (!item || !item.title || !item.start) return null;
+    var ev = {
+      title:       item.title,
+      description: item.description || '',
+      start:       item.start,
+      end:         item.end || item.start,
+      isAllDay:    !!item.allDay,
+      multiDay:    !!item.multiDay,
+      recurrence:  item.recurring && !item.multiDay && item.recurrence
+                     ? 'Repeats ' + item.recurrence.charAt(0).toLowerCase() + item.recurrence.slice(1)
+                     : '',
+      image:       /^https:\/\/images\.planningcenterusercontent\.com\//.test(item.image || '') ? item.image : '',
+      url:         /^https:\/\/rccgjhsv\.churchcenter\.com\//.test(item.url || '') ? item.url : CHURCH_CENTER_CALENDAR,
+      location:    item.location ? (item.location.address || item.location.name || '') : ''
     };
+    // The calendar helpers take all-day dates as YYYY-MM-DD with an
+    // exclusive end date (the day after the last day).
+    if (ev.isAllDay) {
+      ev.start = ymdInTz(new Date(item.start));
+      ev.end   = ymdInTz(addDays(lastMomentDay(new Date(item.end || item.start)), 1));
+    }
+    return ev;
   }
 
   function renderLiveEvents(grid, events) {
+    grid.removeAttribute('aria-busy');
     grid.innerHTML = events.map(renderEventCard).join('');
     bindCalendarToggles(grid);
     grid.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
     setUpcomingGridLayout(grid, events.length);
   }
 
+  function renderEventsEmpty(grid, message) {
+    grid.removeAttribute('aria-busy');
+    grid.classList.remove('c2', 'c3');
+    grid.innerHTML =
+      '<div class="events-empty">' +
+        '<p>' + escHtml(message) + '</p>' +
+        '<a class="card-cta" href="' + CHURCH_CENTER_CALENDAR + '" target="_blank" rel="noopener">Open the Church Center calendar</a>' +
+      '</div>';
+  }
+
   // Grids opted in via [data-grid-cols-auto] flip between c2 and c3
-  // based on event count: 3 x 2 for 5+ items, otherwise 2 columns.
+  // based on event count: 3 across for 3 or 5+ items, otherwise 2.
   // The .grid container always reserves the same outer width (it's a
   // direct child of the .wrap), so toggling between c2 and c3 only
   // changes how the columns divide that width — not the width itself.
   function setUpcomingGridLayout(grid, count) {
     if (!grid.hasAttribute('data-grid-cols-auto')) return;
     grid.classList.remove('c2', 'c3');
-    grid.classList.add(count >= 5 ? 'c3' : 'c2');
+    grid.classList.add(count === 3 || count >= 5 ? 'c3' : 'c2');
   }
+
+  function renderEventCard(ev) {
+    var when = describeWhen(ev);
+    var flyer = ev.image
+      ? '<img src="' + escHtml(ev.image) + '" alt="' + escHtml('Flyer for ' + ev.title) + '" loading="lazy" decoding="async" width="960" height="540" />'
+      : '<span class="event-flyer-fallback" aria-hidden="true">' + escHtml(ev.title) + '</span>';
+
+    var detail = ev.description ? truncate(ev.description, 160) : ev.recurrence;
+
+    return [
+      '<article class="upcoming-event has-flyer reveal in">',
+        '<a class="event-flyer" href="', escHtml(ev.url), '" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">',
+          flyer,
+        '</a>',
+        '<div class="event-main">',
+          '<div class="event-date" aria-hidden="true">',
+            '<div class="month">', escHtml(when.month), '</div>',
+            '<div class="day">', escHtml(when.day), '</div>',
+          '</div>',
+          '<div class="event-body">',
+            '<div class="event-meta">', escHtml(when.meta), '</div>',
+            '<h3><a href="', escHtml(ev.url), '" target="_blank" rel="noopener">', escHtml(ev.title), '</a></h3>',
+            detail ? '<p>' + escHtml(detail) + '</p>' : '',
+            '<div class="event-actions">',
+              renderAddToCalendar(calendarPayload(ev)),
+              '<a class="card-cta" href="', escHtml(ev.url), '" target="_blank" rel="noopener">Details</a>',
+            '</div>',
+          '</div>',
+        '</div>',
+      '</article>'
+    ].join('');
+  }
+
+  // Date tile + meta line, always in Pacific time.
+  //   Single day:  "Saturday · 4:00 PM to 7:00 PM"
+  //   Multi-day:   "Dec 29 – Dec 31 · Starts 7:00 PM"
+  //   All day:     "Saturday · All day"  /  "Dec 29 – Dec 31 · All day"
+  function describeWhen(ev) {
+    var start = ev.isAllDay ? parseLocalDate(ev.start) : new Date(ev.start);
+    var tz = ev.isAllDay ? undefined : EVENTS_TZ;
+    var fmt = function (d, opts) {
+      if (tz) opts.timeZone = tz;
+      return d.toLocaleString('en-US', opts);
+    };
+    var time = function (d) { return fmt(d, { hour: 'numeric', minute: '2-digit', hour12: true }); };
+    var shortDate = function (d) { return fmt(d, { month: 'short', day: 'numeric' }); };
+
+    var lastDay = ev.isAllDay ? addDays(parseLocalDate(ev.end), -1) : lastMomentDay(new Date(ev.end));
+    var spansDays = ymd(lastDay, tz) !== ymd(start, tz);
+
+    var meta;
+    if (spansDays) {
+      meta = shortDate(start) + ' – ' + shortDate(lastDay) + ' · ' + (ev.isAllDay ? 'All day' : 'Starts ' + time(start));
+    } else if (ev.isAllDay) {
+      meta = fmt(start, { weekday: 'long' }) + ' · All day';
+    } else {
+      meta = fmt(start, { weekday: 'long' }) + ' · ' + time(start) + ' to ' + time(new Date(ev.end));
+    }
+
+    return {
+      month: fmt(start, { month: 'short' }),
+      day:   fmt(start, { day: 'numeric' }),
+      meta:  meta
+    };
+  }
+
+  // What the Google / Outlook / Apple links receive.
+  function calendarPayload(ev) {
+    var desc = ev.description ? ev.description + '\n\n' : '';
+    return {
+      title:       ev.title,
+      description: desc + 'Details: ' + ev.url,
+      start:       ev.start,
+      end:         ev.end,
+      location:    ev.location,
+      isAllDay:    ev.isAllDay
+    };
+  }
+
+  // An event ending exactly at midnight belongs to the previous day
+  // (e.g. "7 PM Dec 29 to 12 AM Jan 1" is Dec 29 – Dec 31).
+  function lastMomentDay(end) {
+    return new Date(end.getTime() - 60 * 1000);
+  }
+  function addDays(d, n) {
+    return new Date(d.getTime() + n * 24 * 60 * 60 * 1000);
+  }
+  function ymd(d, tz) {
+    var opts = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    if (tz) opts.timeZone = tz;
+    return d.toLocaleDateString('en-CA', opts);
+  }
+  function ymdInTz(d) { return ymd(d, EVENTS_TZ); }
 
   // Parse a YYYY-MM-DD all-day date as local-noon (avoids the
   // common UTC-midnight-then-shift-back-a-day display bug).
@@ -1059,40 +1156,20 @@
     return new Date(+p[0], +p[1] - 1, +p[2], 12, 0, 0, 0);
   }
 
-  function renderEventCard(ev) {
-    var TZ = 'America/Los_Angeles';
-    var month, day, meta;
-
-    if (ev.isAllDay) {
-      var d = parseLocalDate(ev.start);
-      month = d.toLocaleString('en-US', { month: 'short' });
-      day   = String(d.getDate());
-      meta  = d.toLocaleString('en-US', { weekday: 'long' }) + ' · All day';
-    } else {
-      var start = new Date(ev.start);
-      var end   = new Date(ev.end);
-      month = start.toLocaleString('en-US', { month: 'short',  timeZone: TZ });
-      day   = start.toLocaleString('en-US', { day:   'numeric', timeZone: TZ });
-      var t = function (x) {
-        return x.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: TZ });
-      };
-      meta = start.toLocaleString('en-US', { weekday: 'long', timeZone: TZ }) + ' · ' + t(start) + ' to ' + t(end);
-    }
-
-    return [
-      '<article class="upcoming-event reveal in">',
-        '<div class="event-date" aria-hidden="true">',
-          '<div class="month">', escHtml(month), '</div>',
-          '<div class="day">', escHtml(day), '</div>',
-        '</div>',
-        '<div class="event-body">',
-          '<div class="event-meta">', escHtml(meta), '</div>',
-          '<h3>', escHtml(ev.title), '</h3>',
-          '<p>', escHtml(truncate(ev.description, 200)), '</p>',
-          renderAddToCalendar(ev),
-        '</div>',
-      '</article>'
-    ].join('');
+  // Close any open "Add to calendar" menu on outside click or Escape.
+  function bindCalendarDismiss() {
+    if (document.documentElement.dataset.calDismissBound === '1') return;
+    document.documentElement.dataset.calDismissBound = '1';
+    var closeAll = function () {
+      document.querySelectorAll('[data-cal-menu]').forEach(function (m) { m.hidden = true; });
+      document.querySelectorAll('[data-cal-toggle]').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
+    };
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.cal-add')) closeAll();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeAll();
+    });
   }
 
   function renderAddToCalendar(ev) {
@@ -1209,11 +1286,6 @@
     return String(s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
-  }
-  function stripHtml(s) {
-    var div = document.createElement('div');
-    div.innerHTML = s;
-    return (div.textContent || '').replace(/\s+/g, ' ').trim();
   }
   function truncate(s, n) {
     s = String(s || '');

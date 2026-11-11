@@ -1,0 +1,13 @@
+# /api/ serves exactly one thing: events.php.
+# Everything else in this folder (backups like events.php.bak, editor
+# swap files, the cache folder, stray uploads) is refused.
+
+Options -Indexes
+
+<FilesMatch ".*">
+  Require all denied
+</FilesMatch>
+
+<Files "events.php">
+  Require all granted
+</Files>
