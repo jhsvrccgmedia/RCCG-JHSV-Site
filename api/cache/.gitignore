@@ -1,0 +1,4 @@
+# Runtime cache written by api/events.php; never commit it.
+*
+!.htaccess
+!.gitignore

@@ -29,12 +29,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preload" as="image" href="/assets/photos/hero_background.jpg" fetchpriority="high" />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css?v=87" />
+<link rel="stylesheet" href="styles.css?v=88" />
 
 <script>
-  window.JHSV_CALENDAR = {
-    id:     "rccgjhsv2013@gmail.com",
-    apiKey: "AIzaSyAbqbFGmW3VbrykD4TjV-qVtMEbhso0o0U",
+  // Upcoming events come from Church Center via /api/events.php (see scripts.js).
+  window.JHSV_EVENTS = {
+    endpoint: "/api/events.php",
     maxResults: 3
   };
 </script>
@@ -258,63 +258,29 @@
       <a class="btn btn-outline" href="/events">See all events <span class="arrow">&rarr;</span></a>
     </div>
 
-    <div class="grid c3 reveal" id="upcomingGrid">
-      <article class="upcoming-event"
-        data-event
-        data-event-title="Family Picnic"
-        data-event-start="2026-05-16T09:00:00-07:00"
-        data-event-end="2026-05-16T16:00:00-07:00"
-        data-event-location="474 Piercy Road, San Jose, CA 95138"
-        data-event-desc="One day in the park. Food, games, and friendships that last beyond Sunday.">
-        <div class="event-date" aria-hidden="true">
-          <div class="month">May</div>
-          <div class="day">16</div>
-        </div>
-        <div class="event-body">
-          <div class="event-meta">Saturday &middot; 9:00 AM to 4:00 PM</div>
-          <h3>Family Picnic</h3>
-          <p>One day in the park. Food, games, and friendships that last beyond Sunday.</p>
+    <div class="grid c3 reveal" id="upcomingGrid" aria-busy="true">
+      <article class="upcoming-event has-flyer is-loading" aria-hidden="true">
+        <div class="event-flyer"></div>
+        <div class="event-main">
+          <div class="event-date"></div>
+          <div class="event-body"><span class="sk-line" style="width: 45%;"></span><span class="sk-line" style="width: 85%;"></span><span class="sk-line" style="width: 60%;"></span></div>
         </div>
       </article>
-
-      <article class="upcoming-event"
-        data-event
-        data-event-title="Triumphant Women Annual Conference"
-        data-event-start="2026-06-13T09:00:00-07:00"
-        data-event-end="2026-06-13T13:00:00-07:00"
-        data-event-location="474 Piercy Road, San Jose, CA 95138"
-        data-event-desc="A flagship gathering for the Women's Ministry. Worship, teaching, intercession, and breakthrough.">
-        <div class="event-date" aria-hidden="true">
-          <div class="month">Jun</div>
-          <div class="day">13</div>
-        </div>
-        <div class="event-body">
-          <div class="event-meta">Saturday &middot; 9:00 AM to 1:00 PM</div>
-          <h3>Triumphant Women Annual Conference</h3>
-          <p>A flagship gathering for the Women&rsquo;s Ministry. Worship, teaching, intercession, and breakthrough.</p>
+      <article class="upcoming-event has-flyer is-loading" aria-hidden="true">
+        <div class="event-flyer"></div>
+        <div class="event-main">
+          <div class="event-date"></div>
+          <div class="event-body"><span class="sk-line" style="width: 45%;"></span><span class="sk-line" style="width: 85%;"></span><span class="sk-line" style="width: 60%;"></span></div>
         </div>
       </article>
-
-      <article class="upcoming-event"
-        data-event
-        data-event-title="Summer Bible Day Camp"
-        data-event-start="2026-07-06T09:00:00-07:00"
-        data-event-end="2026-07-06T15:00:00-07:00"
-        data-event-location="474 Piercy Road, San Jose, CA 95138"
-        data-event-desc="A day full of Bible-centered fun for kids, with songs, lessons, and friendships.">
-        <div class="event-date" aria-hidden="true">
-          <div class="month">Jul</div>
-          <div class="day">06</div>
-        </div>
-        <div class="event-body">
-          <div class="event-meta">Monday &middot; 9:00 AM to 3:00 PM</div>
-          <h3>Summer Bible Day Camp</h3>
-          <p>A day full of Bible-centered fun for kids, with songs, lessons, and friendships.</p>
+      <article class="upcoming-event has-flyer is-loading" aria-hidden="true">
+        <div class="event-flyer"></div>
+        <div class="event-main">
+          <div class="event-date"></div>
+          <div class="event-body"><span class="sk-line" style="width: 45%;"></span><span class="sk-line" style="width: 85%;"></span><span class="sk-line" style="width: 60%;"></span></div>
         </div>
       </article>
     </div>
-
-    <p class="reveal" data-cal-status hidden style="text-align: center; margin-top: 28px; font-size: 13px; color: var(--text-muted);"></p>
   </div>
 </section>
 
@@ -450,6 +416,6 @@
   </div>
 </footer>
 
-<script src="scripts.js?v=38" defer></script>
+<script src="scripts.js?v=39" defer></script>
 </body>
 </html>
