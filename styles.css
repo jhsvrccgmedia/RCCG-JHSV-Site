@@ -956,14 +956,17 @@ body[data-page="home"] section.alt#welcome {
   overflow: hidden;
   border: 1px solid var(--border-soft);
 }
-#spotGridNextSteps { grid-template-columns: repeat(3, 1fr); }
+#spotGridNextSteps { grid-template-columns: repeat(4, 1fr); }
 #spotGridDuringService { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1100px) {
+  #spotGridNextSteps { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 900px) {
-  #spotGridNextSteps { grid-template-columns: 1fr; }
   #spotGridDuringService { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
-  .spot-grid { grid-template-columns: 1fr; }
+  .spot-grid,
+  #spotGridNextSteps { grid-template-columns: 1fr; }
 }
 .spot-card {
   background: var(--bg-card);
@@ -1678,6 +1681,23 @@ footer.site-footer .socials a:hover {
   transform: translateY(-2px);
 }
 footer.site-footer .socials svg { width: 18px; height: 18px; }
+/* "Download our App" pill under the Follow icons. */
+footer.site-footer .footer-app-btn {
+  display: inline-flex;
+  color: var(--text-inverse);
+  margin-top: 18px;
+  padding: 9px 18px; min-height: 0;
+  font-size: 13px;
+  gap: 8px;
+  border-color: rgba(250,246,240,0.30);
+}
+footer.site-footer .footer-app-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+footer.site-footer .footer-app-btn:hover {
+  background: var(--coral-500);
+  border-color: var(--coral-500);
+  color: #fff;
+  transform: translateY(-2px);
+}
 footer.site-footer .nl-form {
   display: flex; gap: 8px; margin-top: 10px;
 }
