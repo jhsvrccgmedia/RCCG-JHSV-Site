@@ -21,14 +21,23 @@ AddDefaultCharset UTF-8
   # Strip .html on canonical URLs, but skip /partials/ — those .html
   # files are fetched at runtime by scripts.js (data-include) and must
   # resolve directly without a redirect-to-extensionless path.
+  #
+  # REDIRECT_STATUS is empty only on the visitor's original request.
+  # Without that check, the internal /events -> events.html rewrite
+  # below re-enters these rules, matches ".html", and redirects back to
+  # /events forever (ERR_TOO_MANY_REDIRECTS on stock Apache).
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_URI} !^/partials/ [NC]
   RewriteCond %{REQUEST_URI} ^/(.+)\.html$ [NC]
   RewriteRule ^ /%1 [L,R=301]
 
+  # Serve /events from events.html, but only when that page exists, so
+  # unknown paths get a clean 404 instead of a rewrite to a missing file.
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]+$
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
   RewriteRule ^([^/]+?)/?$ $1.html [L]
 </IfModule>
 
